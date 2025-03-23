@@ -1,3 +1,4 @@
+"use client"
 import HomeCourseCard from "@/app/items/homeCourseCard";
 import DashLineChart from "@/app/items/LineChart";
 import OverViewCard from "@/app/items/OverViewCard";

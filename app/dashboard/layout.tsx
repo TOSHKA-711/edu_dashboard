@@ -11,6 +11,7 @@ import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import NavBar from "../components/navbar/NavBar";
 import Link from "next/link";
+import Image from "next/image";
 
 // const { Header, Content, Footer, Sider } = Layout;
 const { Header, Content, Sider } = Layout;
@@ -28,7 +29,7 @@ const items: MenuItem[] = [
   getItem(
     <Link href="/dashboard/overview">المركز الجماهيري ام الفحم</Link>,
     "1",
-    <img src="/logo1.svg" alt="logo" width={20} height={20} />
+    <Image src="/logo1.svg" alt="logo" width={20} height={20} />
   ),
   getItem(
     <Link href="/dashboard/overview">نظرة عامة</Link>,
@@ -56,6 +57,8 @@ const items2: MenuItem[] = [
 ];
 
 const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // console.log("Children in Layout:", children);
+
   const [collapsed, setCollapsed] = useState(false);
   const [breadcrumbItems, setBreadcrumbItems] = useState<{ title: string }[]>([
     { title: "الرئيسية" },
@@ -106,7 +109,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           onClick={handleMenuClick}
           style={{ paddingTop: "2rem" }}
         />
-        <img
+        <Image
           src="/sidebar_image.svg"
           alt="sidebar"
           width={500}

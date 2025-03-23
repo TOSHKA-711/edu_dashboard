@@ -1,3 +1,4 @@
+"use client"
 import CoursesTable from "@/app/items/CoursesTable";
 import { Avatar } from "@mui/material";
 import Image from "next/image";

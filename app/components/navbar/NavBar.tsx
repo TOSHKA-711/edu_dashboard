@@ -2,7 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosNotificationsOutline } from "react-icons/io";
 const NavBar = () => {
-  console.log("NavBar rendered");
   return (
     <div
       className="navbar h-full w-full px-8 flex items-center justify-end gap-2"

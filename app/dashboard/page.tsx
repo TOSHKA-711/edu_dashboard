@@ -1,10 +1,11 @@
-
+import DashLayout from "./layout";
 import OverView from "./overview/page";
-
 
 const Dashboard = () => {
   return (
-    <OverView/>
+    <DashLayout>
+      <OverView />
+    </DashLayout>
   );
 };
 

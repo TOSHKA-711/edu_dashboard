@@ -4,12 +4,12 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
 import { IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import LinearProgressBar from "./LinearProgress";
 import Image from "next/image";
 
 export default function CoursesTable() {
-  const router = useRouter();
+  // const router = useRouter();
 const columns: GridColDef[] = [
   {
     field: "courseName",
@@ -265,7 +265,6 @@ const handleDelete = (id: number) => {
 
   const handleEdit = (id: number) => {
     alert(`تعديل المستخدم ID: ${id}`);
-    router.push("/dashboard/students/editStudent")
     
   };
  

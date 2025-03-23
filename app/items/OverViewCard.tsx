@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { HiMiniUsers } from "react-icons/hi2";
