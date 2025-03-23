@@ -242,7 +242,7 @@ export default function UsersTable() {
     <Paper
       sx={{
         height: 590,
-        width: "100%",
+        width:"100%",
         background: "",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },

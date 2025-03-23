@@ -9,7 +9,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 const ViewStudent = () => {
   return (
     <div className="view-student flex flex-col items-start gap-4">
-      <div className="student-card rounded-lg flex flex-row items-center justify-start gap-8 p-8 w-full" style={{backgroundColor:"rgba(255, 255, 255, 0.5)" }}>
+      <div className="student-card rounded-lg flex flex-row items-center justify-start gap-8 p-8 w-full max-md:flex-col max-sm:px-3" style={{backgroundColor:"rgba(255, 255, 255, 0.5)" }}>
         <div className="main-details flex flex-row items-center justify-start gap-8">
           <span className="flex flex-col items-center gap-2">
             <Avatar alt="user" src="/user.jpg" sx={{width:"5rem" , height:"5rem",objectFit:"cover" }}/>
@@ -26,7 +26,7 @@ const ViewStudent = () => {
             تقييم
           </span>
         </div>
-        <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF]"></div>
+        <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF] max-md:h-1 max-md:w-4/5  "></div>
         <div className="per-details flex flex-col items-start gap-3">
           <h2 className="text-lg font-semibold  ">معلومات شخصية</h2>
           <div className="flex flex-row gap-2 items-center justify-center">

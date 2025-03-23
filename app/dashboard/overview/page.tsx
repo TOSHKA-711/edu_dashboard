@@ -10,7 +10,7 @@ const OverView = () => {
       <div className="cards w-full flex flex-row items-center justify-start gap-2">
         <OverViewCard />
       </div>
-      <div className="charts w-full flex flex-row items-center justify-start gap-5">
+      <div className="charts w-full flex flex-row items-center justify-start gap-5 max-md:flex-col">
         <DashLineChart areaColor="#25CD25" gradientId="greenGradient" dir={true} title="عدد المستخدمين " />
         <DashLineChart areaColor="#FFAA00" gradientId="orangeGradient" dir={true} title="الربح" />
       </div>
