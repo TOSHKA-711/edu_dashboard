@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import LinearProgressBar from "./LinearProgress";
 import Image from "next/image";
@@ -37,7 +37,7 @@ const columns: GridColDef[] = [
     headerName: "التقدم",
     width: 130,
     sortable: true,
-    renderCell: (params) => (
+    renderCell: () => (
       <div
         style={{
           display: "flex",
@@ -248,7 +248,7 @@ const rows = [
   },
 ];
 
-const paginationModel = { page: 0, pageSize: 5 };
+
 
 const handleView = (id: number) => {
   alert(`عرض المستخدم ID: ${id}`);
