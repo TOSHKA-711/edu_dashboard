@@ -71,7 +71,7 @@ export default function AllCoursesTable() {
       headerName: "الإجراء",
       width: 180,
       sortable: false,
-      renderCell: (params) => (
+      renderCell: () => (
         <div
           style={{
             display: "flex",
