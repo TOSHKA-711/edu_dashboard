@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { PieChartOutlined, TeamOutlined } from "@ant-design/icons";
+import { PieChartOutlined } from "@ant-design/icons";
 import { FiUsers } from "react-icons/fi";
 import { GoArrowSwitch } from "react-icons/go";
 import { FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
@@ -46,7 +46,7 @@ const items: MenuItem[] = [
   getItem(<Link href="/dashboard/courses">الكورسات</Link>, "6", <FaLaptopCode />),
   getItem(<Link href="/dashboard/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
 
-  // getItem("الفِرق", "sub2", <TeamOutlined />, [
+  // getItem("الفِرق", "sub2", />, [
   //   getItem(<Link href="/teams/1">الفريق 1</Link>, "8"),
   //   getItem(<Link href="/teams/2">الفريق 2</Link>, "9"),
   // ]),

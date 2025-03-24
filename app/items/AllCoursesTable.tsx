@@ -4,8 +4,6 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
 import { IconButton, Tooltip } from "@mui/material";
-// import { useRouter } from "next/navigation";
-import LinearProgressBar from "./LinearProgress";
 import Image from "next/image";
 
 export default function AllCoursesTable() {
@@ -87,7 +85,7 @@ export default function AllCoursesTable() {
           {/* عرض */}
           <Tooltip title="عرض">
             <IconButton
-              onClick={() => handleView(params.row.id)}
+              onClick={() => handleView()}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -99,7 +97,7 @@ export default function AllCoursesTable() {
           {/* تعديل */}
           <Tooltip title="تعديل">
             <IconButton
-              onClick={() => handleEdit(params.row.id)}
+              onClick={() => handleEdit()}
               color="secondary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -111,7 +109,7 @@ export default function AllCoursesTable() {
           {/* حذف */}
           <Tooltip title="حذف">
             <IconButton
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete()}
               color="error"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -244,17 +242,17 @@ export default function AllCoursesTable() {
     },
   ];
 
-  const handleView = (id: number) => {
+  const handleView = () => {
     // alert(`عرض المستخدم ID: ${id}`);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = () => {
     // if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
     //   alert(`تم حذف المستخدم ID: ${id}`);
     // }
   };
 
-  const handleEdit = (id: number) => {
+  const handleEdit = () => {
     // alert(`تعديل المستخدم ID: ${id}`);
   };
 

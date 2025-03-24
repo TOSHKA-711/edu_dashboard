@@ -1,6 +1,5 @@
 "use client";
 import CoursesTable from "@/app/items/CoursesTable";
-import TeacherRates from "@/app/items/TeacherRates";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";

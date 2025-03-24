@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // تجنب مشاكل الصور بعد النشر
   },
+  
 };
 
 export default nextConfig;

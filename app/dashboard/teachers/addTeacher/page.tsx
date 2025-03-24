@@ -1,7 +1,6 @@
 "use client";
 import { InputField } from "@/app/items/InputField";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RiUploadLine } from "react-icons/ri";
 
