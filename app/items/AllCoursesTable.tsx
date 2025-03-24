@@ -8,7 +8,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import LinearProgressBar from "./LinearProgress";
 import Image from "next/image";
 
-export default function CoursesTable() {
+export default function AllCoursesTable() {
   // const router = useRouter();
   const columns: GridColDef[] = [
     {
@@ -38,31 +38,11 @@ export default function CoursesTable() {
         </div>
       ),
     },
-    {
-      field: "progress",
-      headerName: "التقدم",
-      width: 130,
-      sortable: true,
-      renderCell: () => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <LinearProgressBar />
-          {/* {params.row.progress} */}
-        </div>
-      ),
-    },
 
-    { field: "attendance", headerName: "الحضور", width: 90 },
-    { field: "date", headerName: " التاريخ", width: 120 },
+    { field: "students", headerName: "الطلاب", width: 90 },
+    { field: "lessons", headerName: "الدروس", width: 90 },
     { field: "price", headerName: " السعر", width: 120 },
+    { field: "duration", headerName: " المده", width: 120 },
     {
       field: "status",
       headerName: "الحالة",
@@ -149,120 +129,133 @@ export default function CoursesTable() {
       id: 1,
       courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-01-15",
-      attendance: "90%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "مفعل",
     },
     {
       id: 2,
-      courseName: "Lannister",
+      courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-02-10",
-      attendance: "75%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 3,
-      courseName: "Lannister",
+      courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-03-22",
-      attendance: "85%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "مفعل",
     },
     {
       id: 4,
-      courseName: "Stark",
+      courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-04-05",
-      attendance: "95%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "مفعل",
     },
     {
       id: 5,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 6,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 7,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 8,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 9,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 10,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 11,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 12,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
     {
       id: 13,
-      courseName: "Targaryen",
+     courseName: "مقدمة في علوم الحاسب",
       price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      duration: "3 شهور",
+      lessons: "16",
+      students: "28",
       status: "غير مفعل",
     },
   ];
 
   const handleView = (id: number) => {
-    alert(`عرض المستخدم ID: ${id}`);
+    // alert(`عرض المستخدم ID: ${id}`);
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
-    }
+    // if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
+    //   alert(`تم حذف المستخدم ID: ${id}`);
+    // }
   };
 
   const handleEdit = (id: number) => {
-    alert(`تعديل المستخدم ID: ${id}`);
+    // alert(`تعديل المستخدم ID: ${id}`);
   };
 
   return (

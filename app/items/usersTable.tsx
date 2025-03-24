@@ -52,9 +52,9 @@ export default function UsersTable() {
             borderRadius: "6px",
 
             backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#DB340B"
+              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#fff"}`,
+            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
           }}
         >
           {params.row.status}
@@ -260,7 +260,7 @@ export default function UsersTable() {
           pagination: { paginationModel: { pageSize: 10, page: 0 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
-        checkboxSelection
+        // checkboxSelection
         sx={{
           border: 0,
           "& .MuiDataGrid-cell": {

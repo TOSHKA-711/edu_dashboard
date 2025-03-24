@@ -41,15 +41,15 @@ const items: MenuItem[] = [
     "3",
     <FiUsers />
   ),
-  getItem(<Link href="/parents">أولياء الأمور</Link>, "4", <GoArrowSwitch />),
-  getItem(<Link href="/teachers">المعلمين</Link>, "5", <FaChalkboardTeacher />),
-  getItem(<Link href="/courses">الكورسات</Link>, "6", <FaLaptopCode />),
-  getItem(<Link href="/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
+  getItem(<Link href="/dashboard/parents">أولياء الأمور</Link>, "4", <GoArrowSwitch />),
+  getItem(<Link href="/dashboard/teachers">المعلمين</Link>, "5", <FaChalkboardTeacher />),
+  getItem(<Link href="/dashboard/courses">الكورسات</Link>, "6", <FaLaptopCode />),
+  getItem(<Link href="/dashboard/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
 
-  getItem("الفِرق", "sub2", <TeamOutlined />, [
-    getItem(<Link href="/teams/1">الفريق 1</Link>, "8"),
-    getItem(<Link href="/teams/2">الفريق 2</Link>, "9"),
-  ]),
+  // getItem("الفِرق", "sub2", <TeamOutlined />, [
+  //   getItem(<Link href="/teams/1">الفريق 1</Link>, "8"),
+  //   getItem(<Link href="/teams/2">الفريق 2</Link>, "9"),
+  // ]),
   getItem(<Link href="/settings">الاعدادات</Link>, "10", <CiSettings />),
 ];
 const items2: MenuItem[] = [
