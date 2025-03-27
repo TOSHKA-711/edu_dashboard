@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, IconButton, Box, Tooltip } from "@mui/material";
+import { IconButton, Box, Tooltip } from "@mui/material";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FontDownloadIcon from "@mui/icons-material/FontDownload";
@@ -30,7 +30,7 @@ const TextEditor: React.FC = () => {
     };">${text}</${tag}>`;
 
     setHtmlText(styledText);
-    // console.log("Formatted HTML:", styledText);
+    console.log("Formatted HTML:", htmlText);
   }, [text, fontIndex, isItalic, fontWeightIndex, fontSizeIndex]);
 
   return (

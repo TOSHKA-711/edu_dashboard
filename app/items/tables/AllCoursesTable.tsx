@@ -2,7 +2,7 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 import { IconButton, Tooltip } from "@mui/material";
 import Image from "next/image";
 import MenuDots from "../MenuDots";

@@ -170,15 +170,15 @@ export default function EnrolledTable() {
     router.push("/dashboard/students/viewStudent");
   };
 
-  const handleDelete = (id: number) => {
-    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
-    }
-  };
+  // const handleDelete = (id: number) => {
+  //   if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
+  //     alert(`تم حذف المستخدم ID: ${id}`);
+  //   }
+  // };
 
-  const handleEdit = () => {
-    router.push("/dashboard/students/editStudent");
-  };
+  // const handleEdit = () => {
+  //   router.push("/dashboard/students/editStudent");
+  // };
 
   return (
     <Paper

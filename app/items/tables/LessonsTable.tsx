@@ -5,7 +5,6 @@ import Paper from "@mui/material/Paper";
 import { FaRegEye} from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { IoMdAdd } from "react-icons/io";
 import SwitchBtn from "../inputs&btns/SwitchBtn";
 
 export default function LessonsTable() {
@@ -83,17 +82,7 @@ export default function LessonsTable() {
               <FaRegEye />
             </IconButton>
           </Tooltip>
-          {/* سداد مبلغ */}
-          {/* <Tooltip title="سداد جزء">
-            <IconButton
-              onClick={() => handleView()}
-              color="primary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <IoMdAdd />
-            </IconButton>
-          </Tooltip> */}
+          
         </div>
       ),
     },
@@ -171,15 +160,15 @@ export default function LessonsTable() {
     router.push("/dashboard/students/viewStudent");
   };
 
-  const handleDelete = (id: number) => {
-    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
-    }
-  };
+  // const handleDelete = (id: number) => {
+  //   if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
+  //     alert(`تم حذف المستخدم ID: ${id}`);
+  //   }
+  // };
 
-  const handleEdit = () => {
-    router.push("/dashboard/students/editStudent");
-  };
+  // const handleEdit = () => {
+  //   router.push("/dashboard/students/editStudent");
+  // };
 
   return (
     <Paper
