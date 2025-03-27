@@ -3,18 +3,17 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { IconButton, Tooltip } from "@mui/material";
-// import { useRouter } from "next/navigation";
-import LinearProgressBar from "./LinearProgress";
-import Image from "next/image";
+import { Avatar, IconButton, Tooltip } from "@mui/material";
+import { useRouter } from "next/navigation";
 
-export default function CoursesTable() {
-  // const router = useRouter();
+export default function TeachersTable() {
+  const router = useRouter();
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 90 },
     {
-      field: "courseName",
-      headerName: "الدورة",
-      width: 220,
+      field: "firstName",
+      headerName: "الاسم",
+      width:220,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -27,46 +26,18 @@ export default function CoursesTable() {
             height: "100%",
           }}
         >
-          <Image
-            alt="user"
-            src="/course image.svg"
-            width={40}
-            height={30}
-            className="h-10"
-          />
-          {params.row.courseName}
+          <Avatar alt="user" src="/user.jpg" />
+          {params.row.firstName}
         </div>
       ),
     },
-    {
-      field: "progress",
-      headerName: "التقدم",
-      width: 130,
-      sortable: true,
-      renderCell: () => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <LinearProgressBar />
-          {/* {params.row.progress} */}
-        </div>
-      ),
-    },
-
-    { field: "attendance", headerName: "الحضور", width: 90 },
-    { field: "date", headerName: " التاريخ", width: 120 },
-    { field: "price", headerName: " السعر", width: 120 },
+    { field: "coursesNumber", headerName: "الدورة", width: 120 },
+    { field: "joinDate", headerName: " تاريخ الإنضمام", width: 120 },
+    { field: "studentsNumber", headerName: "عدد الطلبة", width: 120 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 90,
+      width: 120,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -78,6 +49,7 @@ export default function CoursesTable() {
             height: "60%",
             alignSelf: "center",
             borderRadius: "6px",
+
             backgroundColor: `${
               params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
             }`,
@@ -107,7 +79,7 @@ export default function CoursesTable() {
           {/* عرض */}
           <Tooltip title="عرض">
             <IconButton
-              onClick={() => handleView(params.row.id)}
+              onClick={() => handleView()}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -119,7 +91,7 @@ export default function CoursesTable() {
           {/* تعديل */}
           <Tooltip title="تعديل">
             <IconButton
-              onClick={() => handleEdit(params.row.id)}
+              onClick={() => handleEdit()}
               color="secondary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -147,112 +119,112 @@ export default function CoursesTable() {
   const rows = [
     {
       id: 1,
-      courseName: "مقدمة في علوم الحاسب",
-      price: "200$",
-      date: "2023-01-15",
-      attendance: "90%",
+      coursesNumber: "6",
+      firstName: "Jon",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "مفعل",
     },
     {
       id: 2,
-      courseName: "Lannister",
-      price: "200$",
-      date: "2023-02-10",
-      attendance: "75%",
+      coursesNumber: "6",
+      firstName: "Cersei",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 3,
-      courseName: "Lannister",
-      price: "200$",
-      date: "2023-03-22",
-      attendance: "85%",
+      coursesNumber: "6",
+      firstName: "Jaime",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "مفعل",
     },
     {
       id: 4,
-      courseName: "Stark",
-      price: "200$",
-      date: "2023-04-05",
-      attendance: "95%",
+      coursesNumber: "6",
+      firstName: "Arya",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "مفعل",
     },
     {
       id: 5,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 6,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 7,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 8,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 9,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 10,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 11,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 12,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 13,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
+      coursesNumber: "6",
+      firstName: "Daenerys",
+      joinDate: "05 Jan, 2024",
+      studentsNumber: "5",
       status: "غير مفعل",
     },
   ];
 
-  const handleView = (id: number) => {
-    alert(`عرض المستخدم ID: ${id}`);
+  const handleView = () => {
+    router.push("/dashboard/teachers/viewTeacher");
   };
 
   const handleDelete = (id: number) => {
@@ -261,15 +233,16 @@ export default function CoursesTable() {
     }
   };
 
-  const handleEdit = (id: number) => {
-    alert(`تعديل المستخدم ID: ${id}`);
+  const handleEdit = () => {
+    // router.push("/dashboard/students/editStudent");
   };
+
 
   return (
     <Paper
       sx={{
         height: 590,
-        width: "100%",
+        width:"100%",
         background: "",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
@@ -287,6 +260,7 @@ export default function CoursesTable() {
           pagination: { paginationModel: { pageSize: 10, page: 0 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
+        // checkboxSelection
         sx={{
           border: 0,
           "& .MuiDataGrid-cell": {

@@ -6,14 +6,14 @@ import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function ParentsTable() {
+export default function UsersTable() {
   const router = useRouter();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
     {
       field: "firstName",
       headerName: "الاسم",
-      width: 160,
+      width: 180,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -31,9 +31,10 @@ export default function ParentsTable() {
         </div>
       ),
     },
-    { field: "coursesNumber", headerName: " عدد الدورات", width: 90 },
-    { field: "payments", headerName: " المدفوعات", width: 100 },
-    { field: "childNumber", headerName: "عدد الأبناء", width: 90 },
+    { field: "courseName", headerName: "اسم الدورة", width: 250 },
+    { field: "joinDate", headerName: "تاريخ الانضمام", width: 130 },
+    { field: "attendance", headerName: "الحضور", width: 90 },
+    // { field: "status", headerName: "الحالة", width: 90 },
     {
       field: "status",
       headerName: "الحالة",
@@ -119,112 +120,112 @@ export default function ParentsTable() {
   const rows = [
     {
       id: 1,
-      coursesNumber: "6",
+      courseName: "Snow",
       firstName: "Jon",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-01-15",
+      attendance: "90%",
       status: "مفعل",
     },
     {
       id: 2,
-      coursesNumber: "6",
+      courseName: "Lannister",
       firstName: "Cersei",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-02-10",
+      attendance: "75%",
       status: "غير مفعل",
     },
     {
       id: 3,
-      coursesNumber: "6",
+      courseName: "Lannister",
       firstName: "Jaime",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-03-22",
+      attendance: "85%",
       status: "مفعل",
     },
     {
       id: 4,
-      coursesNumber: "6",
+      courseName: "Stark",
       firstName: "Arya",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-04-05",
+      attendance: "95%",
       status: "مفعل",
     },
     {
       id: 5,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 6,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 7,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 8,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 9,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 10,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 11,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 12,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
     {
       id: 13,
-      coursesNumber: "6",
+      courseName: "Targaryen",
       firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
+      joinDate: "2023-05-18",
+      attendance: "80%",
       status: "غير مفعل",
     },
   ];
 
   const handleView = () => {
-    router.push("/dashboard/parents/viewParent");
+    router.push("/dashboard/students/viewStudent");
   };
 
   const handleDelete = (id: number) => {
@@ -234,7 +235,7 @@ export default function ParentsTable() {
   };
 
   const handleEdit = () => {
-    // router.push("/dashboard/students/editStudent");
+    router.push("/dashboard/students/editStudent");
   };
 
   return (

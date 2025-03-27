@@ -1,10 +1,10 @@
-import ParentsTable from '@/app/items/tables/ParentsTable';
+import EnrolledTable from '@/app/items/tables/EnrolledTable';
 import React from 'react';
 
 const Page = () => {
     return (
         <div>
-            <ParentsTable/>
+            <EnrolledTable/>
         </div>
     );
 }

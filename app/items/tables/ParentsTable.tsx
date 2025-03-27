@@ -6,14 +6,14 @@ import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function TeachersTable() {
+export default function ParentsTable() {
   const router = useRouter();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
     {
       field: "firstName",
       headerName: "الاسم",
-      width: 160,
+      width: 190,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -31,13 +31,13 @@ export default function TeachersTable() {
         </div>
       ),
     },
-    { field: "coursesNumber", headerName: "الدورة", width: 90 },
-    { field: "joinDate", headerName: " تاريخ الإنضمام", width: 100 },
-    { field: "studentsNumber", headerName: "عدد الطلبة", width: 90 },
+    { field: "coursesNumber", headerName: " عدد الدورات", width: 120 },
+    { field: "payments", headerName: " المدفوعات", width: 120 },
+    { field: "childNumber", headerName: "عدد الأبناء", width: 120 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 90,
+      width: 120,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -121,110 +121,110 @@ export default function TeachersTable() {
       id: 1,
       coursesNumber: "6",
       firstName: "Jon",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "مفعل",
     },
     {
       id: 2,
       coursesNumber: "6",
       firstName: "Cersei",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 3,
       coursesNumber: "6",
       firstName: "Jaime",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "مفعل",
     },
     {
       id: 4,
       coursesNumber: "6",
       firstName: "Arya",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "مفعل",
     },
     {
       id: 5,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 6,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 7,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 8,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 9,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 10,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 11,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 12,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
     {
       id: 13,
       coursesNumber: "6",
       firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
+      payments: "200$",
+      childNumber: "5",
       status: "غير مفعل",
     },
   ];
 
   const handleView = () => {
-    router.push("/dashboard/teachers/viewTeacher");
+    router.push("/dashboard/parents/viewParent");
   };
 
   const handleDelete = (id: number) => {
@@ -236,7 +236,6 @@ export default function TeachersTable() {
   const handleEdit = () => {
     // router.push("/dashboard/students/editStudent");
   };
-
 
   return (
     <Paper

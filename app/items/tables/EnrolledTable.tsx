@@ -2,18 +2,19 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaRegEye} from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { IoMdAdd } from "react-icons/io";
 
-export default function UsersTable() {
+export default function EnrolledTable() {
   const router = useRouter();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 120 },
     {
       field: "firstName",
       headerName: "الاسم",
-      width: 130,
+      width: 300,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -24,6 +25,7 @@ export default function UsersTable() {
             alignItems: "center",
             width: "100%",
             height: "100%",
+            fontFamily: 'Tajawal',
           }}
         >
           <Avatar alt="user" src="/user.jpg" />
@@ -31,42 +33,34 @@ export default function UsersTable() {
         </div>
       ),
     },
-    { field: "courseName", headerName: "اسم الدورة", width: 190 },
-    { field: "joinDate", headerName: "تاريخ الانضمام", width: 120 },
-    { field: "attendance", headerName: "الحضور", width: 90 },
-    // { field: "status", headerName: "الحالة", width: 90 },
     {
-      field: "status",
-      headerName: "الحالة",
-      width: 90,
+      field: "payment",
+      headerName: "المبلغ",
+      width: 350,
       sortable: true,
       renderCell: (params) => (
         <div
           style={{
             display: "flex",
+            gap: "8px",
             justifyContent: "center",
             alignItems: "center",
-            width: "80%",
-            height: "60%",
-            alignSelf: "center",
-            borderRadius: "6px",
-
-            backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
-            }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
+            width: "100%",
+            height: "100%",
+            fontFamily: 'Tajawal',
+            fontSize:"18px"
           }}
         >
-          {params.row.status}
+         {params.row.payment}
         </div>
       ),
     },
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 180,
+      width: 280,
       sortable: false,
-      renderCell: (params) => (
+      renderCell: () => (
         <div
           style={{
             display: "flex",
@@ -88,28 +82,15 @@ export default function UsersTable() {
               <FaRegEye />
             </IconButton>
           </Tooltip>
-
-          {/* تعديل */}
-          <Tooltip title="تعديل">
+          {/* سداد مبلغ */}
+          <Tooltip title="سداد جزء">
             <IconButton
-              onClick={() => handleEdit()}
-              color="secondary"
+              onClick={() => handleView()}
+              color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
             >
-              <FaEdit />
-            </IconButton>
-          </Tooltip>
-
-          {/* حذف */}
-          <Tooltip title="حذف">
-            <IconButton
-              onClick={() => handleDelete(params.row.id)}
-              color="error"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaTrash />
+              <IoMdAdd />
             </IconButton>
           </Tooltip>
         </div>
@@ -120,107 +101,68 @@ export default function UsersTable() {
   const rows = [
     {
       id: 1,
-      courseName: "Snow",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Jon",
-      joinDate: "2023-01-15",
-      attendance: "90%",
-      status: "مفعل",
     },
     {
       id: 2,
-      courseName: "Lannister",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Cersei",
-      joinDate: "2023-02-10",
-      attendance: "75%",
-      status: "غير مفعل",
     },
     {
       id: 3,
-      courseName: "Lannister",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Jaime",
-      joinDate: "2023-03-22",
-      attendance: "85%",
-      status: "مفعل",
     },
     {
       id: 4,
-      courseName: "Stark",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Arya",
-      joinDate: "2023-04-05",
-      attendance: "95%",
-      status: "مفعل",
     },
     {
       id: 5,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 6,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 7,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 8,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 9,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 10,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 11,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 12,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
     {
       id: 13,
-      courseName: "Targaryen",
+      payment: "تم دفع 300 شيكل من اصل 600",
       firstName: "Daenerys",
-      joinDate: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
     },
   ];
 
@@ -242,7 +184,7 @@ export default function UsersTable() {
     <Paper
       sx={{
         height: 590,
-        width:"100%",
+        width: "100%",
         background: "",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },

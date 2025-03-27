@@ -1,7 +1,7 @@
 "use client"
-import HomeCourseCard from "@/app/items/homeCourseCard";
-import DashLineChart from "@/app/items/LineChart";
-import OverViewCard from "@/app/items/OverViewCard";
+import HomeCourseCard from "@/app/items/cards/homeCourseCard";
+import DashLineChart from "@/app/items/charts/LineChart";
+import OverViewCard from "@/app/items/cards/OverViewCard";
 import React from "react";
 
 const OverView = () => {

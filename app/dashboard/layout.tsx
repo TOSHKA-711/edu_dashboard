@@ -13,7 +13,6 @@ import NavBar from "../components/navbar/NavBar";
 import Link from "next/link";
 import Image from "next/image";
 
-// const { Header, Content, Footer, Sider } = Layout;
 const { Header, Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -140,7 +139,6 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             style={{ margin: "20px 0", direction: "rtl", fontSize: "25px" }}
             items={breadcrumbItems.map((item) => ({ title: item.title }))}
           />
-
           {children}
         </Content>
         {/* <Footer style={{ textAlign: "center" }}>

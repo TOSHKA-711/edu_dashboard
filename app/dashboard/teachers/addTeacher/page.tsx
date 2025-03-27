@@ -1,5 +1,5 @@
 "use client";
-import { InputField } from "@/app/items/InputField";
+import { InputField } from "@/app/items/inputs&btns/InputField";
 import Image from "next/image";
 import React, { useState } from "react";
 import { RiUploadLine } from "react-icons/ri";
