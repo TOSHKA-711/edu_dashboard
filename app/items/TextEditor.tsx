@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { IconButton, Box, Tooltip } from "@mui/material";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -62,7 +63,7 @@ const TextEditor: React.FC = () => {
         </Tooltip>
         <Tooltip title="عادي">
           <IconButton
-            onClick={() => setFontSizeIndex(0)}
+            onClick={() => setFontSizeIndex(0)} 
             color={fontSizeIndex === 0 ? "primary" : "default"}
           >
             <LooksOneIcon />
@@ -93,33 +94,7 @@ const TextEditor: React.FC = () => {
           </IconButton>
         </Tooltip>
       </Box>
-
-      {/* <TextField
-        fullWidth
-        placeholder="اكتب هنا..."
-        multiline
-        rows={4}
-        variant="outlined"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        InputProps={{
-          sx: {
-            width: "100%",
-            fontFamily: fonts[fontIndex],
-            fontStyle: isItalic ? "italic" : "normal",
-            fontWeight: fontWeights[fontWeightIndex],
-            fontSize:
-              fontSizeIndex === 0
-                ? "16px"
-                : fontSizeIndex === 1
-                ? "32px"
-                : fontSizeIndex === 2
-                ? "24px"
-                : "20px",
-            border: "none",
-          },
-        }}
-      /> */}
+      
       <textarea
         name="description"
         cols={30}
