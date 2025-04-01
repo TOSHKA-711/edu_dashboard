@@ -1,6 +1,6 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setUser, logout } from "./authSlice"; // تأكد أن المسار صحيح
+import { setUser } from "./authSlice"; // تأكد أن المسار صحيح
 
 export const authApi = createApi({
   reducerPath: "authApi",
