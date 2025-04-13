@@ -24,14 +24,14 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-export default function LinearProgressBar() {
+export default function LinearProgressBar({value}:{value:number}) {
   return (
     <Stack spacing={2} sx={{ flexGrow: 1  , "& .MuiLinearProgress-colorPrimary" : {marginTop:"5px"}}}>
      <div className="flex items-center justify-between w-full h-3">
-      <p>30%</p>
+      <p>{value}%</p>
       <p>سئ</p>
      </div>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={value??0} />
     </Stack>
   );
 }

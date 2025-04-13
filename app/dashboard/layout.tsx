@@ -1,62 +1,59 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect ,useMemo} from "react";
 import { PieChartOutlined } from "@ant-design/icons";
 import { FiUsers } from "react-icons/fi";
 import { GoArrowSwitch } from "react-icons/go";
 import { FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
 import { MdOutlineWidgets } from "react-icons/md";
 import { CiSettings, CiLogout } from "react-icons/ci";
-
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import NavBar from "../components/navbar/NavBar";
 import Link from "next/link";
 import Image from "next/image";
-
-const { Header, Content, Sider } = Layout;
-
-type MenuItem = Required<MenuProps>["items"][number];
-
-const getItem = (
-  label: React.ReactNode,
-  key: string,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem => ({ key, icon, children, label });
-
-const items: MenuItem[] = [
-  getItem(
-    <Link href="/dashboard/overview">المركز الجماهيري ام الفحم</Link>,
-    "1",
-    <Image src="/logo1.svg" alt="logo" width={20} height={20} />
-  ),
-  getItem(
-    <Link href="/dashboard/overview">نظرة عامة</Link>,
-    "2",
-    <PieChartOutlined />
-  ),
-  getItem(
-    <Link href="/dashboard/students/allStudents">الطلاب</Link>,
-    "3",
-    <FiUsers />
-  ),
-  getItem(<Link href="/dashboard/parents">أولياء الأمور</Link>, "4", <GoArrowSwitch />),
-  getItem(<Link href="/dashboard/teachers">المعلمين</Link>, "5", <FaChalkboardTeacher />),
-  getItem(<Link href="/dashboard/courses">الكورسات</Link>, "6", <FaLaptopCode />),
-  getItem(<Link href="/dashboard/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
-
-  // getItem("الفِرق", "sub2", />, [
-  //   getItem(<Link href="/teams/1">الفريق 1</Link>, "8"),
-  //   getItem(<Link href="/teams/2">الفريق 2</Link>, "9"),
-  // ]),
-  getItem(<Link href="/settings">الاعدادات</Link>, "10", <CiSettings />),
-];
-const items2: MenuItem[] = [
-  getItem("Logout", "11", <CiLogout className="text-red-400" />),
-];
+import { useDispatch } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
+import { logout } from "../Redux/Slices/Auth/authSlice";
 
 const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // console.log("Children in Layout:", children);
+  const { Header, Content, Sider } = Layout;
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const path = usePathname(); // استخدمنا router.pathname بدلاً من window.location.pathname
+
+  // handle logout
+  const handleLogout = () => {
+    router.push("/auth");
+    dispatch(logout());
+  };
+
+  type MenuItem = Required<MenuProps>["items"][number];
+
+  const getItem = (
+    label: React.ReactNode,
+    key: string,
+    icon?: React.ReactNode,
+    children?: MenuItem[]
+  ): MenuItem => ({ key, icon, children, label });
+
+  const items: MenuItem[] = [
+    getItem(
+      <Link href="/dashboard/overview">المركز الجماهيري ام الفحم</Link>,
+      "1",
+      <Image src="/logo1.svg" alt="logo" width={20} height={20} />
+    ),
+    getItem(<Link href="/dashboard/overview">نظرة عامة</Link>, "2", <PieChartOutlined />),
+    getItem(<Link href="/dashboard/students/allStudents">الطلاب</Link>, "3", <FiUsers />),
+    getItem(<Link href="/dashboard/parents">أولياء الأمور</Link>, "4", <GoArrowSwitch />),
+    getItem(<Link href="/dashboard/teachers">المعلمين</Link>, "5", <FaChalkboardTeacher />),
+    getItem(<Link href="/dashboard/courses">الكورسات</Link>, "6", <FaLaptopCode />),
+    getItem(<Link href="/dashboard/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
+    getItem(<Link href="/settings">الاعدادات</Link>, "10", <CiSettings />),
+  ];
+
+  const items2: MenuItem[] = [
+    getItem(<button onClick={handleLogout}>Logout</button>, "11", <CiLogout />),
+  ];
 
   const [collapsed, setCollapsed] = useState(false);
   const [breadcrumbItems, setBreadcrumbItems] = useState<{ title: string }[]>([
@@ -67,7 +64,8 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const breadcrumbMap: Record<string, { title: string }[]> = {
+  const breadcrumbMap: Record<string, { title: string }[]> = useMemo(() => ({
+
     "1": [{ title: "نظرة عامة" }],
     "2": [{ title: "نظرة عامة" }],
     "3": [{ title: "الطلاب" }],
@@ -78,11 +76,36 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     "8": [{ title: "الفرق" }, { title: "الفريق 1" }],
     "9": [{ title: "الفرق" }, { title: "الفريق 2" }],
     "10": [{ title: "الاعدادات" }],
-  };
+  }), []);
 
-  const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
-    setBreadcrumbItems(breadcrumbMap[key] || [{ title: "الرئيسية" }]);
-  };
+  useEffect(() => {
+    switch (true) {
+      case path.includes("/students"):
+        setBreadcrumbItems(breadcrumbMap["3"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/parents"):
+        setBreadcrumbItems(breadcrumbMap["4"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/teachers"):
+        setBreadcrumbItems(breadcrumbMap["5"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/courses"):
+        setBreadcrumbItems(breadcrumbMap["6"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/subjects"):
+        setBreadcrumbItems(breadcrumbMap["7"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/teams"):
+        setBreadcrumbItems(breadcrumbMap["8"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/settings"):
+        setBreadcrumbItems(breadcrumbMap["10"] || [{ title: "الرئيسية" }]);
+        break;
+      default:
+        setBreadcrumbItems([{ title: "الرئيسية" }]);
+        break;
+    }
+  }, [path , breadcrumbMap]);
 
   return (
     <Layout style={{ minHeight: "100vh" }} dir="rtl">
@@ -105,7 +128,6 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}
-          onClick={handleMenuClick}
           style={{ paddingTop: "2rem" }}
         />
         <Image
@@ -120,7 +142,6 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items2}
-          onClick={handleMenuClick}
           style={{ paddingTop: "2rem" }}
         />
       </Sider>
@@ -141,9 +162,6 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           />
           {children}
         </Content>
-        {/* <Footer style={{ textAlign: "center" }}>
-          Ali Mostafa ©{new Date().getFullYear()} Created by Toshka
-        </Footer> */}
       </Layout>
     </Layout>
   );

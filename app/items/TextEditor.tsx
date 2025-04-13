@@ -32,7 +32,7 @@ const TextEditor: React.FC = () => {
 
     setHtmlText(styledText);
     console.log("Formatted HTML:", htmlText);
-  }, [text, fontIndex, isItalic, fontWeightIndex, fontSizeIndex]);
+  }, [text, fontIndex, isItalic, fontWeightIndex, fontSizeIndex , htmlText]);
 
   return (
     <Box sx={{ width: "100%", mt: 3 }}>

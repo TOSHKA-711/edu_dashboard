@@ -1,15 +1,49 @@
 "use client";
-import CoursesTable from "@/app/items/tables/CoursesTable";
+import TeacherRates from "@/app/items/cards/TeacherRates";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { MdOutlineDateRange } from "react-icons/md";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/Redux/Store";
+import {
+  useGetInstructorCoursesQuery,
+  useGetInstructorRatesQuery,
+} from "@/app/Redux/Slices/Instructors/InstructorsApi";
+import InstructorsCoursesTable from "@/app/items/tables/InstructorsCoursesTable";
 
-const ViewParent = () => {
+const ViewTeacher = () => {
+  const params = useParams();
+  const instructorId = parseInt(params.id as string) ?? 0;
+  const [isRendered, setIsRendered] = useState(false);
   const [isViewCourses, setIsViewCourses] = useState<boolean>(true);
+  const selectedUser = useSelector(
+    (state: RootState) => state.Instructors.selectedUser
+  );
 
-  //   handle switch view
+  const {
+    data: courses,
+  } = useGetInstructorCoursesQuery(instructorId, {
+    skip: !instructorId,
+  });
+
+  const { data: rates } =
+    useGetInstructorRatesQuery(instructorId);
+
+  useEffect(() => {
+    setIsRendered(true);
+  }, []);
+
+  if (!instructorId || !isRendered) {
+    return <div>Loading...</div>;
+  }
+
+  if (!selectedUser) {
+    return <div>Loading or no instructors found.</div>;
+  }
+
   const handleSwitchView = () => {
     setIsViewCourses(!isViewCourses);
   };
@@ -23,20 +57,25 @@ const ViewParent = () => {
           <span className="flex flex-col items-center gap-2">
             <Avatar
               alt="user"
-              src="/user.jpg"
+              src={selectedUser?.image}
               sx={{ width: "5rem", height: "5rem", objectFit: "cover" }}
             />
-            Ali mostafa
+            {selectedUser?.first_name} {selectedUser?.last_name}
           </span>
           <span className="flex flex-col items-center gap-1">
             <Image alt="user" src="/Frame_users.svg" width={40} height={100} />
-            <p>5</p>
-            ابناء
+            <p>1258</p>
+            طالب
           </span>
           <span className="flex flex-col items-center gap-1">
             <Image alt="user" src="/Frame_book.svg" width={40} height={100} />
             <p>07</p>
             دورة
+          </span>
+          <span className="flex flex-col items-center gap-1">
+            <Image alt="user" src="/Frame_rate.svg" width={40} height={100} />
+            <p>4.5</p>
+            تقييم
           </span>
         </div>
         <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF] max-md:h-1 max-md:w-4/5  "></div>
@@ -59,7 +98,11 @@ const ViewParent = () => {
             <span> 05 Jan, 2024</span>
           </div>
         </div>
-      
+        <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF] max-md:h-1 max-md:w-4/5  "></div>
+        <div className="about flex flex-col items-start gap-4">
+          <p className="font-semibold text-lg">نبذة مختصرة</p>
+          <p>{selectedUser?.info}</p>
+        </div>
       </div>
       <div className="w-full flex flex-col items-start gap-4 py-6">
         <div
@@ -76,7 +119,7 @@ const ViewParent = () => {
                 isViewCourses && "bg-white"
               } ${!isViewCourses && "text-[#757575]"} `}
             >
-              أسعد
+              الدورات
             </button>
             <button
               onClick={handleSwitchView}
@@ -84,15 +127,20 @@ const ViewParent = () => {
                 !isViewCourses && "bg-white"
               } ${isViewCourses && "text-[#757575] "} `}
             >
-              شريف
+              التقييمات
             </button>
           </div>
         </div>
-        <CoursesTable /> 
-      
+        {isViewCourses ? (
+          <InstructorsCoursesTable
+            courses={courses ?? { status: false, message: "", data: [] }}
+          />
+        ) : (
+          <TeacherRates reviews={rates?.data ?? []} />
+        )}
       </div>
     </div>
   );
 };
 
-export default ViewParent;
+export default ViewTeacher;

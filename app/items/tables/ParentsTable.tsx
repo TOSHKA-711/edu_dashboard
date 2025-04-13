@@ -2,18 +2,41 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaRegEye, FaTrash } from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { ParentType } from "@/app/Redux/types";
+import { useGetAllParentsQuery } from "@/app/Redux/Slices/Parents/parentsApi";
+import { setSelectedParent } from "@/app/Redux/Slices/Parents/ParentsSlice";
+import Image from "next/image";
 
 export default function ParentsTable() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  // start fetch users
+
+  const { data, error, isLoading } = useGetAllParentsQuery();
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching students</p>;
+  const parents = data?.data ;
+  // end fetch users
+
+  if (!parents || parents.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-2 text-lg">
+        No parents found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+      </div>
+    );
+  }
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 60 },
     {
       field: "firstName",
       headerName: "الاسم",
-      width: 190,
+      width: 200,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -26,18 +49,18 @@ export default function ParentsTable() {
             height: "100%",
           }}
         >
-          <Avatar alt="user" src="/user.jpg" />
-          {params.row.firstName}
+          <Avatar alt="user" src={params.row.image} />
+          {params.row.first_name} {params.row.last_name}
         </div>
       ),
     },
-    { field: "coursesNumber", headerName: " عدد الدورات", width: 120 },
-    { field: "payments", headerName: " المدفوعات", width: 120 },
-    { field: "childNumber", headerName: "عدد الأبناء", width: 120 },
+    { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
+    { field: "email", headerName: " البريد", width: 200 },
+    { field: "children_count", headerName: " عدد الابناء", width: 100 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 120,
+      width: 90,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -63,7 +86,7 @@ export default function ParentsTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 180,
+      width: 80,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -79,7 +102,7 @@ export default function ParentsTable() {
           {/* عرض */}
           <Tooltip title="عرض">
             <IconButton
-              onClick={() => handleView()}
+              onClick={() => handleView(params.row)}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -89,16 +112,16 @@ export default function ParentsTable() {
           </Tooltip>
 
           {/* تعديل */}
-          <Tooltip title="تعديل">
+          {/* <Tooltip title="تعديل">
             <IconButton
-              onClick={() => handleEdit()}
+              onClick={() => handleEdit(params.row)}
               color="secondary"
               size="small"
               sx={{ cursor: "pointer" }}
             >
               <FaEdit />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
 
           {/* حذف */}
           <Tooltip title="حذف">
@@ -116,115 +139,9 @@ export default function ParentsTable() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      coursesNumber: "6",
-      firstName: "Jon",
-      payments: "200$",
-      childNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 2,
-      coursesNumber: "6",
-      firstName: "Cersei",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 3,
-      coursesNumber: "6",
-      firstName: "Jaime",
-      payments: "200$",
-      childNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 4,
-      coursesNumber: "6",
-      firstName: "Arya",
-      payments: "200$",
-      childNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 5,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 6,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 7,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 8,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 9,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 10,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 11,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 12,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 13,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      payments: "200$",
-      childNumber: "5",
-      status: "غير مفعل",
-    },
-  ];
-
-  const handleView = () => {
-    router.push("/dashboard/parents/viewParent");
+  const handleView = (user: ParentType) => {
+    router.push(`/dashboard/parents/viewParent/${user.id}`);
+    dispatch(setSelectedParent(user));
   };
 
   const handleDelete = (id: number) => {
@@ -233,15 +150,12 @@ export default function ParentsTable() {
     }
   };
 
-  const handleEdit = () => {
-    // router.push("/dashboard/students/editStudent");
-  };
 
   return (
     <Paper
       sx={{
         height: 590,
-        width:"100%",
+        width: "100%",
         background: "",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
@@ -253,7 +167,7 @@ export default function ParentsTable() {
       }}
     >
       <DataGrid
-        rows={rows}
+        rows={parents}
         columns={columns}
         initialState={{
           pagination: { paginationModel: { pageSize: 10, page: 0 } },

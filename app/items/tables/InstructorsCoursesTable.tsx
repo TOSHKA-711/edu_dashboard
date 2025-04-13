@@ -3,40 +3,30 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useGetAllStudentsQuery } from "@/app/Redux/Slices/Students/studentsApi";
-import { useDispatch } from "react-redux";
-import { setSelectedUser } from "@/app/Redux/Slices/Students/studentsSlice";
-import { StudentType } from "@/app/Redux/types";
+import { IconButton, Tooltip } from "@mui/material";
 import Image from "next/image";
+import { AllInstructorCoursesType } from "@/app/Redux/types";
 
-export default function UsersTable() {
-  const router = useRouter();
-  const dispatch = useDispatch();
+export default function InstructorsCoursesTable({
+  courses,
+}: {
+  courses: AllInstructorCoursesType;
+}) {
 
-  // start fetch users
-
-  const { data, error, isLoading } = useGetAllStudentsQuery();
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching students</p>;
-  const students = data?.data ;
-  // end fetch users
-
-  if (!students || students.length === 0) {
+  if (!courses || courses.data.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No students found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+        No courses found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
       </div>
     );
   }
 
+  // const router = useRouter();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
     {
-      field: "firstName",
-      headerName: "الاسم",
-      width: 200,
+      field: "courseName",
+      headerName: "الدورة",
+      width: 220,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -49,15 +39,100 @@ export default function UsersTable() {
             height: "100%",
           }}
         >
-          <Avatar alt="user" src={params.row.image} />
-          {params.row.first_name} {params.row.last_name}
+          <Image
+            alt="user"
+            src={params.row.image}
+            width={40}
+            height={30}
+            className="h-10"
+          />
+          {params.row.title}
         </div>
       ),
     },
-    { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
-    { field: "email", headerName: " البريد", width: 200 },
-    { field: "educational_stage", headerName: "المرحلة التعليمية", width: 180 },
-    // { field: "status", headerName: "الحالة", width: 90 },
+    {
+      field: "address",
+      headerName: "العنوان",
+      width: 180,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "start",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+
+          {params.row.address}
+        </div>
+      ),
+    },
+
+
+    {
+      field: "session_count",
+      headerName: "الحصص",
+      width: 80,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {params.row.session_count} 
+        </div>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "  السعر",
+      width: 90,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {params.row.price} $
+        </div>
+      ),
+    },
+    {
+      field: "type",
+      headerName: " النوع",
+      width: 90,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {params.row.type}
+        </div>
+      ),
+    },
     {
       field: "status",
       headerName: "الحالة",
@@ -73,7 +148,6 @@ export default function UsersTable() {
             height: "60%",
             alignSelf: "center",
             borderRadius: "6px",
-
             backgroundColor: `${
               params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
             }`,
@@ -87,7 +161,7 @@ export default function UsersTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 120,
+      width: 140,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -103,7 +177,7 @@ export default function UsersTable() {
           {/* عرض */}
           <Tooltip title="عرض">
             <IconButton
-              onClick={() => handleView(params.row)}
+              onClick={() => handleView(params.row.id)}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -115,7 +189,7 @@ export default function UsersTable() {
           {/* تعديل */}
           <Tooltip title="تعديل">
             <IconButton
-              onClick={() => handleEdit(params.row)}
+              onClick={() => handleEdit(params.row.id)}
               color="secondary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -140,9 +214,11 @@ export default function UsersTable() {
     },
   ];
 
-  const handleView = (user: StudentType) => {
-    router.push(`/dashboard/students/viewStudent/${user.id}`);
-    dispatch(setSelectedUser(user));
+
+ 
+
+  const handleView = (id: number) => {
+    alert(`عرض المستخدم ID: ${id}`);
   };
 
   const handleDelete = (id: number) => {
@@ -151,9 +227,8 @@ export default function UsersTable() {
     }
   };
 
-  const handleEdit = (user: StudentType) => {
-    router.push("/dashboard/students/editStudent");
-    dispatch(setSelectedUser(user));
+  const handleEdit = (id: number) => {
+    alert(`تعديل المستخدم ID: ${id}`);
   };
 
   return (
@@ -172,13 +247,12 @@ export default function UsersTable() {
       }}
     >
       <DataGrid
-        rows={students}
+        rows={courses?.data ?? []}
         columns={columns}
         initialState={{
           pagination: { paginationModel: { pageSize: 10, page: 0 } },
         }}
         pageSizeOptions={[5, 10, 20, 50]}
-        // checkboxSelection
         sx={{
           border: 0,
           "& .MuiDataGrid-cell": {

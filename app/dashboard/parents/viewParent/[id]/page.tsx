@@ -1,19 +1,52 @@
 "use client";
 import CoursesTable from "@/app/items/tables/CoursesTable";
-import TeacherRates from "@/app/items/cards/TeacherRates";
+import { useGetParentChildrenQuery } from "@/app/Redux/Slices/Parents/parentsApi";
+import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
+import { RootState } from "@/app/Redux/Store";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { MdOutlineDateRange } from "react-icons/md";
+import { useSelector } from "react-redux";
 
-const ViewTeacher = () => {
-  const [isViewCourses, setIsViewCourses] = useState<boolean>(true);
+const ViewParent = () => {
+  const params = useParams();
+  const [parentId, setParentId] = useState(parseInt(params.id as string) ?? 0);
+  const [isRendered, setIsRendered] = useState(false);
+  
+  const { data: courses, refetch } = useGetStudentCoursesQuery(parentId, {
+    skip: !parentId, 
+  });
+  
 
-  //   handle switch view
-  const handleSwitchView = () => {
-    setIsViewCourses(!isViewCourses);
+  const { data: parentChildren } = useGetParentChildrenQuery(parentId);
+  
+  const selectedUser = useSelector(
+    (state: RootState) => state.students.selectedUser
+  );
+  
+  const [isViewCourses, setIsViewCourses] = useState<string>("parent");
+
+  useEffect(() => {
+    setIsRendered(true);
+  }, []);
+
+  if (!parentId || !isRendered) {
+    return <div>Loading...</div>;
+  }
+
+  if (!selectedUser) {
+    return <div>Loading or no student found.</div>;
+  }
+
+  const handleSwitchView = async (name: string , id : number ) => {
+    setIsViewCourses(name);
+    setParentId(id);  
+    await refetch(); 
   };
+
   return (
     <div className="view-student flex flex-col items-start gap-4">
       <div
@@ -24,25 +57,20 @@ const ViewTeacher = () => {
           <span className="flex flex-col items-center gap-2">
             <Avatar
               alt="user"
-              src="/user.jpg"
+              src={selectedUser?.image}
               sx={{ width: "5rem", height: "5rem", objectFit: "cover" }}
             />
-            Ali mostafa
+            {selectedUser?.first_name} {selectedUser?.last_name}
           </span>
           <span className="flex flex-col items-center gap-1">
             <Image alt="user" src="/Frame_users.svg" width={40} height={100} />
-            <p>1258</p>
-            طالب
+            <p>{selectedUser?.children_count}</p>
+            ابناء
           </span>
           <span className="flex flex-col items-center gap-1">
             <Image alt="user" src="/Frame_book.svg" width={40} height={100} />
             <p>07</p>
             دورة
-          </span>
-          <span className="flex flex-col items-center gap-1">
-            <Image alt="user" src="/Frame_rate.svg" width={40} height={100} />
-            <p>4.5</p>
-            تقييم
           </span>
         </div>
         <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF] max-md:h-1 max-md:w-4/5  "></div>
@@ -54,7 +82,7 @@ const ViewTeacher = () => {
               <HiOutlineIdentification className="text-lg" />
               الرقم التعريفي :
             </span>
-            <span> b57646</span>
+            <span> {selectedUser?.identity_id}</span>
           </div>
           <div className="flex flex-row gap-2 items-center justify-center">
             <span className="flex flex-row gap-1 items-center justify-start">
@@ -64,11 +92,6 @@ const ViewTeacher = () => {
             </span>
             <span> 05 Jan, 2024</span>
           </div>
-        </div>
-        <div className="middle w-[2px] h-[6rem] bg-[#B0DEFF] max-md:h-1 max-md:w-4/5  "></div>
-        <div className="about flex flex-col items-start gap-4">
-          <p className="font-semibold text-lg">نبذة مختصرة</p>
-          <p>مدرب موبايل فلاتر لديه خبرة في فلاتر وتطوير الموبايل</p>
         </div>
       </div>
       <div className="w-full flex flex-col items-start gap-4 py-6">
@@ -81,27 +104,36 @@ const ViewTeacher = () => {
         >
           <div className="rounded-2xl p-2 flex items-center gap-2 bg-[#F2F4F5]">
             <button
-              onClick={handleSwitchView}
+              onClick={() => handleSwitchView("parent", parentId)}
               className={`py-2 px-6 rounded-lg text-lg font-semibold cursor-pointer ${
-                isViewCourses && "bg-white"
-              } ${!isViewCourses && "text-[#757575]"} `}
+                isViewCourses == "parent" ? "bg-white" : "text-[#757575]"
+              }`}
             >
-              الدورات
+              كورساتي
             </button>
-            <button
-              onClick={handleSwitchView}
-              className={`py-2 px-6 rounded-lg text-lg font-semibold cursor-pointer ${
-                !isViewCourses && "bg-white"
-              } ${isViewCourses && "text-[#757575] "} `}
-            >
-              التقييمات
-            </button>
+            {parentChildren?.data.map((child) => {
+              return (
+                <button
+                  key={child.id}
+                  onClick={() => handleSwitchView(child.first_name, child.id)}
+                  className={`py-2 px-6 rounded-lg text-lg font-semibold cursor-pointer ${
+                    isViewCourses == child.first_name
+                      ? "bg-white"
+                      : "text-[#757575]"
+                  }`}
+                >
+                  {child.first_name}
+                </button>
+              );
+            })}
           </div>
         </div>
-        {isViewCourses ? <CoursesTable /> : <TeacherRates />}
+        <CoursesTable
+          courses={courses ?? { status: false, message: "", data: [] }}
+        />
       </div>
     </div>
   );
 };
 
-export default ViewTeacher;
+export default ViewParent;

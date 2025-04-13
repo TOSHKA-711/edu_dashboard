@@ -7,14 +7,29 @@ import { IconButton, Tooltip } from "@mui/material";
 // import { useRouter } from "next/navigation";
 import LinearProgressBar from "../charts/LinearProgress";
 import Image from "next/image";
+import { AllStudentCoursesType } from "@/app/Redux/types";
 
-export default function CoursesTable() {
+export default function CoursesTable({
+  courses,
+}: {
+  courses: AllStudentCoursesType;
+}) {
+  console.log(courses);
+
+  if (!courses || courses.data.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-2 text-lg">
+        No courses found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+      </div>
+    );
+  }
+
   // const router = useRouter();
   const columns: GridColDef[] = [
     {
       field: "courseName",
       headerName: "الدورة",
-      width: 250,
+      width: 220,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -29,21 +44,21 @@ export default function CoursesTable() {
         >
           <Image
             alt="user"
-            src="/course image.svg"
+            src={params.row.course.image}
             width={40}
             height={30}
             className="h-10"
           />
-          {params.row.courseName}
+          {params.row.course.title}
         </div>
       ),
     },
     {
-      field: "progress",
-      headerName: "التقدم",
+      field: "instructor",
+      headerName: "المعلم",
       width: 180,
       sortable: true,
-      renderCell: () => (
+      renderCell: (params) => (
         <div
           style={{
             display: "flex",
@@ -54,15 +69,95 @@ export default function CoursesTable() {
             height: "100%",
           }}
         >
-          <LinearProgressBar />
+          {params.row.course.instructor.first_name}{" "}
+          {params.row.course.instructor.last_name}
+        </div>
+      ),
+    },
+    {
+      field: "progress",
+      headerName: "التقدم",
+      width: 180,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "start",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <LinearProgressBar value={params.row.course.earnings_point} />
           {/* {params.row.progress} */}
         </div>
       ),
     },
 
-    { field: "attendance", headerName: "الحضور", width: 90 },
-    { field: "date", headerName: " التاريخ", width: 120 },
-    { field: "price", headerName: " السعر", width: 120 },
+    {
+      field: "attendance",
+      headerName: "الحضور",
+      width: 100,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "start",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {params.row.course.session_count} دروس
+        </div>
+      ),
+    },
+    // {
+    //   field: "start_date",
+    //   headerName: " تاريخ البدأ",
+    //   width: 120,
+    //   sortable: true,
+    //   renderCell: (params) => (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         gap: "8px",
+    //         justifyContent: "start",
+    //         alignItems: "center",
+    //         width: "100%",
+    //         height: "100%",
+    //       }}
+    //     >
+
+    //       {params.row.course.start_date}
+    //     </div>
+    //   ),
+    // },
+    // { field: "price", headerName: " السعر", width: 120 },
+    {
+      field: "price",
+      headerName: "  السعر",
+      width: 110,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "start",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {params.row.course.price} $
+        </div>
+      ),
+    },
     {
       field: "status",
       headerName: "الحالة",
@@ -91,7 +186,7 @@ export default function CoursesTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 180,
+      width: 140,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -144,112 +239,112 @@ export default function CoursesTable() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      courseName: "مقدمة في علوم الحاسب",
-      price: "200$",
-      date: "2023-01-15",
-      attendance: "90%",
-      status: "مفعل",
-    },
-    {
-      id: 2,
-      courseName: "Lannister",
-      price: "200$",
-      date: "2023-02-10",
-      attendance: "75%",
-      status: "غير مفعل",
-    },
-    {
-      id: 3,
-      courseName: "Lannister",
-      price: "200$",
-      date: "2023-03-22",
-      attendance: "85%",
-      status: "مفعل",
-    },
-    {
-      id: 4,
-      courseName: "Stark",
-      price: "200$",
-      date: "2023-04-05",
-      attendance: "95%",
-      status: "مفعل",
-    },
-    {
-      id: 5,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 6,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 7,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 8,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 9,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 10,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 11,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 12,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-    {
-      id: 13,
-      courseName: "Targaryen",
-      price: "200$",
-      date: "2023-05-18",
-      attendance: "80%",
-      status: "غير مفعل",
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: 1,
+  //     courseName: "مقدمة في علوم الحاسب",
+  //     price: "200$",
+  //     date: "2023-01-15",
+  //     attendance: "90%",
+  //     status: "مفعل",
+  //   },
+  //   {
+  //     id: 2,
+  //     courseName: "Lannister",
+  //     price: "200$",
+  //     date: "2023-02-10",
+  //     attendance: "75%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 3,
+  //     courseName: "Lannister",
+  //     price: "200$",
+  //     date: "2023-03-22",
+  //     attendance: "85%",
+  //     status: "مفعل",
+  //   },
+  //   {
+  //     id: 4,
+  //     courseName: "Stark",
+  //     price: "200$",
+  //     date: "2023-04-05",
+  //     attendance: "95%",
+  //     status: "مفعل",
+  //   },
+  //   {
+  //     id: 5,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 6,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 7,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 8,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 9,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 10,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 11,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 12,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  //   {
+  //     id: 13,
+  //     courseName: "Targaryen",
+  //     price: "200$",
+  //     date: "2023-05-18",
+  //     attendance: "80%",
+  //     status: "غير مفعل",
+  //   },
+  // ];
 
   const handleView = (id: number) => {
     alert(`عرض المستخدم ID: ${id}`);
@@ -281,7 +376,7 @@ export default function CoursesTable() {
       }}
     >
       <DataGrid
-        rows={rows}
+        rows={courses?.data ?? []}
         columns={columns}
         initialState={{
           pagination: { paginationModel: { pageSize: 10, page: 0 } },

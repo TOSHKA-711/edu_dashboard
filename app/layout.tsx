@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Tajawal } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import {store} from "./Redux/Store";
+// import { Provider } from "react-redux";
+
+import ReduxProvider from "./Redux/provider";
 
 const tajawal = Tajawal({
   weight: ["400", "700"],
@@ -35,8 +36,7 @@ export default function RootLayout({
       <body
         className={`${tajawal.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider store={store}>{children}</Provider>
-        {/* {children} */}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

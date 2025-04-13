@@ -2,7 +2,7 @@
 import { useAlert } from "@/app/items/hooks/useAlert";
 import { useImageUpload } from "@/app/items/hooks/useImageUploader";
 import { InputField } from "@/app/items/inputs&btns/InputField";
-import { useSetStudentUpdateMutation } from "@/app/Redux/Slices/Students/studentsApi";
+import { useSetInstructorUpdateMutation } from "@/app/Redux/Slices/Instructors/InstructorsApi";
 import { RootState } from "@/app/Redux/Store";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -21,32 +21,23 @@ const Page = () => {
     useImageUpload(setImage);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const selectedUser = useSelector(
-    (state: RootState) => state.students.selectedUser
+    (state: RootState) => state.Instructors.selectedUser
   );
-  const [setStudentUpdate] =
-    useSetStudentUpdateMutation();
+  const [setInstructorUpdate] =
+    useSetInstructorUpdateMutation();
 
   const [payload, setPayload] = useState({
     image: selectedUser?.image,
     first_name: selectedUser?.first_name ?? "null",
     last_name: selectedUser?.last_name ?? "null",
-    identity_id: selectedUser?.identity_id ?? "null",
-    email: selectedUser?.email ?? "null",
-    phone: selectedUser?.phone_number ?? "null",
     date_of_birth: selectedUser?.date_of_birth ?? "null",
-    parent_id: selectedUser?.parent_id ?? "null",
-    mother_id: selectedUser?.mother_identity_id ?? "null",
-    student_type: selectedUser?.child_type ?? "null",
-    neighborhood: selectedUser?.neighborhood ?? "null",
-    educational_stage: selectedUser?.educational_stage ?? "null",
-    school_name: selectedUser?.school_name ?? "null",
-    grade_name: selectedUser?.grade_name ?? "null",
+    bio: selectedUser?.bio ?? "null",
+    info: selectedUser?.info ?? "null",
   });
 
   useEffect(() => {
     setIsRendered(true);
   }, []);
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -78,64 +69,17 @@ const Page = () => {
       ) {
         formData.append("last_name", payload.last_name);
       }
-      if (
-        selectedUser.identity_id !== payload.identity_id &&
-        selectedUser.identity_id !== null
-      ) {
-        formData.append("identity_id", payload.identity_id);
-      }
+
       if (
         selectedUser.date_of_birth !== payload.date_of_birth &&
         selectedUser.date_of_birth !== null
       ) {
         formData.append("date_of_birth", payload.date_of_birth);
       }
-      if (
-        selectedUser.parent_id !== payload.parent_id &&
-        selectedUser.parent_id !== null
-      ) {
-        formData.append("parent_id", String(payload.parent_id));
-      }
-      if (
-        selectedUser.mother_identity_id !== payload.mother_id &&
-        selectedUser.mother_identity_id !== null
-      ) {
-        formData.append("mother_id", String(payload.mother_id));
-      }
-      if (
-        selectedUser.child_type !== payload.student_type &&
-        selectedUser.child_type !== null
-      ) {
-        formData.append("student_type", payload.student_type);
-      }
-      if (
-        selectedUser.neighborhood !== payload.neighborhood &&
-        selectedUser.neighborhood !== null
-      ) {
-        formData.append("neighborhood", payload.neighborhood);
-      }
-      if (
-        selectedUser.educational_stage !== payload.educational_stage &&
-        selectedUser.educational_stage !== null
-      ) {
-        formData.append("educational_stage", payload.educational_stage);
-      }
-      if (
-        selectedUser.school_name !== payload.school_name &&
-        selectedUser.school_name !== null
-      ) {
-        formData.append("school_name", payload.school_name);
-      }
-      if (
-        selectedUser.grade_name !== payload.grade_name &&
-        selectedUser.grade_name !== null
-      ) {
-        formData.append("grade_name", payload.grade_name);
-      }
 
       // إرسال البيانات
       try {
-        await setStudentUpdate({
+        await setInstructorUpdate({
           id: selectedUser.id,
           data: formData,
         }).unwrap();
@@ -224,13 +168,6 @@ const Page = () => {
               onChange={handleChange}
             />
             <InputField
-              label="هويه الطالب *"
-              type="text"
-              name="identity_id"
-              value={payload.identity_id}
-              onChange={handleChange}
-            />
-            <InputField
               label="تاريخ الميلاد *"
               type="text"
               name="date_of_birth"
@@ -238,107 +175,22 @@ const Page = () => {
               onChange={handleChange}
             />
             <InputField
-              label="هويه الاب *"
+              label="نبذه تعريفيه *"
               type="text"
-              name="parent_id"
-              value={payload.parent_id}
+              name="bio"
+              value={payload.bio}
               onChange={handleChange}
             />
             <InputField
-              label="هويه الام *"
+              label=" وصف *"
               type="text"
-              name="mother_id"
-              value={payload.mother_id}
+              name="info"
+              value={payload.info}
               onChange={handleChange}
             />
           </div>
         </div>
-        {/* --------------- */}
-        <div className="course-details flex flex-col items-start gap-8 pt-10">
-          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
-            معلومات عن الصف /مكان الدورة
-          </div>
-          <div className="inputs w-full grid grid-cols-3 gap-4">
-            <InputField
-              label="الصف*"
-              type="text"
-              name="grade_name"
-              value={payload.grade_name}
-              onChange={handleChange}
-            />
-            <InputField
-              label="المدرسة*"
-              type="text"
-              name="school_name"
-              value={payload.school_name}
-              onChange={handleChange}
-            />
-            <InputField
-              label="المرحلة التعليمية*"
-              type="text"
-              name="educational_stage"
-              value={payload.educational_stage}
-              onChange={handleChange}
-            />
-            <InputField
-              label="الحي*"
-              type="text"
-              name="neighborhood"
-              value={payload.neighborhood}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        {/* --------------- */}
-        {/* <div className="date-details flex flex-col items-start gap-8 pt-10">
-        <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
-        تفاصيل الدورة وتاريخ اقامتها
-        </div>
-        <div className="inputs w-full grid grid-cols-3 gap-4">
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-      </div> */}
+
         {/* --------------- */}
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <button
@@ -349,7 +201,7 @@ const Page = () => {
           </button>
           <button
             className="bg-[#F2F4F8]  py-2 px-30 rounded-3xl cursor-pointer"
-            onClick={() => router.push("/dashboard/students/allStudents")}
+            onClick={() => router.push("/dashboard/teachers")}
           >
             الغاء
           </button>

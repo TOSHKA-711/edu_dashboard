@@ -2,18 +2,54 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaRegEye, FaTrash, FaEdit } from "react-icons/fa";
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { InstructorType } from "@/app/Redux/types";
+import Image from "next/image";
+import {
+  useDeleteInstructorMutation,
+  useGetAllInstructorsQuery,
+} from "@/app/Redux/Slices/Instructors/InstructorsApi";
+import { setSelectedInstructor } from "@/app/Redux/Slices/Instructors/InstructorsSlice";
+import { useAlert } from "../hooks/useAlert";
+import { ToastContainer } from "react-toastify";
 
 export default function TeachersTable() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { showSuccess, showError } = useAlert();
+
+  // start fetch users
+
+  const { data, error, isLoading } = useGetAllInstructorsQuery();
+  const [deleteInstructor] = useDeleteInstructorMutation();
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching students</p>;
+  const instructors = data?.data;
+  // end fetch users
+
+  if (!instructors || instructors.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-2 text-lg">
+        No parents found{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
+      </div>
+    );
+  }
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 60 },
     {
       field: "firstName",
       headerName: "الاسم",
-      width:220,
+      width: 200,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -26,18 +62,18 @@ export default function TeachersTable() {
             height: "100%",
           }}
         >
-          <Avatar alt="user" src="/user.jpg" />
-          {params.row.firstName}
+          <Avatar alt="user" src={params.row.image} />
+          {params.row.first_name} {params.row.last_name}
         </div>
       ),
     },
-    { field: "coursesNumber", headerName: "الدورة", width: 120 },
-    { field: "joinDate", headerName: " تاريخ الإنضمام", width: 120 },
-    { field: "studentsNumber", headerName: "عدد الطلبة", width: 120 },
+    { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
+    { field: "email", headerName: " البريد", width: 200 },
+    { field: "children_count", headerName: " عدد الابناء", width: 100 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 120,
+      width: 90,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -63,7 +99,7 @@ export default function TeachersTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 180,
+      width: 100,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -79,7 +115,7 @@ export default function TeachersTable() {
           {/* عرض */}
           <Tooltip title="عرض">
             <IconButton
-              onClick={() => handleView()}
+              onClick={() => handleView(params.row)}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -91,7 +127,7 @@ export default function TeachersTable() {
           {/* تعديل */}
           <Tooltip title="تعديل">
             <IconButton
-              onClick={() => handleEdit()}
+              onClick={() => handleEdit(params.row)}
               color="secondary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -116,161 +152,65 @@ export default function TeachersTable() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      coursesNumber: "6",
-      firstName: "Jon",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 2,
-      coursesNumber: "6",
-      firstName: "Cersei",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 3,
-      coursesNumber: "6",
-      firstName: "Jaime",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 4,
-      coursesNumber: "6",
-      firstName: "Arya",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "مفعل",
-    },
-    {
-      id: 5,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 6,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 7,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 8,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 9,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 10,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 11,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 12,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-    {
-      id: 13,
-      coursesNumber: "6",
-      firstName: "Daenerys",
-      joinDate: "05 Jan, 2024",
-      studentsNumber: "5",
-      status: "غير مفعل",
-    },
-  ];
-
-  const handleView = () => {
-    router.push("/dashboard/teachers/viewTeacher");
+  const handleView = (user: InstructorType) => {
+    router.push(`/dashboard/teachers/viewTeacher/${user.id}`);
+    dispatch(setSelectedInstructor(user));
+  };
+  const handleEdit = (user: InstructorType) => {
+    router.push(`/dashboard/teachers/editTeacher`);
+    dispatch(setSelectedInstructor(user));
   };
 
-  const handleDelete = (id: number) => {
-    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
+  const handleDelete = async (instructorId: number) => {
+    const confirmDelete = window.confirm(
+      "هل أنت متأكد أنك تريد حذف هذا المعلم ؟"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await deleteInstructor({ instructorId }).unwrap();
+      showSuccess("تم حذف المعلم بنجاح!");
+    } catch {
+      showError("فشل في حذف المعلم!");
     }
   };
 
-  const handleEdit = () => {
-    // router.push("/dashboard/students/editStudent");
-  };
-
-
   return (
-    <Paper
-      sx={{
-        height: 590,
-        width:"100%",
-        background: "",
-        "& .MuiToolbar-root": { direction: "ltr" },
-        "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
-        "& .MuiDataGrid-row": { gap: "2rem" },
-        "& .MuiDataGrid-columnHeaders": {
-          background: "white",
-          padding: "12px 0",
-        },
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        // checkboxSelection
+    <>
+      <ToastContainer />
+      <Paper
         sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
+          height: 590,
+          width: "100%",
+          background: "",
+          "& .MuiToolbar-root": { direction: "ltr" },
+          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row": { gap: "2rem" },
+          "& .MuiDataGrid-columnHeaders": {
+            background: "white",
+            padding: "12px 0",
           },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
         }}
-      />
-    </Paper>
+      >
+        <DataGrid
+          rows={instructors}
+          columns={columns}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10, page: 0 } },
+          }}
+          pageSizeOptions={[5, 10, 20, 50]}
+          // checkboxSelection
+          sx={{
+            border: 0,
+            "& .MuiDataGrid-cell": {
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+          }}
+        />
+      </Paper>
+    </>
   );
 }
