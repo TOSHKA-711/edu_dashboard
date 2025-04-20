@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useGetAllStudentsQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { useDispatch } from "react-redux";
@@ -20,21 +20,33 @@ export default function UsersTable() {
   const { data, error, isLoading } = useGetAllStudentsQuery();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching students</p>;
-  const students = data?.data ;
+  const students = data?.data;
+
   // end fetch users
 
   if (!students || students.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No students found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+        No students found{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
       </div>
     );
   }
 
+  const rows = students.map((student: StudentType) => ({
+    full_name: `${student.first_name} ${student.last_name}`,
+    ...student,
+  }));
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 60 },
     {
-      field: "firstName",
+      field: "full_name",
       headerName: "الاسم",
       width: 200,
       sortable: true,
@@ -50,18 +62,19 @@ export default function UsersTable() {
           }}
         >
           <Avatar alt="user" src={params.row.image} />
-          {params.row.first_name} {params.row.last_name}
+          {/* {params.row.first_name} {params.row.last_name} */}
+          {params.row.full_name}
         </div>
       ),
     },
     { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
     { field: "email", headerName: " البريد", width: 200 },
-    { field: "educational_stage", headerName: "المرحلة التعليمية", width: 180 },
+    { field: "educational_stage", headerName: "المرحلة التعليمية", width: 120 },
     // { field: "status", headerName: "الحالة", width: 90 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 90,
+      width: 120,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -75,9 +88,9 @@ export default function UsersTable() {
             borderRadius: "6px",
 
             backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
+              params.row.status == "active" ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
+            color: `${params.row.status == "active" ? "#43B75D" : "#DB340B"}`,
           }}
         >
           {params.row.status}
@@ -159,9 +172,10 @@ export default function UsersTable() {
   return (
     <Paper
       sx={{
-        height: 590,
+        height: 600,
         width: "100%",
         background: "",
+        marginBottom: "3rem",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
         "& .MuiDataGrid-row": { gap: "2rem" },
@@ -171,24 +185,28 @@ export default function UsersTable() {
         },
       }}
     >
-      <DataGrid
-        rows={students}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        // checkboxSelection
-        sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-          },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-        }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <div style={{ minWidth: 800, height: "100%" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10, page: 0 } },
+            }}
+            pageSizeOptions={[10]}
+            // checkboxSelection
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-cell": {
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              },
+              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+            }}
+          />
+        </div>
+      </Box>
     </Paper>
   );
 }

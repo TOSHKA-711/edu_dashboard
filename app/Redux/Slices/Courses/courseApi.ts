@@ -1,0 +1,153 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setAllCourses } from "./courseSlice";
+import {
+  AllCategoriesResponseType,
+  AllCourseDepartmentsResponseType,
+  AllEnrolledUsersResponseType,
+  AllStudentCoursesAttendanceResponseType,
+  GetAllCoursesResponseType,
+} from "../../types";
+
+export const coursesApi = createApi({
+  reducerPath: "coursesApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    prepareHeaders: (headers) => {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+      }
+      return headers;
+    },
+  }),
+
+  endpoints: (builder) => ({
+    getAllCourses: builder.query<GetAllCoursesResponseType, void>({
+      query: () => "course",
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data: response } = await queryFulfilled;
+          dispatch(setAllCourses(response.data));
+        } catch (error) {
+          console.error("Fetching courses failed", error);
+        }
+      },
+    }),
+    getCourseDepartments: builder.query<
+      AllCourseDepartmentsResponseType,
+      number | string
+    >({
+      query: (courseId) => `departmentAndSessions/${courseId}`,
+      async onQueryStarted(courseId, { queryFulfilled }) {
+        try {
+           await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching sessions failed", error);
+        }
+      },
+    }),
+    getAllCategories: builder.query<AllCategoriesResponseType, void>({
+      query: () => "categories",
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+           await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching categories failed", error);
+        }
+      },
+    }),
+    getStudentsInSession: builder.query<AllStudentCoursesAttendanceResponseType, {courseId:number|string,sessionId:number|string}>({
+      query: ({courseId,sessionId}) => `usersCoursesBySession/${courseId}/${sessionId}`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+           await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching categories failed", error);
+        }
+      },
+    }),
+    getEnrolledUsers: builder.query<AllEnrolledUsersResponseType,number|string>({
+      query: (courseId) => `getUsersEnrolledInCourse/${courseId}`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+           await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching users failed", error);
+        }
+      },
+    }),
+    setCourse: builder.mutation<unknown, unknown>({
+      query: (data) => ({
+        url: `courses-add`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateCourse: builder.mutation<unknown, {id:number , data:FormData}>({
+      query: ({id,data}) => ({
+        url: `course/${id}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    setDepartment: builder.mutation<unknown, FormData>({
+      query: (data) => ({
+        url: `departments`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    setSession: builder.mutation<unknown, FormData>({
+      query: (data) => ({
+        url: `course-sessions`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    setUserAttendance: builder.mutation<unknown, {sessionId:number|string,userId:number|string}>({
+      query: ({sessionId,userId} ) => ({
+        url: `makeAttendForUsers`,
+        method: "POST",
+        body: {
+          course_session_id:sessionId,
+          user_ids:[userId]
+        },
+      }),
+    }),
+    setUserPayment: builder.mutation<unknown, {amount:number,userId:number|string}>({
+      query: ({amount,userId} ) => ({
+        url: `makePaymentForUser`,
+        method: "POST",
+        body: {
+          amount:amount,
+          id:userId
+        },
+      }),
+    }),
+    deleteDepartment: builder.mutation<unknown, number>({
+      query: (departmentId ) => ({
+        url: `departments/${departmentId}`,
+        method: "DELETE",
+      }),
+    }),
+  
+  }),
+});
+
+export const {
+  useGetAllCoursesQuery,
+  useGetCourseDepartmentsQuery,
+  useGetAllCategoriesQuery,
+  useGetStudentsInSessionQuery,
+  useGetEnrolledUsersQuery,
+  useSetDepartmentMutation,
+  useSetCourseMutation,
+  useSetSessionMutation,
+  useSetUserAttendanceMutation,
+  useSetUserPaymentMutation,
+  useUpdateCourseMutation,
+  useDeleteDepartmentMutation
+} = coursesApi;

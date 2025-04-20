@@ -33,13 +33,6 @@ export const parentsApi = createApi({
     getParentChildren: builder.query<GetAllParentChildrenResponseType, string|number>({
       query: (parentId) => `/users/info/parent/${parentId}/children`,
     }),
-    // setStudentUpdate: builder.mutation<unknown, FormData>({
-    //   query: (credentials) => ({
-    //     url: `users/updateUserInfo/${parseInt(credentials.get('student_id') as string)}`,
-    //     method: 'POST',
-    //     body: credentials,
-    //   }),
-    // }),
   }),
 });
 

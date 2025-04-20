@@ -14,7 +14,7 @@ export default function SelectField() {
     <div>
       <FormControl
         sx={{
-          width: "70vw",
+          width: "20rem",
           "& .MuiInputBase-root": { borderRadius: "16px" , fontFamily:"unset" , border:"#2664B1 solid 2px"},
         }}
       >

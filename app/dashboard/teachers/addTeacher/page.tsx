@@ -19,8 +19,7 @@ const Page = () => {
     useImageUpload(setImage);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [setInstructor] =
-    useSetInstructorMutation();
+  const [setInstructor] = useSetInstructorMutation();
 
   const [payload, setPayload] = useState({
     first_name: "",
@@ -136,7 +135,7 @@ const Page = () => {
           <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
             معلومات شخصية
           </div>
-          <div className="inputs w-full grid grid-cols-3 gap-4">
+          <div className="inputs w-full grid grid-cols-3 max-md:grid-cols-1 gap-4">
             <InputField
               label="الاسم الشخصي *"
               type="text"
@@ -178,13 +177,13 @@ const Page = () => {
         {/* --------------- */}
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <button
-            className="bg-[#2664B1] text-white py-2 px-30 rounded-3xl cursor-pointer"
+            className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             حفظ
           </button>
           <button
-            className="bg-[#F2F4F8]  py-2 px-30 rounded-3xl cursor-pointer"
+            className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >
             الغاء

@@ -2,19 +2,32 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye} from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Avatar, Box } from "@mui/material";
 import SwitchBtn from "../inputs&btns/SwitchBtn";
+import {
+  AllStudentCoursesAttendanceResponseType,
+  CourseStudentAttendanceType,
+} from "@/app/Redux/types";
 
-export default function LessonsTable() {
-  const router = useRouter();
+export default function LessonsTable({
+  students,
+  sessionId,
+}: {
+  students: AllStudentCoursesAttendanceResponseType;
+  sessionId: number | string;
+}) {
+
+  const rows = students.data.map((student: CourseStudentAttendanceType) => ({
+    full_name: `${student.first_name} ${student.last_name}`,
+    ...student,
+  }));
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 120 },
+    { field: "user_id", headerName: "ID", width: 80 },
     {
-      field: "firstName",
+      field: "full_name",
       headerName: "الاسم",
-      width: 300,
+      width: 400,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -25,11 +38,12 @@ export default function LessonsTable() {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            fontFamily: 'Tajawal',
+            fontFamily: "Tajawal",
+            fontSize: "20px",
           }}
         >
           <Avatar alt="user" src="/user.jpg" />
-          {params.row.firstName}
+          {params.row.full_name}
         </div>
       ),
     },
@@ -38,7 +52,7 @@ export default function LessonsTable() {
       headerName: "الحضور",
       width: 350,
       sortable: false,
-      renderCell: () => (
+      renderCell: (params) => (
         <div
           style={{
             display: "flex",
@@ -47,135 +61,28 @@ export default function LessonsTable() {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            fontFamily: 'Tajawal',
-            fontSize:"18px"
+            fontFamily: "Tajawal",
+            fontSize: "18px",
           }}
         >
-        <SwitchBtn/>
-        </div>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "الإجراء",
-      width: 280,
-      sortable: false,
-      renderCell: () => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {/* عرض */}
-          <Tooltip title="عرض">
-            <IconButton
-              onClick={() => handleView()}
-              color="primary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaRegEye />
-            </IconButton>
-          </Tooltip>
-          
+          <SwitchBtn
+            active={params.row.attended_session ? true : false}
+            userId={params.row.user_id}
+            sessionId={sessionId}
+          />
         </div>
       ),
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Jon",
-    },
-    {
-      id: 2,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Cersei",
-    },
-    {
-      id: 3,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Jaime",
-    },
-    {
-      id: 4,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Arya",
-    },
-    {
-      id: 5,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 6,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 7,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 8,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 9,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 10,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 11,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 12,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 13,
-      attendance: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-  ];
-
-  const handleView = () => {
-    router.push("/dashboard/students/viewStudent");
-  };
-
-  // const handleDelete = (id: number) => {
-  //   if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-  //     alert(`تم حذف المستخدم ID: ${id}`);
-  //   }
-  // };
-
-  // const handleEdit = () => {
-  //   router.push("/dashboard/students/editStudent");
-  // };
 
   return (
     <Paper
       sx={{
-        height: 590,
+        height: 600,
         width: "100%",
         background: "",
+        marginBottom: "3rem",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
         "& .MuiDataGrid-row": { gap: "2rem" },
@@ -185,24 +92,29 @@ export default function LessonsTable() {
         },
       }}
     >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        // checkboxSelection
-        sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-          },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-        }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <div style={{ minWidth: 800 }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowId={(row) => row.user_id}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10, page: 0 } },
+            }}
+            pageSizeOptions={[10]}
+            // checkboxSelection
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-cell": {
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              },
+              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+            }}
+          />
+        </div>
+      </Box>
     </Paper>
   );
 }

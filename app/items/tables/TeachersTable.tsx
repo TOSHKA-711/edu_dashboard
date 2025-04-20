@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaTrash, FaEdit } from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { InstructorType } from "@/app/Redux/types";
@@ -44,10 +44,15 @@ export default function TeachersTable() {
     );
   }
 
+  const rows = instructors.map((instructor: InstructorType) => ({
+    full_name: `${instructor.first_name} ${instructor.last_name}`,
+    ...instructor,
+  }));
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 60 },
     {
-      field: "firstName",
+      field: "full_name",
       headerName: "الاسم",
       width: 200,
       sortable: true,
@@ -63,13 +68,44 @@ export default function TeachersTable() {
           }}
         >
           <Avatar alt="user" src={params.row.image} />
-          {params.row.first_name} {params.row.last_name}
+          {params.row.full_name}
         </div>
       ),
     },
-    { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
-    { field: "email", headerName: " البريد", width: 200 },
-    { field: "children_count", headerName: " عدد الابناء", width: 100 },
+    {
+      field: "bio",
+      headerName: "نبذة",
+      width: 300,
+      renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: "100%",
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "info",
+      headerName: "حول",
+      width: 300,
+      renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: "100%",
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
     {
       field: "status",
       headerName: "الحالة",
@@ -87,9 +123,9 @@ export default function TeachersTable() {
             borderRadius: "6px",
 
             backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
+              params.row.status == "active" ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
+            color: `${params.row.status == "active" ? "#43B75D" : "#DB340B"}`,
           }}
         >
           {params.row.status}
@@ -180,7 +216,7 @@ export default function TeachersTable() {
       <ToastContainer />
       <Paper
         sx={{
-          height: 590,
+          height: 600,
           width: "100%",
           background: "",
           "& .MuiToolbar-root": { direction: "ltr" },
@@ -192,24 +228,28 @@ export default function TeachersTable() {
           },
         }}
       >
-        <DataGrid
-          rows={instructors}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10, page: 0 } },
-          }}
-          pageSizeOptions={[5, 10, 20, 50]}
-          // checkboxSelection
-          sx={{
-            border: 0,
-            "& .MuiDataGrid-cell": {
-              textAlign: "center",
-              display: "flex",
-              justifyContent: "center",
-            },
-            "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-          }}
-        />
+        <Box sx={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 800 }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10, page: 0 } },
+              }}
+              pageSizeOptions={[10]}
+              // checkboxSelection
+              sx={{
+                border: 0,
+                "& .MuiDataGrid-cell": {
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                },
+                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              }}
+            />
+          </div>
+        </Box>
       </Paper>
     </>
   );

@@ -1,11 +1,35 @@
 "use client";
-import OverViewCard from "@/app/items/cards/OverViewCard";
+import CategoryCard from "@/app/items/cards/CategoryCard";
+import { useGetAllCategoriesQuery } from "@/app/Redux/Slices/Categories/categoryApi";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
 
+const bgColors = ["#FFFADF", "#EFECFF", "#E8FBF5", "#FFF0FF"];
+const iconBgColors = ["#FBF2C0", "#E6E0FF", "#D8F8ED", "#FFE5FF"];
+const iconColors = ["#D9CC83", "#917FF0", "#75A896", "#B270B2"];
+
 const Page = () => {
   const router = useRouter();
+  const { data: categories, isLoading: categoriesLoading } =
+    useGetAllCategoriesQuery();
+  console.log(categories);
+
+  if (categoriesLoading || categories?.data.length == 0) {
+    return (
+      <div className="flex flex-col items-center gap-2 text-lg">
+        ... no categories found yet{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-start gap-5 py-8">
       <button
@@ -15,8 +39,20 @@ const Page = () => {
         <IoIosAdd className="text-lg" />
         إضافة موضوع
       </button>
-      <OverViewCard />
-      <OverViewCard />
+
+      {categories && (
+        <div className="flex w-full items-center justify-start flex-wrap gap-3 max-lg:grid max-lg:grid-cols-2 max-sm:grid-cols-1">
+          {categories.data.map((category,index) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              bgColor={bgColors[index % bgColors.length]}
+              iconBg={iconBgColors[index % iconBgColors.length]}
+              iconColor={iconColors[index % iconColors.length]}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

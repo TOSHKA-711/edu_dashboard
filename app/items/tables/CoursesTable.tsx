@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 // import { useRouter } from "next/navigation";
 import LinearProgressBar from "../charts/LinearProgress";
 import Image from "next/image";
@@ -19,7 +19,13 @@ export default function CoursesTable({
   if (!courses || courses.data.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No courses found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+        No courses found{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
       </div>
     );
   }
@@ -27,7 +33,7 @@ export default function CoursesTable({
   // const router = useRouter();
   const columns: GridColDef[] = [
     {
-      field: "courseName",
+      field: "title",
       headerName: "الدورة",
       width: 220,
       sortable: true,
@@ -116,28 +122,6 @@ export default function CoursesTable({
         </div>
       ),
     },
-    // {
-    //   field: "start_date",
-    //   headerName: " تاريخ البدأ",
-    //   width: 120,
-    //   sortable: true,
-    //   renderCell: (params) => (
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         gap: "8px",
-    //         justifyContent: "start",
-    //         alignItems: "center",
-    //         width: "100%",
-    //         height: "100%",
-    //       }}
-    //     >
-
-    //       {params.row.course.start_date}
-    //     </div>
-    //   ),
-    // },
-    // { field: "price", headerName: " السعر", width: 120 },
     {
       field: "price",
       headerName: "  السعر",
@@ -239,113 +223,6 @@ export default function CoursesTable({
     },
   ];
 
-  // const rows = [
-  //   {
-  //     id: 1,
-  //     courseName: "مقدمة في علوم الحاسب",
-  //     price: "200$",
-  //     date: "2023-01-15",
-  //     attendance: "90%",
-  //     status: "مفعل",
-  //   },
-  //   {
-  //     id: 2,
-  //     courseName: "Lannister",
-  //     price: "200$",
-  //     date: "2023-02-10",
-  //     attendance: "75%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 3,
-  //     courseName: "Lannister",
-  //     price: "200$",
-  //     date: "2023-03-22",
-  //     attendance: "85%",
-  //     status: "مفعل",
-  //   },
-  //   {
-  //     id: 4,
-  //     courseName: "Stark",
-  //     price: "200$",
-  //     date: "2023-04-05",
-  //     attendance: "95%",
-  //     status: "مفعل",
-  //   },
-  //   {
-  //     id: 5,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 6,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 7,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 8,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 9,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 10,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 11,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 12,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  //   {
-  //     id: 13,
-  //     courseName: "Targaryen",
-  //     price: "200$",
-  //     date: "2023-05-18",
-  //     attendance: "80%",
-  //     status: "غير مفعل",
-  //   },
-  // ];
-
   const handleView = (id: number) => {
     alert(`عرض المستخدم ID: ${id}`);
   };
@@ -363,9 +240,10 @@ export default function CoursesTable({
   return (
     <Paper
       sx={{
-        height: 590,
+        height: 600,
         width: "100%",
         background: "",
+        marginBottom: "3rem",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
         "& .MuiDataGrid-row": { gap: "2rem" },
@@ -375,23 +253,27 @@ export default function CoursesTable({
         },
       }}
     >
-      <DataGrid
-        rows={courses?.data ?? []}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-          },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-        }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <div style={{ minWidth: 800 }}>
+          <DataGrid
+            rows={courses?.data ?? []}
+            columns={columns}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10, page: 0 } },
+            }}
+            pageSizeOptions={[10]}
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-cell": {
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              },
+              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+            }}
+          />
+        </div>
+      </Box>
     </Paper>
   );
 }

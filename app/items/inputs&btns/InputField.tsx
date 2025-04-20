@@ -8,10 +8,10 @@ interface PropsType {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const InputField: React.FC<PropsType> = ({ label, type, name, value, onChange }) => {
+export const InputField: React.FC<PropsType> = ({ label, type, name, value, onChange}) => {
   return (
-    <div className="mb-4">
-      <label className="block text-gray-700 mb-2 text-lg">{label}</label>
+    <div className="mb-4 w-full">
+      <label className="block text-gray-700 mb-2 px-2 text-lg">{label}</label>
       <input
         type={type}
         name={name}

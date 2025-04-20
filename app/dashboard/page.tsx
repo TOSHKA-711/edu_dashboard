@@ -1,12 +1,9 @@
-import DashLayout from "./layout";
+// import DashLayout from "./layout";
 import OverView from "./overview/page";
 
 const Dashboard = () => {
-  return (
-    <DashLayout>
-      <OverView />
-    </DashLayout>
-  );
+  // return(<DashLayout> <OverView /></DashLayout>);
+  return <OverView />;
 };
 
 export default Dashboard;

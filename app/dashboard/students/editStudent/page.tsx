@@ -23,8 +23,7 @@ const Page = () => {
   const selectedUser = useSelector(
     (state: RootState) => state.students.selectedUser
   );
-  const [setStudentUpdate] =
-    useSetStudentUpdateMutation();
+  const [setStudentUpdate] = useSetStudentUpdateMutation();
 
   const [payload, setPayload] = useState({
     image: selectedUser?.image,
@@ -46,7 +45,6 @@ const Page = () => {
   useEffect(() => {
     setIsRendered(true);
   }, []);
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -205,10 +203,10 @@ const Page = () => {
 
         {/* ------------forms------------  */}
         <div className="personal-details flex flex-col items-start gap-8 pt-10">
-          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
+          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl max-sm:text-[16px] rounded-md">
             معلومات شخصية
           </div>
-          <div className="inputs w-full grid grid-cols-3 gap-4">
+          <div className="inputs w-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
             <InputField
               label="الاسم الشخصي *"
               type="text"
@@ -255,10 +253,10 @@ const Page = () => {
         </div>
         {/* --------------- */}
         <div className="course-details flex flex-col items-start gap-8 pt-10">
-          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
+          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl max-sm:text-[16px] rounded-md">
             معلومات عن الصف /مكان الدورة
           </div>
-          <div className="inputs w-full grid grid-cols-3 gap-4">
+          <div className="inputs w-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
             <InputField
               label="الصف*"
               type="text"
@@ -290,65 +288,15 @@ const Page = () => {
           </div>
         </div>
         {/* --------------- */}
-        {/* <div className="date-details flex flex-col items-start gap-8 pt-10">
-        <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
-        تفاصيل الدورة وتاريخ اقامتها
-        </div>
-        <div className="inputs w-full grid grid-cols-3 gap-4">
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <InputField
-            label="الاسم بالكامل *"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-      </div> */}
-        {/* --------------- */}
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <button
-            className="bg-[#2664B1] text-white py-2 px-30 rounded-3xl cursor-pointer"
+            className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             حفظ
           </button>
           <button
-            className="bg-[#F2F4F8]  py-2 px-30 rounded-3xl cursor-pointer"
+            className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >
             الغاء

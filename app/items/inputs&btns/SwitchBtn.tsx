@@ -1,12 +1,40 @@
-import * as React from 'react';
-import Switch from '@mui/material/Switch';
+import * as React from "react";
+import Switch from "@mui/material/Switch";
+import { useSetUserAttendanceMutation } from "@/app/Redux/Slices/Courses/courseApi";
 
-const label = { inputProps: { 'aria-label': 'Attendance' } };
+const label = { inputProps: { "aria-label": "Attendance" } };
 
-export default function SwitchBtn() {
+export default function SwitchBtn({
+  active,
+  sessionId,
+  userId,
+}: {
+  active: boolean;
+  sessionId: number | string;
+  userId: number | string;
+}) {
+  const [checked, setChecked] = React.useState(active);
+  const [setUserAttendance, { isLoading }] = useSetUserAttendanceMutation();
+
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newChecked = event.target.checked;
+    setChecked(newChecked);
+
+    try {
+      await setUserAttendance({ sessionId, userId });
+      console.log(`Attendance marked successfully for userId ${userId}`);
+    } catch (err) {
+      console.error("Attendance update failed", err);
+      setChecked(!newChecked);
+    }
+  };
+
   return (
-    <div>
-      <Switch {...label}  />
-    </div>
+    <Switch
+      {...label}
+      checked={checked}
+      onChange={handleChange}
+      disabled={isLoading}
+    />
   );
 }

@@ -3,10 +3,13 @@ import { authApi } from "./Slices/Auth/authApi";
 import { studentsApi } from "./Slices/Students/studentsApi";
 import { parentsApi } from "./Slices/Parents/parentsApi";
 import { instructorsApi } from "./Slices/Instructors/InstructorsApi";
+import { coursesApi } from "./Slices/Courses/courseApi";
+import { categoriesApi } from "./Slices/Categories/categoryApi";
 import authReducer from "./Slices/Auth/authSlice";
 import studentsReducer from "./Slices/Students/studentsSlice";
 import parentsReducer from "./Slices/Parents/ParentsSlice";
 import InstructorsReducer from "./Slices/Instructors/InstructorsSlice";
+import CoursesReducer from "./Slices/Courses/courseSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,13 +21,18 @@ export const store = configureStore({
     [parentsApi.reducerPath]: parentsApi.reducer,
     Instructors: InstructorsReducer,
     [instructorsApi.reducerPath]: instructorsApi.reducer,
+    Courses: CoursesReducer,
+    [coursesApi.reducerPath]: coursesApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       studentsApi.middleware,
       parentsApi.middleware,
-      instructorsApi.middleware
+      instructorsApi.middleware,
+      coursesApi.middleware,
+      categoriesApi.middleware,
     ),
 });
 

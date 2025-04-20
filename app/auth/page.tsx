@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import { useAlert } from "../items/hooks/useAlert";
 
-const Page = () => {
+const AuthPage = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
   const [payload, setPayload] = useState({ email: "", password: "" });
@@ -96,4 +96,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default AuthPage;

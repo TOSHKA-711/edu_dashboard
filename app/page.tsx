@@ -1,10 +1,10 @@
 
-import Dashboard from "./dashboard/page";
+import AuthPage from "./auth/page";
 
 export default function Home() {
   return (
    <div >
-<Dashboard/>
+  <AuthPage/>
    </div>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 // import { Provider } from "react-redux";
 
 import ReduxProvider from "./Redux/provider";
+import { ToastContainer } from "react-toastify";
 
 const tajawal = Tajawal({
   weight: ["400", "700"],
@@ -36,7 +37,10 @@ export default function RootLayout({
       <body
         className={`${tajawal.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <ToastContainer />
+           {children}
+        </ReduxProvider>
       </body>
     </html>
   );

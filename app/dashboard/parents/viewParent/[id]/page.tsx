@@ -102,7 +102,7 @@ const ViewParent = () => {
             backdropFilter: "blur(14.350000381469727px)",
           }}
         >
-          <div className="rounded-2xl p-2 flex items-center gap-2 bg-[#F2F4F5]">
+          <div className="rounded-2xl p-2 flex items-center gap-2 bg-[#F2F4F5] flex-wrap max-sm:justify-center">
             <button
               onClick={() => handleSwitchView("parent", parentId)}
               className={`py-2 px-6 rounded-lg text-lg font-semibold cursor-pointer ${

@@ -4,19 +4,18 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
-import { IoBookmarksOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { CourseType } from "../Redux/types";
-import { useDispatch } from "react-redux";
-import { setSelectedCourse } from "../Redux/Slices/Courses/courseSlice";
+import { useDeleteCategoryMutation } from "../Redux/Slices/Categories/categoryApi";
+import { useAlert } from "./hooks/useAlert";
 
-export default function MenuDots({course}:{course:CourseType}) {
+export default function SubjectsCardDots({bg,color,categoryId}:{bg:string,color:string,categoryId:number|string}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const router = useRouter()
-  const dispatch = useDispatch()
+  const {showError,showSuccess} = useAlert()
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,22 +23,27 @@ export default function MenuDots({course}:{course:CourseType}) {
     setAnchorEl(null);
   };
 
+  const handleDeleteCategory= async(categoryId:number)=>{
+    const confirmed = window.confirm(`هل أنت متأكد من حذف الموضوع  ؟`);
+    if (!confirmed) return;
+    try {
+      await deleteCategory(categoryId).unwrap();
+      showSuccess("Category deleted successfully!");
 
-  // handle edit 
-  const handleEditCourse=(course:CourseType)=>{
-    dispatch(setSelectedCourse(course))
+    } catch {
+      showError("Failed to delete category!");
+    }
   }
 
-
   return (
-    <div>
+    <div className={`absolute -right-2 -top-1 bg-[${bg}] p-0 text-sm  scale-[-.5]`}>
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ fontSize: "25px", fontWeight: "bold" ,marginBottom:"14px"}}
+        sx={{ fontSize: "30px", fontWeight: "bold" ,marginBottom:"14px" , height:"30px" , color:`${color}`}}
       >
         ...
       </Button>
@@ -60,13 +64,13 @@ export default function MenuDots({course}:{course:CourseType}) {
           },
         }}
       >
-        <MenuItem onClick={()=>handleEditCourse(course)}>
+        <MenuItem onClick={()=>router.push(`/dashboard/subjects/editCategory/${categoryId}`)}>
           تعديل <CiEdit />
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={{ color: "#DB340B" }}>
+        <MenuItem onClick={()=>handleDeleteCategory(parseInt(String(categoryId)))} sx={{ color: "#DB340B" }}>
           حذف <MdOutlineDelete />
         </MenuItem>
-        <MenuItem onClick={()=>router.push(`/dashboard/courses/viewCourse/${course.id}`)}>
+        {/* <MenuItem onClick={()=>router.push(`/dashboard/courses/viewCourse/${course.id}`)}>
             الحضور <FaUsers />
         </MenuItem>
         <MenuItem onClick={()=>router.push(`/dashboard/courses/addDepartment/${course.id}`)}>
@@ -75,7 +79,7 @@ export default function MenuDots({course}:{course:CourseType}) {
         <MenuItem onClick={()=>router.push(`/dashboard/courses/enrolled/${course.id}`)}>
           الحجوزات
           <IoBookmarksOutline />
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </div>
   );

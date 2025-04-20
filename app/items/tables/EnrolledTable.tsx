@@ -2,19 +2,46 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye} from "react-icons/fa";
-import { Avatar, IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { IoMdAdd } from "react-icons/io";
+import {
+  AllEnrolledUsersResponseType,
+  EnrolledUserType,
+} from "@/app/Redux/types";
+import { useSetUserPaymentMutation } from "@/app/Redux/Slices/Courses/courseApi";
+import { useAlert } from "../hooks/useAlert";
+import { ToastContainer } from "react-toastify";
 
-export default function EnrolledTable() {
-  const router = useRouter();
+export default function EnrolledTable({
+  users,
+}: {
+  users: AllEnrolledUsersResponseType;
+}) {
+  const { showSuccess, showError } = useAlert();
+  const [setUserPayment] = useSetUserPaymentMutation();
+  const [amounts, setAmounts] = React.useState<{ [userId: number]: number }>(
+    {}
+  );
+
+  const handleInputsChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    userId: number
+  ) => {
+    const { value } = e.target;
+    setAmounts((prev) => ({ ...prev, [userId]: parseInt(value) }));
+  };
+
+  const rows = users?.data.map((user: EnrolledUserType) => ({
+    full_name: `${user.first_name} ${user.last_name}`,
+    ...user,
+  }));
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 120 },
+    { field: "id", headerName: "ID", width: 40 },
     {
-      field: "firstName",
+      field: "full_name",
       headerName: "الاسم",
-      width: 300,
+      width: 230,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -25,18 +52,19 @@ export default function EnrolledTable() {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            fontFamily: 'Tajawal',
+            fontFamily: "Tajawal",
+            fontSize: "16px",
           }}
         >
           <Avatar alt="user" src="/user.jpg" />
-          {params.row.firstName}
+          {params.row.full_name}
         </div>
       ),
     },
     {
-      field: "payment",
-      headerName: "المبلغ",
-      width: 350,
+      field: "payment_status",
+      headerName: "حالة الدفع",
+      width: 110,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -47,20 +75,78 @@ export default function EnrolledTable() {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            fontFamily: 'Tajawal',
-            fontSize:"18px"
+            fontFamily: "Tajawal",
+            fontSize: "16px",
           }}
         >
-         {params.row.payment}
+          {params.row.payment_status}
+        </div>
+      ),
+    },
+    {
+      field: "payment_message",
+      headerName: "رسالة الدفع",
+      width: 400,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            fontFamily: "Tajawal",
+            fontSize: "17px",
+          }}
+        >
+          {params.row.payment_message}
+        </div>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "الحالة",
+      width: 140,
+      sortable: true,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "80%",
+            height: "60%",
+            alignSelf: "center",
+            borderRadius: "6px",
+
+            backgroundColor: `${
+              params.row.status === "approved"
+                ? "#ECF8EF"
+                : params.row.status === "pending"
+                ? "#E9DF93"
+                : "#FDECEC"
+            }`,
+            color: `${
+              params.row.status === "approved"
+                ? "#43B75D"
+                : params.row.status === "pending"
+                ? "#C7B10D"
+                : "#DB340B"
+            }`,
+          }}
+        >
+          {params.row.status}
         </div>
       ),
     },
     {
       field: "actions",
-      headerName: "الإجراء",
+      headerName: "سداد مبلغ",
       width: 280,
       sortable: false,
-      renderCell: () => (
+      renderCell: (params) => (
         <div
           style={{
             display: "flex",
@@ -71,21 +157,16 @@ export default function EnrolledTable() {
             height: "100%",
           }}
         >
-          {/* عرض */}
-          <Tooltip title="عرض">
-            <IconButton
-              onClick={() => handleView()}
-              color="primary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaRegEye />
-            </IconButton>
-          </Tooltip>
+          <input
+            type="number"
+            className="border-1 h-7 w-30 rounded-lg py-2 px-3  focus:outline-none focus:ring-1 focus:ring-blue-500 border-[#2664B1] "
+            onChange={(e) => handleInputsChange(e, params.row.id)}
+            value={amounts[params.row.id] || ""}
+          />
           {/* سداد مبلغ */}
           <Tooltip title="سداد جزء">
             <IconButton
-              onClick={() => handleView()}
+              onClick={() => handleAddPayment(parseInt(params.row.id))}
               color="primary"
               size="small"
               sx={{ cursor: "pointer" }}
@@ -98,121 +179,64 @@ export default function EnrolledTable() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Jon",
-    },
-    {
-      id: 2,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Cersei",
-    },
-    {
-      id: 3,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Jaime",
-    },
-    {
-      id: 4,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Arya",
-    },
-    {
-      id: 5,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 6,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 7,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 8,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 9,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 10,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 11,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 12,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-    {
-      id: 13,
-      payment: "تم دفع 300 شيكل من اصل 600",
-      firstName: "Daenerys",
-    },
-  ];
+  const handleAddPayment = async (userId: number) => {
+    const amount = amounts[userId];
+    if (amount && userId) {
+      const confirmed = window.confirm(`هل أنت متأكد من سداد مبلغ ${amount} ؟`);
 
-  const handleView = () => {
-    router.push("/dashboard/students/viewStudent");
+      if (!confirmed) return;
+
+      try {
+        await setUserPayment({ amount, userId }).unwrap();
+        setAmounts((prev) => ({ ...prev, [userId]: 0 }));
+        showSuccess("Payment added successfully!");
+      } catch {
+        showError("Payment failed!");
+      }
+    }
   };
 
-  // const handleDelete = (id: number) => {
-  //   if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-  //     alert(`تم حذف المستخدم ID: ${id}`);
-  //   }
-  // };
-
-  // const handleEdit = () => {
-  //   router.push("/dashboard/students/editStudent");
-  // };
-
   return (
-    <Paper
-      sx={{
-        height: 590,
-        width: "100%",
-        background: "",
-        "& .MuiToolbar-root": { direction: "ltr" },
-        "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
-        "& .MuiDataGrid-row": { gap: "2rem" },
-        "& .MuiDataGrid-columnHeaders": {
-          background: "white",
-          padding: "12px 0",
-        },
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        // checkboxSelection
+    <>
+      <ToastContainer />
+      <Paper
         sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
+          height: 600,
+          width: "100%",
+          background: "",
+          marginBottom: "2rem",
+          "& .MuiToolbar-root": { direction: "ltr" },
+          "& .MuiDataGrid-row--borderBottom": { gap: "23px", background: "" },
+          "& .MuiDataGrid-row": { gap: "1rem" },
+          "& .MuiDataGrid-columnHeaders": {
+            background: "white",
+            padding: "12px 0",
           },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
         }}
-      />
-    </Paper>
+      >
+        <Box sx={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 800 }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10, page: 0 } },
+              }}
+              pageSizeOptions={[10]}
+              // checkboxSelection
+              sx={{
+                border: 0,
+                "& .MuiDataGrid-cell": {
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                },
+                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              }}
+            />
+          </div>
+        </Box>
+      </Paper>
+    </>
   );
 }

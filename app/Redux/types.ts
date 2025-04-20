@@ -100,6 +100,44 @@ export type StudentPayloadType = {
   grade_name: string;
 };
 
+
+export type CourseStudentAttendanceType = {
+  user_id: number;
+  course_id: number;
+  first_name: string;
+  last_name: string;
+  username: string | null;
+  identity_id: string;
+  phone_number: string;
+  email: string | null;
+  image: string;
+  role: string; 
+  attended_session: number;
+};
+
+export type AllStudentCoursesAttendanceResponseType = {
+  status: boolean;
+  message: string;
+  data: CourseStudentAttendanceType[];
+};
+
+export type EnrolledUserType ={
+  id: number;
+  user_id: number;
+  course_id: number;
+  first_name: string;
+  last_name: string;
+  username: string | null;
+  image: string | null;
+  status: "approved" | "pending" | "rejected";  
+  payment_status: "paid" | "unpaid" | "pending";  
+  payment_message: string;
+}
+export type AllEnrolledUsersResponseType = {
+  status: boolean;
+  message: string;
+  data: EnrolledUserType[];
+};
 //=================== parent =======================
 
 export type ParentType = {
@@ -255,3 +293,111 @@ export type AllInstructorRatesResponseType ={
   message: string;
   data: InstructorRateType[];
 }
+
+
+
+//=================== courses =======================
+
+
+export type CourseType ={
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  earnings_point: number;
+  address: string;
+  start_date: string;
+  end_date: string;
+  max_people: number;
+  image: string;
+  age_range: number;
+  session_count: number;
+  instructor: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    image: string;
+    date_of_birth: string;
+    bio: string;
+    info: string;
+    deleted_at: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+  active: number;
+  type: string;
+  category: {
+    id: number;
+    name: string;
+    image: string;
+  };
+  rate_avg: number;
+}
+
+export type GetAllCoursesResponseType = {
+  status: boolean;
+  message: string;
+  data: CourseType[];
+};
+
+export type CourseDepartmentsType = {
+  id: number;
+  title: string;
+  session: {
+    id: number;
+    title: string;
+    description: string | null;
+    attends: number;
+  }[];
+};
+export type AllCourseDepartmentsResponseType = {
+  status: boolean;
+  message: string;
+  data: CourseDepartmentsType[];
+};
+
+
+export type AddCoursePayloadType={
+    title: string;
+    title_he: string;
+    price: number|string;
+    address: string;
+    address_he: string;
+    description: string;
+    description_he: string;
+    item_type: string;
+    start_date: string;
+    end_date: string;
+    max_people: number|string;
+    age_range: number|string;
+    session_count: number|string;
+    earnings_point: number|string;
+    category_id: number|string;
+    instructor_id: number|string;
+    active: number|string;
+    image: File|null; 
+}
+
+//=================== categories =======================
+
+export type CategoryType = {
+  id: number;
+  name_ar: string;
+  name_he: string;
+  image: string;
+  description: string | null;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+  image_url: string;
+  courses_count?: number,
+};
+
+export type AllCategoriesResponseType = {
+  status: boolean;
+  message: string;
+  data: CategoryType[];
+};
+
+
+

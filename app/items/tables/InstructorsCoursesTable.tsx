@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
-import { IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import Image from "next/image";
 import { AllInstructorCoursesType } from "@/app/Redux/types";
 
@@ -12,11 +12,16 @@ export default function InstructorsCoursesTable({
 }: {
   courses: AllInstructorCoursesType;
 }) {
-
   if (!courses || courses.data.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No courses found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+        No courses found{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
       </div>
     );
   }
@@ -24,7 +29,7 @@ export default function InstructorsCoursesTable({
   // const router = useRouter();
   const columns: GridColDef[] = [
     {
-      field: "courseName",
+      field: "title",
       headerName: "الدورة",
       width: 220,
       sortable: true,
@@ -66,12 +71,10 @@ export default function InstructorsCoursesTable({
             height: "100%",
           }}
         >
-
           {params.row.address}
         </div>
       ),
     },
-
 
     {
       field: "session_count",
@@ -89,7 +92,7 @@ export default function InstructorsCoursesTable({
             height: "100%",
           }}
         >
-          {params.row.session_count} 
+          {params.row.session_count}
         </div>
       ),
     },
@@ -214,9 +217,6 @@ export default function InstructorsCoursesTable({
     },
   ];
 
-
- 
-
   const handleView = (id: number) => {
     alert(`عرض المستخدم ID: ${id}`);
   };
@@ -234,9 +234,10 @@ export default function InstructorsCoursesTable({
   return (
     <Paper
       sx={{
-        height: 590,
+        height: 600,
         width: "100%",
         background: "",
+        marginBottom: "3rem",
         "& .MuiToolbar-root": { direction: "ltr" },
         "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
         "& .MuiDataGrid-row": { gap: "2rem" },
@@ -246,23 +247,27 @@ export default function InstructorsCoursesTable({
         },
       }}
     >
-      <DataGrid
-        rows={courses?.data ?? []}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 10, page: 0 } },
-        }}
-        pageSizeOptions={[5, 10, 20, 50]}
-        sx={{
-          border: 0,
-          "& .MuiDataGrid-cell": {
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-          },
-          "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-        }}
-      />
+      <Box sx={{ overflowX: "auto" }}>
+        <div style={{ minWidth: 800 }}>
+          <DataGrid
+            rows={courses?.data ?? []}
+            columns={columns}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10, page: 0 } },
+            }}
+            pageSizeOptions={[10]}
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-cell": {
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+              },
+              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+            }}
+          />
+        </div>
+      </Box>
     </Paper>
   );
 }
