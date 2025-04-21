@@ -39,7 +39,7 @@ const AuthPage = () => {
     <>
       <ToastContainer />
       <div
-        className="login w-full h-screen flex items-center justify-center relative"
+        className="login w-full h-screen flex items-center justify-center relative "
         style={{ background: "linear-gradient(to left, #EDF4F1, #E3EBF5)" }}
         dir="rtl"
       >
@@ -51,7 +51,7 @@ const AuthPage = () => {
           className="absolute top-4 left-5"
         />
         <div
-          className="card bg-[#fff] flex flex-col items-start pr-6 pl-8 py-8 gap-5 min-w-[450px] rounded-lg"
+          className="card bg-[#fff] flex flex-col items-start pr-6 pl-8 py-8 gap-5 min-w-[450px] rounded-lg max-sm:min-w-[320px]"
           style={{ boxShadow: "0px 3.48px 3.48px 0px #00000040" }}
         >
           <span className="flex flex-col items-start gap-1">
