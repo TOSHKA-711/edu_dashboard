@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect ,useMemo} from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { PieChartOutlined } from "@ant-design/icons";
 import { FiUsers } from "react-icons/fi";
 import { GoArrowSwitch } from "react-icons/go";
 import { FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
-import { MdOutlineWidgets } from "react-icons/md";
+import { MdOutlineWidgets, MdOutlinePayments } from "react-icons/md";
 import { CiSettings, CiLogout } from "react-icons/ci";
+
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import NavBar from "../components/navbar/NavBar";
@@ -42,13 +43,64 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       "1",
       <Image src="/logo1.svg" alt="logo" width={20} height={20} />
     ),
-    getItem(<Link href="/dashboard/overview">نظرة عامة</Link>, "2", <PieChartOutlined />),
-    getItem(<Link href="/dashboard/students/allStudents">الطلاب</Link>, "3", <FiUsers />),
-    getItem(<Link href="/dashboard/parents">أولياء الأمور</Link>, "4", <GoArrowSwitch />),
-    getItem(<Link href="/dashboard/teachers">المعلمين</Link>, "5", <FaChalkboardTeacher />),
-    getItem(<Link href="/dashboard/courses">الكورسات</Link>, "6", <FaLaptopCode />),
-    getItem(<Link href="/dashboard/subjects">المواضيع</Link>, "7", <MdOutlineWidgets />),
-    getItem(<Link href="/settings">الاعدادات</Link>, "10", <CiSettings />),
+    getItem(
+      <Link href="/dashboard/overview">نظرة عامة</Link>,
+      "2",
+      <PieChartOutlined />
+    ),
+    getItem(
+      <Link href="/dashboard/students/allStudents">الطلاب</Link>,
+      "3",
+      <FiUsers />
+    ),
+    getItem(
+      <Link href="/dashboard/parents">أولياء الأمور</Link>,
+      "4",
+      <GoArrowSwitch />
+    ),
+    getItem(
+      <Link href="/dashboard/teachers">المعلمين</Link>,
+      "5",
+      <FaChalkboardTeacher />
+    ),
+    getItem(
+      <Link href="/dashboard/courses">الكورسات</Link>,
+      "6",
+      <FaLaptopCode />
+    ),
+    getItem(
+      <Link href="/dashboard/subjects">المواضيع</Link>,
+      "7",
+      <MdOutlineWidgets />
+    ),
+    getItem(
+      <Link href="/dashboard/payments">المدفوعات</Link>,
+      "8",
+      <MdOutlinePayments />
+    ),
+    getItem(
+      <Link href="/dashboard/settings/profile">الاعدادات</Link>,
+      "9",
+      <CiSettings />,
+      [
+        getItem(
+          <Link href="/dashboard/settings/profile">الملف الشخصي</Link>,
+          "10",
+          <CiSettings />
+        ),
+        getItem(
+          <Link href="/dashboard/settings/addRole">الاذونات</Link>,
+          "11",
+          <CiSettings />
+        ),
+        getItem(
+          <Link href="/dashboard/settings/changeLanguage">اللغة</Link>,
+          "12",
+          <CiSettings />
+        ),
+      
+      ]
+    ),
   ];
 
   const items2: MenuItem[] = [
@@ -64,19 +116,20 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const breadcrumbMap: Record<string, { title: string }[]> = useMemo(() => ({
-
-    "1": [{ title: "نظرة عامة" }],
-    "2": [{ title: "نظرة عامة" }],
-    "3": [{ title: "الطلاب" }],
-    "4": [{ title: "أولياء الأمور" }],
-    "5": [{ title: "المعلمين" }],
-    "6": [{ title: "الكورسات" }],
-    "7": [{ title: "المواضيع" }],
-    "8": [{ title: "الفرق" }, { title: "الفريق 1" }],
-    "9": [{ title: "الفرق" }, { title: "الفريق 2" }],
-    "10": [{ title: "الاعدادات" }],
-  }), []);
+  const breadcrumbMap: Record<string, { title: string }[]> = useMemo(
+    () => ({
+      "1": [{ title: "نظرة عامة" }],
+      "2": [{ title: "نظرة عامة" }],
+      "3": [{ title: "الطلاب" }],
+      "4": [{ title: "أولياء الأمور" }],
+      "5": [{ title: "المعلمين" }],
+      "6": [{ title: "الكورسات" }],
+      "7": [{ title: "المواضيع" }],
+      "8": [{ title: "المدفوعات" }],
+      "9": [{ title: "الاعدادات" }],
+    }),
+    []
+  );
 
   useEffect(() => {
     switch (true) {
@@ -95,17 +148,17 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       case path.includes("/subjects"):
         setBreadcrumbItems(breadcrumbMap["7"] || [{ title: "الرئيسية" }]);
         break;
-      case path.includes("/teams"):
+      case path.includes("/payments"):
         setBreadcrumbItems(breadcrumbMap["8"] || [{ title: "الرئيسية" }]);
         break;
       case path.includes("/settings"):
-        setBreadcrumbItems(breadcrumbMap["10"] || [{ title: "الرئيسية" }]);
+        setBreadcrumbItems(breadcrumbMap["9"] || [{ title: "الرئيسية" }]);
         break;
       default:
         setBreadcrumbItems([{ title: "الرئيسية" }]);
         break;
     }
-  }, [path , breadcrumbMap]);
+  }, [path, breadcrumbMap]);
 
   return (
     <Layout style={{ minHeight: "100vh" }} dir="rtl">

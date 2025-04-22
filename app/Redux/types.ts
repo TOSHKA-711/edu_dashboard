@@ -1,3 +1,57 @@
+export type UserType = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string | null;
+  identity_id: string | null;
+  phone_number: string | null;
+  email: string;
+  image: string | null;
+  color: string | null;
+  verify_code: string;
+  role: string;
+  date_of_birth: string | null;
+  school_name: string | null;
+  grade_name: string | null;
+  educational_stage: string | null;
+  neighborhood: string | null;
+  parent_id: number | null;
+  parent_type: string | null;
+  child_type: string | null;
+  status: number;
+  mother_name: string | null;
+  mother_identity_id: string | null;
+  points: number | null;
+  balance: number | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AllRolesResponseType={
+  message: string;
+  user: UserType[];
+}
+
+// =======================================
+export type DashboardStatsType = {
+  profit_chart: {
+    date: string;
+    value: string;
+  }[];
+  user_chart: {
+    date: string;
+    value: number;
+  }[];
+  totals: {
+    child_users: number;
+    parent_users: number;
+    individual_users: number;
+    enrollments: number;
+  };
+  date_range: string;
+};
+
+
 // ================= student ==================
 export type StudentType = {
   id: number;
@@ -278,6 +332,7 @@ export type InstructorPayloadType = {
 };
 
 export type InstructorRateType ={
+  id:number;
   rating: number;
   review: string;
   is_accept: number;
@@ -302,7 +357,9 @@ export type AllInstructorRatesResponseType ={
 export type CourseType ={
   id: number;
   title: string;
+  title_he: string;
   description: string;
+  description_he: string;
   price: string;
   earnings_point: number;
   address: string;
@@ -320,6 +377,7 @@ export type CourseType ={
     date_of_birth: string;
     bio: string;
     info: string;
+    status: string;
     deleted_at: string | null;
     created_at: string;
     updated_at: string;
@@ -397,6 +455,29 @@ export type AllCategoriesResponseType = {
   status: boolean;
   message: string;
   data: CategoryType[];
+};
+//=================== payments =======================
+
+export type CoursesPaymentType = {
+  id: number;
+  user_id: number;
+  course_id: number;
+  course_title: string;
+  course_title_he: string;
+  first_name: string;
+  last_name: string;
+  username: string | null;
+  image: string | null;
+  status: string;
+  payment_status: string;
+  payment_message: string;
+};
+
+
+export type AllCoursesPaymentsResponseType = {
+  status: boolean;
+  message: string;
+  data: CoursesPaymentType[];
 };
 
 

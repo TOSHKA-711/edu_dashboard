@@ -26,7 +26,7 @@ export const parentsApi = createApi({
           const { data: response } = await queryFulfilled;
           dispatch(setAllParents(response.data));
         } catch (error) {
-          console.error("Fetching students failed", error);
+          console.error("Fetching parents failed", error);
         }
       },
     }),

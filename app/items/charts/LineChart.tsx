@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   AreaChart,
   Area,
@@ -16,25 +16,25 @@ export default function DashLineChart({
   areaColor,
   gradientId,
   dir,
-  title
+  title,
+  data
 }: {
   areaColor: string;
   gradientId: string;
   title: string;
   dir: boolean;
+  data:{date:string,value:string|number}[]
 }) {
-  const [data] = useState([
-    { name: "06:00", value: 0 },
-    { name: "05:00", value: 30 },
-    { name: "04:00", value: 60 },
-    { name: "03:00", value: 50 },
-    { name: "02:00", value: 40 },
-    { name: "01:00", value: 100 },
-    { name: "00:00", value: 80 },
-  ]);
+
+  const formattedData = data.map(item => ({
+    date: item.date ?? item.date ?? "",
+    value: Number(item.value),
+  }));
+  
 
   // قلب البيانات عند الاتجاه من اليمين لليسار
-  const rtlData = dir ? [...data].reverse() : data;
+  const rtlData = dir ? [...formattedData].reverse() : formattedData;
+
 
   return (
     <div
@@ -70,7 +70,7 @@ export default function DashLineChart({
 
           {/* المحور X يبدأ من اليمين */}
           <XAxis 
-            dataKey="name" 
+            dataKey="date" 
             reversed={dir} 
             axisLine={false} 
             tickLine={false} 

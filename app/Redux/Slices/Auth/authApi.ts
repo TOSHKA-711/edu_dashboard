@@ -16,16 +16,16 @@ export const authApi = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled, getState }) {
         try {
           const { data } = await queryFulfilled;
-          const { token, user } = data;
+          const { token, user, role } = data;
 
           if (typeof window !== "undefined") {
             localStorage.setItem("token", token);
+            localStorage.setItem("userRole", role);
             localStorage.setItem("user", JSON.stringify(user));
-            
           }
 
           if (getState()) {
-            dispatch(setUser({ user, token }));
+            dispatch(setUser({ user, token , role}));
           } else {
             console.warn("Store is not initialized yet");
           }

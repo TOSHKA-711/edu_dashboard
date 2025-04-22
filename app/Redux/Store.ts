@@ -5,6 +5,8 @@ import { parentsApi } from "./Slices/Parents/parentsApi";
 import { instructorsApi } from "./Slices/Instructors/InstructorsApi";
 import { coursesApi } from "./Slices/Courses/courseApi";
 import { categoriesApi } from "./Slices/Categories/categoryApi";
+import { OverViewApi } from "./Slices/OverView/overViewApi";
+import { settingsApi } from "./Slices/Settings/settingsApi";
 import authReducer from "./Slices/Auth/authSlice";
 import studentsReducer from "./Slices/Students/studentsSlice";
 import parentsReducer from "./Slices/Parents/ParentsSlice";
@@ -24,6 +26,8 @@ export const store = configureStore({
     Courses: CoursesReducer,
     [coursesApi.reducerPath]: coursesApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
+    [OverViewApi.reducerPath]: OverViewApi.reducer,
+    [settingsApi.reducerPath]: settingsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -33,6 +37,8 @@ export const store = configureStore({
       instructorsApi.middleware,
       coursesApi.middleware,
       categoriesApi.middleware,
+      OverViewApi.middleware,
+      settingsApi.middleware,
     ),
 });
 

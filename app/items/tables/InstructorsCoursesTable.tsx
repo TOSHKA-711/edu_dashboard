@@ -4,14 +4,30 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
 import { Box, IconButton, Tooltip } from "@mui/material";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import Image from "next/image";
 import { AllInstructorCoursesType } from "@/app/Redux/types";
+import { useChangeCourseStatusMutation } from "@/app/Redux/Slices/Courses/courseApi";
+import { useAlert } from "../hooks/useAlert";
+import { ToastContainer } from "react-toastify";
 
 export default function InstructorsCoursesTable({
   courses,
 }: {
   courses: AllInstructorCoursesType;
 }) {
+  const { showSuccess, showError } = useAlert();
+  const [changeCourseStatus] = useChangeCourseStatusMutation();
+
+  const handleChangeCourseStatus = async (id: number) => {
+    try {
+      await changeCourseStatus(id).unwrap();
+      showSuccess("Course status changed successfully!");
+    } catch {
+      showError("Course status changed failed!");
+    }
+  };
+
   if (!courses || courses.data.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
@@ -152,19 +168,19 @@ export default function InstructorsCoursesTable({
             alignSelf: "center",
             borderRadius: "6px",
             backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
+              params.row.active == 1 ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
+            color: `${params.row.active == 1 ? "#43B75D" : "#DB340B"}`,
           }}
         >
-          {params.row.status}
+          {params.row.active == 1 ? "مفعل" : "غير مفعل"}
         </div>
       ),
     },
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 140,
+      width: 180,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -200,6 +216,17 @@ export default function InstructorsCoursesTable({
               <FaEdit />
             </IconButton>
           </Tooltip>
+          <Tooltip title="تعديل">
+            <IconButton
+              onClick={() => handleChangeCourseStatus(params.row.id)}
+              color="success"
+              size="small"
+              sx={{ cursor: "pointer" , gap:"3px"}}
+            >
+              <MdOutlinePublishedWithChanges />
+              {params.row.active == 0 ? "تفعيل" : "تعطيل"}
+            </IconButton>
+          </Tooltip>
 
           {/* حذف */}
           <Tooltip title="حذف">
@@ -232,42 +259,45 @@ export default function InstructorsCoursesTable({
   };
 
   return (
-    <Paper
-      sx={{
-        height: 600,
-        width: "100%",
-        background: "",
-        marginBottom: "3rem",
-        "& .MuiToolbar-root": { direction: "ltr" },
-        "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
-        "& .MuiDataGrid-row": { gap: "2rem" },
-        "& .MuiDataGrid-columnHeaders": {
-          background: "white",
-          padding: "12px 0",
-        },
-      }}
-    >
-      <Box sx={{ overflowX: "auto" }}>
-        <div style={{ minWidth: 800 }}>
-          <DataGrid
-            rows={courses?.data ?? []}
-            columns={columns}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10, page: 0 } },
-            }}
-            pageSizeOptions={[10]}
-            sx={{
-              border: 0,
-              "& .MuiDataGrid-cell": {
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
-            }}
-          />
-        </div>
-      </Box>
-    </Paper>
+    <>
+      <ToastContainer />
+      <Paper
+        sx={{
+          height: 600,
+          width: "100%",
+          background: "",
+          marginBottom: "3rem",
+          "& .MuiToolbar-root": { direction: "ltr" },
+          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row": { gap: "2rem" },
+          "& .MuiDataGrid-columnHeaders": {
+            background: "white",
+            padding: "12px 0",
+          },
+        }}
+      >
+        <Box sx={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 800 }}>
+            <DataGrid
+              rows={courses?.data ?? []}
+              columns={columns}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10, page: 0 } },
+              }}
+              pageSizeOptions={[10]}
+              sx={{
+                border: 0,
+                "& .MuiDataGrid-cell": {
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                },
+                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              }}
+            />
+          </div>
+        </Box>
+      </Paper>
+    </>
   );
 }

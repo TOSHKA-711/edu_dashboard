@@ -2,35 +2,30 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { InstructorType } from "@/app/Redux/types";
+import { UserType } from "@/app/Redux/types";
 import Image from "next/image";
-import {
-  useDeleteInstructorMutation,
-  useGetAllInstructorsQuery,
-} from "@/app/Redux/Slices/Instructors/InstructorsApi";
-import { setSelectedInstructor } from "@/app/Redux/Slices/Instructors/InstructorsSlice";
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
+import {
+  useDeleteRoleMutation,
+  useGetAllRolesQuery,
+} from "@/app/Redux/Slices/Settings/settingsApi";
 
-export default function TeachersTable() {
-  const router = useRouter();
-  const dispatch = useDispatch();
+export default function AllRolesTable() {
   const { showSuccess, showError } = useAlert();
 
   // start fetch users
 
-  const { data, error, isLoading } = useGetAllInstructorsQuery();
-  const [deleteInstructor] = useDeleteInstructorMutation();
+  const { data: roles, error, isLoading } = useGetAllRolesQuery();
+  const [deleteRole] = useDeleteRoleMutation();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching students</p>;
-  const instructors = data?.data;
+  const allRoles = roles?.user;
   // end fetch users
 
-  if (!instructors || instructors.length === 0) {
+  if (!allRoles || allRoles.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
         No parents found{" "}
@@ -44,9 +39,9 @@ export default function TeachersTable() {
     );
   }
 
-  const rows = instructors.map((instructor: InstructorType) => ({
-    full_name: `${instructor.first_name} ${instructor.last_name}`,
-    ...instructor,
+  const rows = allRoles.map((role: UserType) => ({
+    full_name: `${role.first_name} ${role.last_name}`,
+    ...role,
   }));
 
   const columns: GridColDef[] = [
@@ -73,9 +68,9 @@ export default function TeachersTable() {
       ),
     },
     {
-      field: "bio",
-      headerName: "نبذة",
-      width: 280,
+      field: "email",
+      headerName: "البريد الالكتروني",
+      width: 180,
       renderCell: (params) => (
         <div
           style={{
@@ -90,9 +85,43 @@ export default function TeachersTable() {
       ),
     },
     {
-      field: "info",
-      headerName: "حول",
-      width: 300,
+      field: "phone_number",
+      headerName: "رقم الهاتف",
+      width: 160,
+      renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: "100%",
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "identity_id",
+      headerName: " الهويه",
+      width: 90,
+      renderCell: (params) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: "100%",
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "role",
+      headerName: " الدور",
+      width: 130,
       renderCell: (params) => (
         <div
           style={{
@@ -123,19 +152,19 @@ export default function TeachersTable() {
             borderRadius: "6px",
 
             backgroundColor: `${
-              params.row.status == "active" ? "#ECF8EF" : "#FDECEC"
+              params.row.status == 1 ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "active" ? "#43B75D" : "#DB340B"}`,
+            color: `${params.row.status == 1 ? "#43B75D" : "#DB340B"}`,
           }}
         >
-          {params.row.status}
+          {params.row.status == 1 ? "مفعل" : "غير مفعل"}
         </div>
       ),
     },
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 100,
+      width: 60,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -148,30 +177,6 @@ export default function TeachersTable() {
             height: "100%",
           }}
         >
-          {/* عرض */}
-          <Tooltip title="عرض">
-            <IconButton
-              onClick={() => handleView(params.row)}
-              color="primary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaRegEye />
-            </IconButton>
-          </Tooltip>
-
-          {/* تعديل */}
-          <Tooltip title="تعديل">
-            <IconButton
-              onClick={() => handleEdit(params.row)}
-              color="secondary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaEdit />
-            </IconButton>
-          </Tooltip>
-
           {/* حذف */}
           <Tooltip title="حذف">
             <IconButton
@@ -188,26 +193,17 @@ export default function TeachersTable() {
     },
   ];
 
-  const handleView = (user: InstructorType) => {
-    router.push(`/dashboard/teachers/viewTeacher/${user.id}`);
-    dispatch(setSelectedInstructor(user));
-  };
-  const handleEdit = (user: InstructorType) => {
-    router.push(`/dashboard/teachers/editTeacher`);
-    dispatch(setSelectedInstructor(user));
-  };
-
   const handleDelete = async (instructorId: number) => {
     const confirmDelete = window.confirm(
-      "هل أنت متأكد أنك تريد حذف هذا المعلم ؟"
+      "هل أنت متأكد أنك تريد حذف هذا المستخدم ؟"
     );
     if (!confirmDelete) return;
 
     try {
-      await deleteInstructor({ instructorId }).unwrap();
-      showSuccess("تم حذف المعلم بنجاح!");
+      await deleteRole(instructorId).unwrap();
+      showSuccess("تم حذف المستخدم بنجاح!");
     } catch {
-      showError("فشل في حذف المعلم!");
+      showError("فشل في حذف المستخدم!");
     }
   };
 

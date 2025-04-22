@@ -13,7 +13,7 @@ const initialState: CoursesState = {
   courseDepartments: null,
     selectedCourse:
       typeof window !== "undefined"
-        ? JSON.parse(localStorage.getItem("selectedUser") || "null")
+        ? JSON.parse(localStorage.getItem("selectedCourse") || "null")
         : null,
 };
 

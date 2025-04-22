@@ -136,7 +136,7 @@ const ViewTeacher = () => {
             courses={courses ?? { status: false, message: "", data: [] }}
           />
         ) : (
-          <TeacherRates reviews={rates?.data ?? []} />
+          <TeacherRates reviews={rates?.data ?? []} instructorId={instructorId} />
         )}
       </div>
     </div>

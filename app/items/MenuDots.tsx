@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { CiEdit } from "react-icons/ci";
-import { MdOutlineDelete } from "react-icons/md";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { IoBookmarksOutline } from "react-icons/io5";
@@ -11,12 +11,18 @@ import { useRouter } from "next/navigation";
 import { CourseType } from "../Redux/types";
 import { useDispatch } from "react-redux";
 import { setSelectedCourse } from "../Redux/Slices/Courses/courseSlice";
+import { useChangeCourseStatusMutation } from "../Redux/Slices/Courses/courseApi";
+import { useAlert } from "./hooks/useAlert";
 
-export default function MenuDots({course}:{course:CourseType}) {
+export default function MenuDots({ course }: { course: CourseType }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const {showSuccess,showError} = useAlert();
+  const [changeCourseStatus] = useChangeCourseStatusMutation();
+
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,12 +30,23 @@ export default function MenuDots({course}:{course:CourseType}) {
     setAnchorEl(null);
   };
 
+  // handle edit
+  const handleEditCourse = (course: CourseType) => {
+    dispatch(setSelectedCourse(course));
+    router.push("/dashboard/courses/editCourse")
+  };
 
-  // handle edit 
-  const handleEditCourse=(course:CourseType)=>{
-    dispatch(setSelectedCourse(course))
-  }
+  // handle change status
+  const handleChangeCourseStatus = async(id: number) => {
+    try {
+      await changeCourseStatus(id).unwrap();
+      showSuccess("Course status changed successfully!");
+    } catch {
+      showError("Course status changed failed!");
+    }
+  };
 
+  
 
   return (
     <div>
@@ -39,7 +56,7 @@ export default function MenuDots({course}:{course:CourseType}) {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ fontSize: "25px", fontWeight: "bold" ,marginBottom:"14px"}}
+        sx={{ fontSize: "25px", fontWeight: "bold", marginBottom: "14px" }}
       >
         ...
       </Button>
@@ -56,23 +73,42 @@ export default function MenuDots({course}:{course:CourseType}) {
             justifyContent: "right",
             gap: "5px",
             padding: "10px 10px 10px 5rem",
-            fontFamily:"unset"
+            fontFamily: "unset",
           },
         }}
       >
-        <MenuItem onClick={()=>handleEditCourse(course)}>
+        <MenuItem onClick={() => handleEditCourse(course)}>
           تعديل <CiEdit />
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={{ color: "#DB340B" }}>
-          حذف <MdOutlineDelete />
+        <MenuItem
+          onClick={()=>handleChangeCourseStatus(course.id)}
+          sx={{
+            color: `${course.active == 0 ? "#43B75D" : "#DB340B"}`,
+          }}
+        >
+          {course.active == 0 ? "تفعيل" : "تعطيل"}
+
+          <MdOutlinePublishedWithChanges />
         </MenuItem>
-        <MenuItem onClick={()=>router.push(`/dashboard/courses/viewCourse/${course.id}`)}>
-            الحضور <FaUsers />
+        <MenuItem
+          onClick={() =>
+            router.push(`/dashboard/courses/viewCourse/${course.id}`)
+          }
+        >
+          الحضور <FaUsers />
         </MenuItem>
-        <MenuItem onClick={()=>router.push(`/dashboard/courses/addDepartment/${course.id}`)}>
-           الاقسام <IoMdAdd />
+        <MenuItem
+          onClick={() =>
+            router.push(`/dashboard/courses/addDepartment/${course.id}`)
+          }
+        >
+          الاقسام <IoMdAdd />
         </MenuItem>
-        <MenuItem onClick={()=>router.push(`/dashboard/courses/enrolled/${course.id}`)}>
+        <MenuItem
+          onClick={() =>
+            router.push(`/dashboard/courses/enrolled/${course.id}`)
+          }
+        >
           الحجوزات
           <IoBookmarksOutline />
         </MenuItem>

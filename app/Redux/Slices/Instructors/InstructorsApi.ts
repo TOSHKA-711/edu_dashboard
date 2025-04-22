@@ -50,6 +50,12 @@ export const instructorsApi = createApi({
         body: data,
       }),
     }),
+    changeInstructorRateStatus: builder.mutation<unknown,{id:number,status:number}>({
+      query: ({id,status}) => ({
+        url: `changeInstructorRatingStatusReview/${id}/${status}`,
+        method: "GET",
+      }),
+    }),
     deleteInstructor: builder.mutation<unknown, { instructorId: number }>({
         query: ({ instructorId }) => ({
           url: `instructors/${instructorId}`,
@@ -66,5 +72,6 @@ export const {
   useSetInstructorMutation,
   useGetInstructorRatesQuery,
   useSetInstructorUpdateMutation,
+  useChangeInstructorRateStatusMutation,
   useDeleteInstructorMutation
 } = instructorsApi;

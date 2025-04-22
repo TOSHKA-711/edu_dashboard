@@ -2,12 +2,34 @@ import React, { useState } from "react";
 import { Rating, Pagination, Avatar } from "@mui/material";
 import { InstructorRateType } from "@/app/Redux/types";
 import Image from "next/image";
+import { useAlert } from "../hooks/useAlert";
+import { useChangeInstructorRateStatusMutation } from "@/app/Redux/Slices/Instructors/InstructorsApi";
+import { ToastContainer } from "react-toastify";
 
 const ITEMS_PER_PAGE = 5;
 
-const TeacherRates = ({reviews}:{reviews:InstructorRateType[]}) => {
-  
+const TeacherRates = ({
+  reviews,
+  instructorId,
+}: {
+  reviews: InstructorRateType[];
+  instructorId: number;
+}) => {
   const [page, setPage] = useState<number>(1);
+  const { showSuccess, showError } = useAlert();
+  const [changeInstructorRateStatus] = useChangeInstructorRateStatusMutation();
+
+  const handleChangeCourseStatus = async (
+    instructorId: number,
+    status: number
+  ) => {
+    try {
+      await changeInstructorRateStatus({ id: instructorId, status }).unwrap();
+      showSuccess("Course status changed successfully!");
+    } catch {
+      showError("Course status changed failed!");
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -20,17 +42,23 @@ const TeacherRates = ({reviews}:{reviews:InstructorRateType[]}) => {
   if (!reviews || reviews.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No reviews found <Image src={"/404 Error-rafiki.svg"} alt="not found" width={250} height={100}/>{" "}
+        No reviews found{" "}
+        <Image
+          src={"/404 Error-rafiki.svg"}
+          alt="not found"
+          width={250}
+          height={100}
+        />{" "}
       </div>
     );
   }
 
   return (
     <div className="flex flex-col items-start gap-5">
-      {paginatedReviews.map((review , index) => (
+      {paginatedReviews.map((review) => (
         <div
           className="rateCard py-3 px-4 bg-white w-[40rem] flex flex-col items-start gap-5 rounded-2xl"
-          key={index}
+          key={review.id}
         >
           <div className="about flex flex-row items-center justify-between w-full">
             <div className="per-details flex flex-row items-center gap-3">
@@ -40,15 +68,37 @@ const TeacherRates = ({reviews}:{reviews:InstructorRateType[]}) => {
                 sx={{ width: "3rem", height: "3rem" }}
               />
               <span className="flex flex-col items-start gap-1">
-                <h2 className="text-lg">{review?.user?.first_name} {review?.user?.last_name}</h2>
+                <h2 className="text-lg">
+                  {review?.user?.first_name} {review?.user?.last_name}
+                </h2>
                 <p className="text-[#3F434C]">طالب</p>
               </span>
             </div>
             <Rating name="read-only" value={3} readOnly />
           </div>
-          <p className="text text-[17px] w-full text-[#3F434C] px-2">
-            {review.review}
-          </p>
+          <div className="flex items-center justify-between text text-[17px] w-full text-[#3F434C] px-2">
+            <p className="whitespace-normal break-words w-4/5 text-base">
+              {" "}
+              {review.review}
+            </p>
+            <button
+              className="text-white  text-md py-1 px-6 rounded-sm self-center mt-6 cursor-pointer max-sm:px-15"
+              style={{
+                backgroundColor: `${
+                  review.is_accept == 0 ? "#ECF8EF" : "#FDECEC"
+                }`,
+                color: `${review.is_accept == 0 ? "#43B75D" : "#DB340B"}`,
+              }}
+              onClick={() => {
+                handleChangeCourseStatus(
+                  instructorId,
+                  review.is_accept == 0 ? 1 : 0
+                );
+              }}
+            >
+              {review.is_accept == 1 ? "رفض" : "قبول"}
+            </button>
+          </div>
         </div>
       ))}
       <Pagination
@@ -58,6 +108,7 @@ const TeacherRates = ({reviews}:{reviews:InstructorRateType[]}) => {
         color="primary"
         sx={{ direction: "ltr" }}
       />
+      <ToastContainer/>
     </div>
   );
 };
