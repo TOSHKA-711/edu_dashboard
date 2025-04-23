@@ -16,7 +16,7 @@ const OverView = () => {
   return (
     <div className="overview w-full flex flex-col gap-5 pb-3">
       <div className="cards w-full flex flex-row items-center justify-start gap-2">
-        <OverViewCard data={data?.totals??{child_users:0,parent_users:0,individual_users:0,enrollments:0}}/>
+        <OverViewCard data={data?.totals??{child_users:0,parent_users:0,individual_users:0,enrollments:0,course:0,category:0,instructor:0}}/>
       </div>
       <div className="charts w-full flex flex-row items-center justify-start gap-5 max-md:flex-col">
         <DashLineChart areaColor="#25CD25" gradientId="greenGradient" dir={true} title=" المستخدمين "  data={data?.user_chart??[{date:"",value:0}]}/>
