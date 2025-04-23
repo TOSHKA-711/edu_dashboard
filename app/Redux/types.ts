@@ -47,6 +47,9 @@ export type DashboardStatsType = {
     parent_users: number;
     individual_users: number;
     enrollments: number;
+    category: number;
+    course: number;
+    instructor: number;
   };
   date_range: string;
 };

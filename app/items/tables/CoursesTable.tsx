@@ -35,7 +35,7 @@ export default function CoursesTable({
     {
       field: "title",
       headerName: "الدورة",
-      width: 220,
+      width: 250,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -62,7 +62,7 @@ export default function CoursesTable({
     {
       field: "instructor",
       headerName: "المعلم",
-      width: 180,
+      width: 150,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -96,7 +96,7 @@ export default function CoursesTable({
             height: "100%",
           }}
         >
-          <LinearProgressBar value={params.row.course.earnings_point} />
+          <LinearProgressBar value={params.row.attendance_percentage} />
           {/* {params.row.progress} */}
         </div>
       ),
@@ -125,7 +125,7 @@ export default function CoursesTable({
     {
       field: "price",
       headerName: "  السعر",
-      width: 110,
+      width: 100,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -145,7 +145,7 @@ export default function CoursesTable({
     {
       field: "status",
       headerName: "الحالة",
-      width: 90,
+      width: 120,
       sortable: true,
       renderCell: (params) => (
         <div

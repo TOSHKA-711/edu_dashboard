@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -24,14 +24,26 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-export default function LinearProgressBar({value}:{value:number}) {
+export default function LinearProgressBar({ value }: { value: number }) {
+  const getLabel = (value: number) => {
+    if (value < 50) return "سئ";
+    if (value < 70) return "جيد";
+    if (value < 85) return " جيد جدا";
+    return "ممتاز";
+  };
   return (
-    <Stack spacing={2} sx={{ flexGrow: 1  , "& .MuiLinearProgress-colorPrimary" : {marginTop:"5px"}}}>
-     <div className="flex items-center justify-between w-full h-3">
-      <p>{value}%</p>
-      <p>سئ</p>
-     </div>
-      <BorderLinearProgress variant="determinate" value={value??0} />
+    <Stack
+      spacing={2}
+      sx={{
+        flexGrow: 1,
+        "& .MuiLinearProgress-colorPrimary": { marginTop: "5px" },
+      }}
+    >
+      <div className="flex items-center justify-between w-full h-3">
+        <p>{value}%</p>
+        <p>{getLabel(value)}</p>
+      </div>
+      <BorderLinearProgress variant="determinate" value={value ?? 0} />
     </Stack>
   );
 }

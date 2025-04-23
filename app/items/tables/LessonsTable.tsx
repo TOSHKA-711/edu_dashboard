@@ -42,7 +42,7 @@ export default function LessonsTable({
             fontSize: "20px",
           }}
         >
-          <Avatar alt="user" src="/user.jpg" />
+          <Avatar alt="user" src={params.row.image} />
           {params.row.full_name}
         </div>
       ),

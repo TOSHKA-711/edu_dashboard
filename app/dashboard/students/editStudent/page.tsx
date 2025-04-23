@@ -34,13 +34,16 @@ const Page = () => {
     phone: selectedUser?.phone_number ?? "null",
     date_of_birth: selectedUser?.date_of_birth ?? "null",
     parent_id: selectedUser?.parent_id ?? "null",
-    mother_id: selectedUser?.mother_identity_id ?? "null",
+    mother_identity_id: selectedUser?.mother_identity_id ?? "null",
+    mother_name: selectedUser?.mother_name ?? "null",
     student_type: selectedUser?.child_type ?? "null",
     neighborhood: selectedUser?.neighborhood ?? "null",
     educational_stage: selectedUser?.educational_stage ?? "null",
     school_name: selectedUser?.school_name ?? "null",
     grade_name: selectedUser?.grade_name ?? "null",
   });
+
+  // console.log(selectedUser);
 
   useEffect(() => {
     setIsRendered(true);
@@ -66,69 +69,78 @@ const Page = () => {
       // formData.append("student_id", `${selectedUser?.id}`);
       if (
         selectedUser.first_name !== payload.first_name &&
-        selectedUser.first_name !== null
+        payload.first_name !== null
       ) {
         formData.append("first_name", payload.first_name);
       }
       if (
         selectedUser.last_name !== payload.last_name &&
-        selectedUser.last_name !== null
+        payload.last_name !== null
       ) {
         formData.append("last_name", payload.last_name);
       }
       if (
         selectedUser.identity_id !== payload.identity_id &&
-        selectedUser.identity_id !== null
+        payload.identity_id !== null
       ) {
         formData.append("identity_id", payload.identity_id);
       }
       if (
         selectedUser.date_of_birth !== payload.date_of_birth &&
-        selectedUser.date_of_birth !== null
+        payload.date_of_birth !== null
       ) {
         formData.append("date_of_birth", payload.date_of_birth);
       }
       if (
         selectedUser.parent_id !== payload.parent_id &&
-        selectedUser.parent_id !== null
+        payload.parent_id !== null
       ) {
         formData.append("parent_id", String(payload.parent_id));
       }
       if (
-        selectedUser.mother_identity_id !== payload.mother_id &&
-        selectedUser.mother_identity_id !== null
+        selectedUser.mother_identity_id !== payload.mother_identity_id &&
+        payload.mother_identity_id !== null
       ) {
-        formData.append("mother_id", String(payload.mother_id));
+        formData.append(
+          "mother_identity_id",
+          String(payload.mother_identity_id)
+        );
       }
       if (
         selectedUser.child_type !== payload.student_type &&
-        selectedUser.child_type !== null
+        payload.student_type !== null
       ) {
         formData.append("student_type", payload.student_type);
       }
       if (
         selectedUser.neighborhood !== payload.neighborhood &&
-        selectedUser.neighborhood !== null
+        payload.neighborhood !== null
       ) {
         formData.append("neighborhood", payload.neighborhood);
       }
       if (
         selectedUser.educational_stage !== payload.educational_stage &&
-        selectedUser.educational_stage !== null
+        payload.educational_stage !== null
       ) {
         formData.append("educational_stage", payload.educational_stage);
       }
       if (
         selectedUser.school_name !== payload.school_name &&
-        selectedUser.school_name !== null
+        payload.school_name !== null
       ) {
         formData.append("school_name", payload.school_name);
       }
       if (
         selectedUser.grade_name !== payload.grade_name &&
-        selectedUser.grade_name !== null
+        payload.grade_name !== null
       ) {
         formData.append("grade_name", payload.grade_name);
+      }
+      if (
+        selectedUser.mother_name !== payload.mother_name &&
+        payload.mother_name !== null
+      ) {
+        formData.append("mother_name", payload.mother_name);
       }
 
       // إرسال البيانات
@@ -138,17 +150,17 @@ const Page = () => {
           data: formData,
         }).unwrap();
         showSuccess("Data updated successfully!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
-        for (const [key, value] of formData.entries()) {
-          console.log(`${key}: ${value}`);
-        }
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 5000);
+        // for (const [key, value] of formData.entries()) {
+        //   console.log(`${key}: ${value}`);
+        // }
       } catch {
         showError("Data updated failed!");
-        for (const [key, value] of formData.entries()) {
-          console.log(`${key}: ${value}`);
-        }
+        // for (const [key, value] of formData.entries()) {
+        //   console.log(`${key}: ${value}`);
+        // }
       }
     }
   };
@@ -245,8 +257,15 @@ const Page = () => {
             <InputField
               label="هويه الام *"
               type="text"
-              name="mother_id"
-              value={payload.mother_id}
+              name="mother_identity_id"
+              value={payload.mother_identity_id}
+              onChange={handleChange}
+            />
+            <InputField
+              label="اسم الام *"
+              type="text"
+              name="mother_name"
+              value={payload.mother_name}
               onChange={handleChange}
             />
           </div>
