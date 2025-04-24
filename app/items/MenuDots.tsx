@@ -6,6 +6,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
+import { MdStarRate } from "react-icons/md";
 import { IoBookmarksOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { CourseType } from "../Redux/types";
@@ -19,9 +20,8 @@ export default function MenuDots({ course }: { course: CourseType }) {
   const open = Boolean(anchorEl);
   const router = useRouter();
   const dispatch = useDispatch();
-  const {showSuccess,showError} = useAlert();
+  const { showSuccess, showError } = useAlert();
   const [changeCourseStatus] = useChangeCourseStatusMutation();
-
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,11 +33,11 @@ export default function MenuDots({ course }: { course: CourseType }) {
   // handle edit
   const handleEditCourse = (course: CourseType) => {
     dispatch(setSelectedCourse(course));
-    router.push("/dashboard/courses/editCourse")
+    router.push("/dashboard/courses/editCourse");
   };
 
   // handle change status
-  const handleChangeCourseStatus = async(id: number) => {
+  const handleChangeCourseStatus = async (id: number) => {
     try {
       await changeCourseStatus(id).unwrap();
       showSuccess("Course status changed successfully!");
@@ -45,8 +45,6 @@ export default function MenuDots({ course }: { course: CourseType }) {
       showError("Course status changed failed!");
     }
   };
-
-  
 
   return (
     <div>
@@ -81,7 +79,7 @@ export default function MenuDots({ course }: { course: CourseType }) {
           تعديل <CiEdit />
         </MenuItem>
         <MenuItem
-          onClick={()=>handleChangeCourseStatus(course.id)}
+          onClick={() => handleChangeCourseStatus(course.id)}
           sx={{
             color: `${course.active == 0 ? "#43B75D" : "#DB340B"}`,
           }}
@@ -111,6 +109,14 @@ export default function MenuDots({ course }: { course: CourseType }) {
         >
           الحجوزات
           <IoBookmarksOutline />
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
+            router.push(`/dashboard/courses/courseRating/${course.id}`)
+          }
+        >
+          التقييمات
+          <MdStarRate />
         </MenuItem>
       </Menu>
     </div>

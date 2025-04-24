@@ -3,9 +3,11 @@ import { setAllCourses } from "./courseSlice";
 import {
   AllCategoriesResponseType,
   AllCourseDepartmentsResponseType,
+  AllCourseRatesResponseType,
   AllCoursesPaymentsResponseType,
   AllEnrolledUsersResponseType,
   AllStudentCoursesAttendanceResponseType,
+  CourseType,
   GetAllCoursesResponseType,
 } from "../../types";
 
@@ -34,6 +36,19 @@ export const coursesApi = createApi({
           dispatch(setAllCourses(response.data));
         } catch (error) {
           console.error("Fetching courses failed", error);
+        }
+      },
+    }),
+    getCourse: builder.query<
+      { status: boolean; message: string; data: CourseType },
+      number
+    >({
+      query: (courseId) => `courses/${courseId}`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching course failed", error);
         }
       },
     }),
@@ -87,16 +102,23 @@ export const coursesApi = createApi({
         }
       },
     }),
-    getCoursesPayments: builder.query<
-      AllCoursesPaymentsResponseType,
-      void
-    >({
+    getCoursesPayments: builder.query<AllCoursesPaymentsResponseType, void>({
       query: () => `allPayments`,
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
         } catch (error) {
           console.error("Fetching payments failed", error);
+        }
+      },
+    }),
+    getCourseRates: builder.query<AllCourseRatesResponseType, number>({
+      query: (courseId) => `courseRating/${courseId}`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching Rates failed", error);
         }
       },
     }),
@@ -148,13 +170,25 @@ export const coursesApi = createApi({
         },
       }),
     }),
-    changeCourseStatus: builder.mutation<unknown,number>({
+    changeCourseStatus: builder.mutation<unknown, number>({
       query: (id) => ({
         url: `changeCourseStatus/${id}`,
         method: "GET",
       }),
     }),
-    updateCourse: builder.mutation<unknown, { id: number|string; data: FormData }>({
+    changeCourseRateStatus: builder.mutation<
+      unknown,
+      { id: number; status: number }
+    >({
+      query: ({ id, status }) => ({
+        url: `changeCourseRatingStatusReview/${id}/${status}`,
+        method: "GET",
+      }),
+    }),
+    updateCourse: builder.mutation<
+      unknown,
+      { id: number | string; data: FormData }
+    >({
       query: ({ id, data }) => ({
         url: `courses/${id}`,
         method: "POST",
@@ -172,17 +206,20 @@ export const coursesApi = createApi({
 
 export const {
   useGetAllCoursesQuery,
+  useGetCourseQuery,
   useGetCourseDepartmentsQuery,
   useGetAllCategoriesQuery,
   useGetStudentsInSessionQuery,
   useGetEnrolledUsersQuery,
   useGetCoursesPaymentsQuery,
+  useGetCourseRatesQuery,
   useSetDepartmentMutation,
   useSetCourseMutation,
   useSetSessionMutation,
   useSetUserAttendanceMutation,
   useSetUserPaymentMutation,
   useChangeCourseStatusMutation,
+  useChangeCourseRateStatusMutation,
   useUpdateCourseMutation,
   useDeleteDepartmentMutation,
 } = coursesApi;

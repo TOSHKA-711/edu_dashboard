@@ -130,10 +130,6 @@ const Page = () => {
     }
   };
 
-  // if loading or not found
-  if (departments?.data.length == 0 || !departments) {
-    return <div className="text-2xl">No departments found</div>;
-  }
   return (
     <>
       <ToastContainer />

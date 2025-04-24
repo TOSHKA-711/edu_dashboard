@@ -439,6 +439,22 @@ export type AddCoursePayloadType={
     image: File|null; 
 }
 
+export type CourseRateType ={
+  id:number;
+  rating: number;
+  comment: string;
+  is_accept: number;
+  user: {
+    name: string;
+    image: string;
+};
+};
+export type AllCourseRatesResponseType ={
+  status: boolean;
+  message: string;
+  data: CourseRateType[];
+}
+
 //=================== categories =======================
 
 export type CategoryType = {
