@@ -75,10 +75,10 @@ const Page = () => {
     }
   };
 
-  if (isLoading || !category?.data) {
+  if (isLoading ) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        ... no category found yet{" "}
+        ... loading {" "}
         <Image
           src={"/404 Error-rafiki.svg"}
           alt="not found"
