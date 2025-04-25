@@ -2,14 +2,18 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { Box} from "@mui/material";
 import Image from "next/image";
 import MenuDots from "../MenuDots";
-import { useGetAllCoursesQuery } from "@/app/Redux/Slices/Courses/courseApi";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
+import { useChangeCourseStatusMutation, useGetAllCoursesQuery } from "@/app/Redux/Slices/Courses/courseApi";
+import {  Box, IconButton, Tooltip } from "@mui/material";
+import { useAlert } from "../hooks/useAlert";
+
 
 export default function AllCoursesTable() {
-
-  const { data, error, isLoading } = useGetAllCoursesQuery();
+  const {showSuccess,showError}=useAlert();
+  const { data, error, isLoading ,refetch} = useGetAllCoursesQuery();
+  const [changeCourseStatus] = useChangeCourseStatusMutation();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching students</p>;
   const courses = data?.data;
@@ -30,10 +34,11 @@ export default function AllCoursesTable() {
   }
 
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "title",
       headerName: "الدورة",
-      width: 220,
+      width: 230,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -58,15 +63,15 @@ export default function AllCoursesTable() {
       ),
     },
 
-    { field: "max_people", headerName: "الطلاب", width: 90 },
-    { field: "type", headerName: "النوع", width: 110 },
-    { field: "session_count", headerName: " عدد الحصص", width: 100 },
+    { field: "max_people", headerName: "الطلاب", width: 80 },
+    { field: "type", headerName: "النوع", width: 70 },
+    { field: "session_count", headerName: " عدد الحصص", width: 90 },
     { field: "start_date", headerName: " بدايه الدورة", width: 120 },
     { field: "end_date", headerName: "  نهايه الدورة", width: 120 },
     {
       field: "status",
       headerName: "الحالة",
-      width: 110,
+      width: 120,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -89,7 +94,7 @@ export default function AllCoursesTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 100,
+      width: 90,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -102,12 +107,32 @@ export default function AllCoursesTable() {
             height: "100%",
           }}
         >
+            <Tooltip title="الحالة">
+            <IconButton
+              onClick={() => handleChangeCourseStatus(params.row.id)}
+              color="success"
+              size="small"
+              sx={{ cursor: "pointer", gap: "3px" }}
+            >
+              <MdOutlinePublishedWithChanges />
+              {/* {params.row.active == 0 ? "تفعيل" : "تعطيل"} */}
+            </IconButton>
+          </Tooltip>
           <MenuDots course={params.row} />
         </div>
       ),
     },
   ];
 
+  const handleChangeCourseStatus = async (id: number) => {
+    try {
+      await changeCourseStatus(id).unwrap();
+      showSuccess("Course status changed successfully!");
+      await refetch()
+    } catch {
+      showError("Course status changed failed!");
+    }
+  };
 
   return (
     <Paper
@@ -141,7 +166,16 @@ export default function AllCoursesTable() {
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: 'Tajawal',
+                fontWeight:"bold"
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: 'Tajawal',
+                fontWeight:"500"
+              },
             }}
           />
         </div>

@@ -3,31 +3,36 @@ import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useGetAllStudentsQuery } from "@/app/Redux/Slices/Students/studentsApi";
+import { useChangeUserStatusMutation, useDeleteUserMutation, useGetAllStudentsQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { useDispatch } from "react-redux";
 import { setSelectedUser } from "@/app/Redux/Slices/Students/studentsSlice";
 import { StudentType } from "@/app/Redux/types";
 import Image from "next/image";
+import { useAlert } from "../hooks/useAlert";
+import { ToastContainer } from "react-toastify";
 
 export default function UsersTable() {
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // start fetch users
-
-  const { data, error, isLoading } = useGetAllStudentsQuery();
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching students</p>;
+  const {showSuccess,showError}=useAlert();
+  const { data, error, isLoading ,refetch} = useGetAllStudentsQuery();
+  const [changeUserStatus] = useChangeUserStatusMutation();
+  const [deleteUser] = useDeleteUserMutation();
   const students = data?.data;
 
-  // end fetch users
+  
 
-  if (!students || students.length === 0) {
+
+  
+  if (error) return <p>Error fetching users</p>;
+  // end fetch users
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-        No students found{" "}
+       ... Loading  {" "}
         <Image
           src={"/404 Error-rafiki.svg"}
           alt="not found"
@@ -38,13 +43,13 @@ export default function UsersTable() {
     );
   }
 
-  const rows = students.map((student: StudentType) => ({
+  const rows = students?.map((student: StudentType) => ({
     full_name: `${student.first_name} ${student.last_name}`,
     ...student,
   }));
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "full_name",
       headerName: "الاسم",
@@ -100,7 +105,7 @@ export default function UsersTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 120,
+      width: 150,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -126,6 +131,17 @@ export default function UsersTable() {
           </Tooltip>
 
           {/* تعديل */}
+          <Tooltip title="الحالة">
+            <IconButton
+              onClick={() => handleChangeCourseStatus(params.row.id)}
+              color="success"
+              size="small"
+              sx={{ cursor: "pointer", gap: "3px" }}
+            >
+              <MdOutlinePublishedWithChanges />
+              {/* {params.row.active == 0 ? "تفعيل" : "تعطيل"} */}
+            </IconButton>
+          </Tooltip>
           <Tooltip title="تعديل">
             <IconButton
               onClick={() => handleEdit(params.row)}
@@ -158,9 +174,15 @@ export default function UsersTable() {
     dispatch(setSelectedUser(user));
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
+      try {
+        await deleteUser(id).unwrap();
+        showSuccess("user deleted successfully!");
+        await refetch()
+      } catch {
+        showError("user deleted failed!");
+      }
     }
   };
 
@@ -169,7 +191,21 @@ export default function UsersTable() {
     dispatch(setSelectedUser(user));
   };
 
+
+
+  const handleChangeCourseStatus = async (id: number) => {
+    try {
+      await changeUserStatus(id).unwrap();
+      showSuccess("User status changed successfully!");
+      await refetch()
+    } catch {
+      showError("User status changed failed!");
+    }
+  };
+
   return (
+    <>
+
     <Paper
       sx={{
         height: 600,
@@ -202,11 +238,22 @@ export default function UsersTable() {
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: "Tajawal",
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: "Tajawal",
+                fontWeight: "500",
+              },
             }}
           />
         </div>
       </Box>
     </Paper>
+    <ToastContainer/>
+    </>
   );
 }

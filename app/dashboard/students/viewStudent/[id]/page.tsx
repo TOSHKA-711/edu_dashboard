@@ -1,6 +1,5 @@
 "use client";
 import CoursesTable from "@/app/items/tables/CoursesTable";
-import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { RootState } from "@/app/Redux/Store";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
@@ -15,27 +14,26 @@ const ViewStudent = () => {
   const studentId = (params.id as string) ?? "";
 
   const [isRendered, setIsRendered] = useState(false);
-  const { data: studentCourses } = useGetStudentCoursesQuery(studentId, {
-    skip: !studentId,
-  });
-  const selectedUser = useSelector((state: RootState) => state.students.selectedUser);
-  
+
+  const selectedUser = useSelector(
+    (state: RootState) => state.students.selectedUser
+  );
+
   useEffect(() => {
     setIsRendered(true);
   }, []);
-  
+
   if (!studentId) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
-  
+
   if (!isRendered) {
     return null;
   }
-  
+
   if (!selectedUser) {
     return <div>Loading or no student found.</div>;
   }
-
 
   return (
     <div className="view-student flex flex-col items-start gap-4">
@@ -86,9 +84,7 @@ const ViewStudent = () => {
       </div>
       <div className="w-full flex flex-col items-start gap-4 py-6">
         <h1 className="text-2xl font-semibold">الدورات المسجلة</h1>
-        <CoursesTable
-          courses={studentCourses ?? { status: false, message: "", data: [] }}
-        />
+        <CoursesTable userId={parseInt(studentId)} />
       </div>
     </div>
   );

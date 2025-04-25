@@ -1,38 +1,33 @@
 "use client";
 import CalenderDialog from "@/app/items/Dialogs/CalenderDialog";
 import { useAlert } from "@/app/items/hooks/useAlert";
-import { useImageUpload } from "@/app/items/hooks/useImageUploader";
 import { InputField } from "@/app/items/inputs&btns/InputField";
-import { useSetInstructorMutation } from "@/app/Redux/Slices/Instructors/InstructorsApi";
-import { FormControl } from "@mui/material";
-import { Dayjs } from "dayjs";
-import Image from "next/image";
+import { FormControl, MenuItem } from "@mui/material";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
-import { RiUploadLine } from "react-icons/ri";
+
 // alert
 import { ToastContainer } from "react-toastify";
+import { Dayjs } from "dayjs";
+import { FaRegUser } from "react-icons/fa";
+import { useSetParentMutation } from "@/app/Redux/Slices/Parents/parentsApi";
 
 const Page = () => {
   const [isRendered, setIsRendered] = useState(false);
   const { showSuccess, showError } = useAlert();
   const router = useRouter();
-  const [image, setImage] = useState<File | null>(null);
-  const { imagePreviewUrl, handleImageChange, resetImage } =
-    useImageUpload(setImage);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [setInstructor] = useSetInstructorMutation();
+  const [setParent] = useSetParentMutation();
+
   const [date_of_birth, setDate_of_birth] = useState<Dayjs | null>(null);
   const [payload, setPayload] = useState({
     first_name: "",
     last_name: "",
-    bio: "",
-    info: "",
-    phone_number: "",
     email: "",
-    password: "",
-    password_confirmation: "",
+    phone_number: "",
+    identity_id: "",
+    parent_type: "",
   });
 
   useEffect(() => {
@@ -42,7 +37,13 @@ const Page = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPayload((prev) => ({ ...prev, [name]: value }));
-    // console.log({ ...payload, [name]: value });
+  };
+  const handleSelectChange = (e: SelectChangeEvent<number | string>) => {
+    const { name, value } = e.target;
+    setPayload((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   //  handle submit
@@ -50,15 +51,26 @@ const Page = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    if (image) {
-      formData.append("image", image as Blob);
-    }
-    // formData.append("student_id", `${selectedUser?.id}`);
     if (payload.first_name !== null) {
       formData.append("first_name", payload.first_name);
     }
     if (payload.last_name !== null) {
       formData.append("last_name", payload.last_name);
+    }
+    if (payload.identity_id !== null) {
+      formData.append("identity_id", payload.identity_id);
+    }
+    if (payload.parent_type !== null) {
+      formData.append("parent_type", payload.parent_type);
+    }
+    if (payload.email !== null) {
+      formData.append("email", payload.email);
+    }
+    if (payload.phone_number !== null) {
+      formData.append("phone_number", payload.phone_number);
+    }
+    if (payload.phone_number !== null) {
+      formData.append("role", "parent");
     }
     if (date_of_birth !== null) {
       formData.append(
@@ -66,34 +78,19 @@ const Page = () => {
         String(date_of_birth.format("YYYY-MM-DD"))
       );
     }
-    if (payload.bio !== null) {
-      formData.append("bio", payload.bio);
-    }
-    if (payload.info !== null) {
-      formData.append("info", payload.info);
-    }
-    if (payload.email !== null) {
-      formData.append("email", payload.email);
-    }
-    if (payload.password !== null) {
-      formData.append("password", payload.password);
-    }
-    if (payload.password_confirmation !== null) {
-      formData.append("password_confirmation", payload.password_confirmation);
-    }
-    if (payload.phone_number !== null) {
-      formData.append("phone_number", payload.phone_number);
-    }
 
     // إرسال البيانات
     try {
-      await setInstructor(formData).unwrap();
+      await setParent(formData).unwrap();
       showSuccess("User added successfully!");
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
     } catch {
       showError("User added failed!");
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
     }
   };
 
@@ -105,52 +102,12 @@ const Page = () => {
     <>
       <ToastContainer />
       <div className="edit-student w-full">
-        {/* ----------img upload-------  */}
-        <div className="img-upload flex items-center justify-start gap-4">
-          {imagePreviewUrl && (
-            <Image src={imagePreviewUrl} alt="img" width={60} height={70} />
-          )}
-
-          <div className="inputs flex flex-col items-center gap-3">
-            <p className="text-[#5D5959] text-md">
-              نحن ندعم فقط ملفات JPG، JPEG، أو PNG.
-            </p>
-
-            <div className="flex items-center justify-center gap-8">
-              <span
-                className="flex items-center justify-center gap-2 text-[#2664B1] text-[17px] font-bold cursor-pointer"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <RiUploadLine />
-                رفع الصورة
-              </span>
-
-              <button
-                type="button"
-                className="flex items-center justify-center text-[#DB340B] text-[16px] font-bold border-2 pt-1 pb-2 px-7 rounded-full cursor-pointer"
-                onClick={resetImage}
-              >
-                مسح
-              </button>
-            </div>
-
-            {/* Hidden file input */}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              ref={fileInputRef}
-              style={{ display: "none" }}
-            />
-          </div>
-        </div>
-
         {/* ------------forms------------  */}
         <div className="personal-details flex flex-col items-start gap-8 pt-10">
-          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl rounded-md">
+          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl max-sm:text-[16px] rounded-md">
             معلومات شخصية
           </div>
-          <div className="inputs w-full grid grid-cols-3 max-md:grid-cols-1 gap-4">
+          <div className="inputs w-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
             <InputField
               label="الاسم الشخصي *"
               type="text"
@@ -166,17 +123,10 @@ const Page = () => {
               onChange={handleChange}
             />
             <InputField
-              label="نبذه تعريفيه *"
+              label="الهوية *"
               type="text"
-              name="bio"
-              value={payload.bio}
-              onChange={handleChange}
-            />
-            <InputField
-              label=" وصف *"
-              type="text"
-              name="info"
-              value={payload.info}
+              name="identity_id"
+              value={payload.identity_id}
               onChange={handleChange}
             />
             <InputField
@@ -193,20 +143,44 @@ const Page = () => {
               value={payload.phone_number}
               onChange={handleChange}
             />
-            <InputField
-              label="كلمة المرور *"
-              type="text"
-              name="password"
-              value={payload.password}
-              onChange={handleChange}
-            />
-            <InputField
-              label="تأكيد كلمة المرور *"
-              type="text"
-              name="password_confirmation"
-              value={payload.password_confirmation}
-              onChange={handleChange}
-            />
+            <FormControl
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                flexDirection: "row",
+                position: "relative",
+
+                "& .MuiInputBase-root": {
+                  borderRadius: "16px",
+                  fontFamily: "unset",
+                  width: "100%",
+                  backgroundColor: "white",
+                },
+              }}
+            >
+              <p className="absolute -top-3 right-12 text-lg text-[#2664B1]  ">
+                {" "}
+                النوع *
+              </p>
+              <FaRegUser className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
+              <Select
+                value={payload.parent_type}
+                name="parent_type"
+                onChange={handleSelectChange}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem value={"father"} sx={{ direction: "rtl" }}>
+                  أب
+                </MenuItem>
+
+                <MenuItem value={"mother"} sx={{ direction: "rtl" }}>
+                  أم
+                </MenuItem>
+              </Select>
+            </FormControl>
             <FormControl
               sx={{
                 width: "100%",
@@ -243,8 +217,8 @@ const Page = () => {
             </FormControl>
           </div>
         </div>
-
         {/* --------------- */}
+
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <button
             className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
@@ -254,7 +228,7 @@ const Page = () => {
           </button>
           <button
             className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
-            onClick={() => router.push("/dashboard/students/allStudents")}
+            onClick={() => router.push("/dashboard/parents")}
           >
             الغاء
           </button>

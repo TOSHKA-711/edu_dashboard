@@ -44,6 +44,7 @@ export default function InstructorsCoursesTable({
 
   // const router = useRouter();
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "title",
       headerName: "الدورة",
@@ -221,10 +222,10 @@ export default function InstructorsCoursesTable({
               onClick={() => handleChangeCourseStatus(params.row.id)}
               color="success"
               size="small"
-              sx={{ cursor: "pointer" , gap:"3px"}}
+              sx={{ cursor: "pointer", gap: "3px" }}
             >
               <MdOutlinePublishedWithChanges />
-              {params.row.active == 0 ? "تفعيل" : "تعطيل"}
+              {/* {params.row.active == 0 ? "تفعيل" : "تعطيل"} */}
             </IconButton>
           </Tooltip>
 
@@ -292,7 +293,16 @@ export default function InstructorsCoursesTable({
                   display: "flex",
                   justifyContent: "center",
                 },
-                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"bold"
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"500"
+                },
               }}
             />
           </div>

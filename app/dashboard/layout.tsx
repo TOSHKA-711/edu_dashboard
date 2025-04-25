@@ -20,7 +20,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { Header, Content, Sider } = Layout;
   const dispatch = useDispatch();
   const router = useRouter();
-  const path = usePathname(); // استخدمنا router.pathname بدلاً من window.location.pathname
+  const path = usePathname(); 
 
   // handle logout
   const handleLogout = () => {

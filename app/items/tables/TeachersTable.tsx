@@ -23,7 +23,7 @@ export default function TeachersTable() {
 
   // start fetch users
 
-  const { data, error, isLoading } = useGetAllInstructorsQuery();
+  const { data, error, isLoading ,refetch} = useGetAllInstructorsQuery();
   const [deleteInstructor] = useDeleteInstructorMutation();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching students</p>;
@@ -50,7 +50,7 @@ export default function TeachersTable() {
   }));
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "full_name",
       headerName: "الاسم",
@@ -206,6 +206,7 @@ export default function TeachersTable() {
     try {
       await deleteInstructor({ instructorId }).unwrap();
       showSuccess("تم حذف المعلم بنجاح!");
+      await refetch()
     } catch {
       showError("فشل في حذف المعلم!");
     }
@@ -226,6 +227,7 @@ export default function TeachersTable() {
             background: "white",
             padding: "12px 0",
           },
+       
         }}
       >
         <Box sx={{ overflowX: "auto" }}>
@@ -245,7 +247,16 @@ export default function TeachersTable() {
                   display: "flex",
                   justifyContent: "center",
                 },
-                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"bold"
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"500"
+                },
               }}
             />
           </div>

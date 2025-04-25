@@ -6,7 +6,7 @@ import { FaPaintbrush } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { FaChartSimple } from "react-icons/fa6";
-import CalenderDialog from "../CalenderDialog";
+import CalenderDialog from "../Dialogs/CalenderDialog";
 import { CiCalendarDate } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 import { RiNumbersLine } from "react-icons/ri";

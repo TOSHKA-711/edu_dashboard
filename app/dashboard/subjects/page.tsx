@@ -1,6 +1,7 @@
 "use client";
 import CategoryCard from "@/app/items/cards/CategoryCard";
 import { useGetAllCategoriesQuery } from "@/app/Redux/Slices/Categories/categoryApi";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
@@ -11,10 +12,22 @@ const iconColors = ["#D9CC83", "#917FF0", "#75A896", "#B270B2"];
 
 const Page = () => {
   const router = useRouter();
-  const { data: categories } =
+  const { data: categories ,isLoading} =
     useGetAllCategoriesQuery();
 
-
+    if (isLoading) {
+      return (
+        <div className="flex flex-col items-center gap-2 text-lg">
+          Loading{" "}
+          <Image
+            src={"/404 Error-rafiki.svg"}
+            alt="not found"
+            width={250}
+            height={100}
+          />{" "}
+        </div>
+      );
+    }
 
 
   return (

@@ -272,6 +272,9 @@ export type InstructorType = {
   date_of_birth: string;
   bio: string;
   info: string;
+  email: string;
+  password: string;
+  phone_number:string;
   deleted_at: string | null;
   created_at: string;
   updated_at: string;

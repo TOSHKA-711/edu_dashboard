@@ -1,12 +1,16 @@
 "use client";
+import CalenderDialog from "@/app/items/Dialogs/CalenderDialog";
 import { useAlert } from "@/app/items/hooks/useAlert";
 import { useImageUpload } from "@/app/items/hooks/useImageUploader";
 import { InputField } from "@/app/items/inputs&btns/InputField";
 import { useSetStudentUpdateMutation } from "@/app/Redux/Slices/Students/studentsApi";
 import { RootState } from "@/app/Redux/Store";
+import { FormControl } from "@mui/material";
+import { Dayjs } from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
+import { CiCalendarDate } from "react-icons/ci";
 import { RiUploadLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 // alert
@@ -23,6 +27,7 @@ const Page = () => {
   const selectedUser = useSelector(
     (state: RootState) => state.students.selectedUser
   );
+  const [date_of_birth, setDate_of_birth] = useState<Dayjs | null>(null);
   const [setStudentUpdate] = useSetStudentUpdateMutation();
 
   const [payload, setPayload] = useState({
@@ -32,7 +37,6 @@ const Page = () => {
     identity_id: selectedUser?.identity_id ?? "null",
     email: selectedUser?.email ?? "null",
     phone: selectedUser?.phone_number ?? "null",
-    date_of_birth: selectedUser?.date_of_birth ?? "null",
     parent_id: selectedUser?.parent_id ?? "null",
     mother_identity_id: selectedUser?.mother_identity_id ?? "null",
     mother_name: selectedUser?.mother_name ?? "null",
@@ -86,10 +90,13 @@ const Page = () => {
         formData.append("identity_id", payload.identity_id);
       }
       if (
-        selectedUser.date_of_birth !== payload.date_of_birth &&
-        payload.date_of_birth !== null
+        selectedUser.date_of_birth !== date_of_birth?.format("YYYY-MM-DD") &&
+        date_of_birth !== null
       ) {
-        formData.append("date_of_birth", payload.date_of_birth);
+        formData.append(
+          "date_of_birth",
+          String(date_of_birth.format("YYYY-MM-DD"))
+        );
       }
       if (
         selectedUser.parent_id !== payload.parent_id &&
@@ -241,13 +248,6 @@ const Page = () => {
               onChange={handleChange}
             />
             <InputField
-              label="تاريخ الميلاد *"
-              type="text"
-              name="date_of_birth"
-              value={payload.date_of_birth}
-              onChange={handleChange}
-            />
-            <InputField
               label="هويه الاب *"
               type="text"
               name="parent_id"
@@ -268,6 +268,40 @@ const Page = () => {
               value={payload.mother_name}
               onChange={handleChange}
             />
+            <FormControl
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                flexDirection: "row",
+                position: "relative",
+                marginTop: "1rem",
+
+                "& .MuiInputBase-root": {
+                  borderRadius: "16px",
+                  fontFamily: "unset",
+                  width: "100%",
+                  backgroundColor: "white",
+                },
+              }}
+            >
+              <p className="absolute -top-7 right-12 text-lg text-[#2664B1]  ">
+                {" "}
+                تاريخ الميلاد
+              </p>
+              <CiCalendarDate className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
+              <CalenderDialog setStartDate={setDate_of_birth} />
+              <span
+                style={{
+                  marginRight: "8px",
+                  color: "#2664B1",
+                  fontWeight: "bold",
+                }}
+              >
+                {date_of_birth ? date_of_birth.format("YYYY-MM-DD") : ""}
+              </span>
+            </FormControl>
           </div>
         </div>
         {/* --------------- */}

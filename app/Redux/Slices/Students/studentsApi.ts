@@ -33,11 +33,40 @@ export const studentsApi = createApi({
     getStudentCourses: builder.query<AllStudentCoursesType, string | number>({
       query: (studentId) => `course/get/courses?child_id=${studentId}`,
     }),
-    setStudentUpdate: builder.mutation<unknown, { id: number; data: FormData }>({
-      query: ({ id, data }) => ({
-        url: `users/updateUserInfo/${id}`,
-        method: "POST",
-        body: data,
+    getStudentImages: builder.query<
+      { status: boolean; message: string; data: { data: string[] } },
+      void
+    >({
+      query: () => `/image`,
+    }),
+    setStudent: builder.mutation<unknown, { parentId: number; data: FormData }>(
+      {
+        query: ({ parentId, data }) => ({
+          url: `/users/addChild/${parentId}`,
+          method: "POST",
+          body: data,
+        }),
+      }
+    ),
+    setStudentUpdate: builder.mutation<unknown, { id: number; data: FormData }>(
+      {
+        query: ({ id, data }) => ({
+          url: `users/updateUserInfo/${id}`,
+          method: "POST",
+          body: data,
+        }),
+      }
+    ),
+    changeUserStatus: builder.mutation<unknown, number>({
+      query: (userId) => ({
+        url: `/users/changeStatusUser/${userId}`,
+        method: "GET",
+      }),
+    }),
+    deleteUser: builder.mutation<unknown, number>({
+      query: (userId) => ({
+        url: `users/deleteUser/${userId}`,
+        method: "GET",
       }),
     }),
   }),
@@ -46,5 +75,9 @@ export const studentsApi = createApi({
 export const {
   useGetAllStudentsQuery,
   useGetStudentCoursesQuery,
+  useGetStudentImagesQuery,
   useSetStudentUpdateMutation,
+  useSetStudentMutation,
+  useChangeUserStatusMutation,
+  useDeleteUserMutation,
 } = studentsApi;

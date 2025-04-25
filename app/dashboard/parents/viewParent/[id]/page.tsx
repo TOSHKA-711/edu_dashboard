@@ -1,7 +1,6 @@
 "use client";
 import CoursesTable from "@/app/items/tables/CoursesTable";
 import { useGetParentChildrenQuery } from "@/app/Redux/Slices/Parents/parentsApi";
-import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { RootState } from "@/app/Redux/Store";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
@@ -15,12 +14,6 @@ const ViewParent = () => {
   const params = useParams();
   const [parentId, setParentId] = useState(parseInt(params.id as string) ?? 0);
   const [isRendered, setIsRendered] = useState(false);
-  
-  const { data: courses, refetch } = useGetStudentCoursesQuery(parentId, {
-    skip: !parentId, 
-  });
-  
-
   const { data: parentChildren } = useGetParentChildrenQuery(parentId);
   
   const selectedUser = useSelector(
@@ -44,7 +37,6 @@ const ViewParent = () => {
   const handleSwitchView = async (name: string , id : number ) => {
     setIsViewCourses(name);
     setParentId(id);  
-    await refetch(); 
   };
 
   return (
@@ -129,7 +121,7 @@ const ViewParent = () => {
           </div>
         </div>
         <CoursesTable
-          courses={courses ?? { status: false, message: "", data: [] }}
+          userId={parentId}
         />
       </div>
     </div>

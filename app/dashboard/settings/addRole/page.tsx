@@ -64,7 +64,7 @@ const Page = () => {
           style={{ boxShadow: "0px 3.48px 3.48px 0px #00000040" }}
         >
           <span className="flex flex-col items-start gap-1">
-            <h2 className="text-[#0E0E0E] font-semibold"> اعطاء اذن</h2>
+            <h2 className="text-[#0E0E0E] font-semibold text-lg"> اعطاء اذن</h2>
             <p className="text-[13px]">قم بادخال بيانات المستخدم ... </p>
           </span>
           <div className="inputs w-full grid grid-cols-2 gap-3 max-md:grid-cols-1">

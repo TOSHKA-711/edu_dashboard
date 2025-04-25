@@ -1,12 +1,16 @@
 "use client";
+import CalenderDialog from "@/app/items/Dialogs/CalenderDialog";
 import { useAlert } from "@/app/items/hooks/useAlert";
 import { useImageUpload } from "@/app/items/hooks/useImageUploader";
 import { InputField } from "@/app/items/inputs&btns/InputField";
 import { useSetInstructorUpdateMutation } from "@/app/Redux/Slices/Instructors/InstructorsApi";
 import { RootState } from "@/app/Redux/Store";
+import { FormControl } from "@mui/material";
+import { Dayjs } from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
+import { CiCalendarDate } from "react-icons/ci";
 import { RiUploadLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 // alert
@@ -23,15 +27,18 @@ const Page = () => {
   const selectedUser = useSelector(
     (state: RootState) => state.Instructors.selectedUser
   );
+  const [date_of_birth, setDate_of_birth] = useState<Dayjs | null>(null);
   const [setInstructorUpdate] = useSetInstructorUpdateMutation();
 
   const [payload, setPayload] = useState({
     image: selectedUser?.image,
     first_name: selectedUser?.first_name ?? "null",
     last_name: selectedUser?.last_name ?? "null",
-    date_of_birth: selectedUser?.date_of_birth ?? "null",
     bio: selectedUser?.bio ?? "null",
     info: selectedUser?.info ?? "null",
+    phone_number: selectedUser?.phone_number ?? "",
+    email: selectedUser?.email ?? "",
+    password: "",
   });
 
   useEffect(() => {
@@ -68,12 +75,37 @@ const Page = () => {
       ) {
         formData.append("last_name", payload.last_name);
       }
+      if (selectedUser.bio !== payload.bio && selectedUser.bio !== null) {
+        formData.append("bio", payload.bio);
+      }
+      if (selectedUser.info !== payload.info && selectedUser.info !== null) {
+        formData.append("info", payload.info);
+      }
+      if (selectedUser.email !== payload.email && selectedUser.email !== null) {
+        formData.append("email", payload.email);
+      }
+      if (
+        selectedUser.phone_number !== payload.phone_number &&
+        selectedUser.phone_number !== null
+      ) {
+        formData.append("phone_number", payload.phone_number);
+      }
+      if (
+        selectedUser.password !== payload.password &&
+        selectedUser.password !== null &&
+        payload.password !== ""
+      ) {
+        formData.append("password", payload.password);
+      }
 
       if (
-        selectedUser.date_of_birth !== payload.date_of_birth &&
+        selectedUser.date_of_birth !== date_of_birth?.format("YYYY-MM-DD") &&
         selectedUser.date_of_birth !== null
       ) {
-        formData.append("date_of_birth", payload.date_of_birth);
+        formData.append(
+          "date_of_birth",
+          String(date_of_birth?.format("YYYY-MM-DD"))
+        );
       }
 
       // إرسال البيانات
@@ -83,12 +115,11 @@ const Page = () => {
           data: formData,
         }).unwrap();
         showSuccess("Data updated successfully!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
+      
         for (const [key, value] of formData.entries()) {
           console.log(`${key}: ${value}`);
         }
+        router.push("/dashboard/teachers");
       } catch {
         showError("Data updated failed!");
         for (const [key, value] of formData.entries()) {
@@ -167,13 +198,6 @@ const Page = () => {
               onChange={handleChange}
             />
             <InputField
-              label="تاريخ الميلاد *"
-              type="text"
-              name="date_of_birth"
-              value={payload.date_of_birth}
-              onChange={handleChange}
-            />
-            <InputField
               label="نبذه تعريفيه *"
               type="text"
               name="bio"
@@ -187,6 +211,61 @@ const Page = () => {
               value={payload.info}
               onChange={handleChange}
             />
+            <InputField
+              label=" البريد الالكتروني *"
+              type="email"
+              name="email"
+              value={payload.email}
+              onChange={handleChange}
+            />
+            <InputField
+              label=" الهاتف *"
+              type="phone"
+              name="phone_number"
+              value={payload.phone_number}
+              onChange={handleChange}
+            />
+            <InputField
+              label="كلمة المرور *"
+              type="text"
+              name="password"
+              value={payload.password}
+              onChange={handleChange}
+            />
+            <FormControl
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                flexDirection: "row",
+                position: "relative",
+                marginTop: "1rem",
+
+                "& .MuiInputBase-root": {
+                  borderRadius: "16px",
+                  fontFamily: "unset",
+                  width: "100%",
+                  backgroundColor: "white",
+                },
+              }}
+            >
+              <p className="absolute -top-7 right-12 text-lg text-[#2664B1]  ">
+                {" "}
+                تاريخ الميلاد
+              </p>
+              <CiCalendarDate className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
+              <CalenderDialog setStartDate={setDate_of_birth} />
+              <span
+                style={{
+                  marginRight: "8px",
+                  color: "#2664B1",
+                  fontWeight: "bold",
+                }}
+              >
+                {date_of_birth ? date_of_birth.format("YYYY-MM-DD") : ""}
+              </span>
+            </FormControl>
           </div>
         </div>
 

@@ -16,14 +16,13 @@ export default function LessonsTable({
   students: AllStudentCoursesAttendanceResponseType;
   sessionId: number | string;
 }) {
-
   const rows = students.data.map((student: CourseStudentAttendanceType) => ({
     full_name: `${student.first_name} ${student.last_name}`,
     ...student,
   }));
 
   const columns: GridColDef[] = [
-    { field: "user_id", headerName: "ID", width: 80 },
+    { field: "user_id", headerName: "ID", width: 50 },
     {
       field: "full_name",
       headerName: "الاسم",
@@ -75,7 +74,6 @@ export default function LessonsTable({
     },
   ];
 
-
   return (
     <Paper
       sx={{
@@ -110,7 +108,16 @@ export default function LessonsTable({
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: 'Tajawal',
+                fontWeight:"bold"
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: 'Tajawal',
+                fontWeight:"500"
+              },
             }}
           />
         </div>

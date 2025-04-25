@@ -2,21 +2,25 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaEdit, FaTrash } from "react-icons/fa";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { Box, IconButton, Tooltip } from "@mui/material";
-// import { useRouter } from "next/navigation";
 import LinearProgressBar from "../charts/LinearProgress";
 import Image from "next/image";
-import { AllStudentCoursesType } from "@/app/Redux/types";
+import MenuDots from "../MenuDots";
+import { useChangeCourseStatusMutation } from "@/app/Redux/Slices/Courses/courseApi";
+import { useAlert } from "../hooks/useAlert";
+import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 
-export default function CoursesTable({
-  courses,
-}: {
-  courses: AllStudentCoursesType;
-}) {
-  console.log(courses);
+export default function CoursesTable({ userId }: { userId: number }) {
+  const { showSuccess, showError } = useAlert();
+  const [changeCourseStatus] = useChangeCourseStatusMutation();
+  const { data, refetch } = useGetStudentCoursesQuery(userId, {
+    skip: !userId,
+  });
 
-  if (!courses || courses.data.length === 0) {
+  const courses = data?.data;
+  
+  if (!courses || courses.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
         No courses found{" "}
@@ -32,6 +36,7 @@ export default function CoursesTable({
 
   // const router = useRouter();
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "title",
       headerName: "الدورة",
@@ -97,7 +102,6 @@ export default function CoursesTable({
           }}
         >
           <LinearProgressBar value={params.row.attendance_percentage} />
-          {/* {params.row.progress} */}
         </div>
       ),
     },
@@ -118,30 +122,11 @@ export default function CoursesTable({
             height: "100%",
           }}
         >
-          {params.row.course.session_count} دروس
+          {params.row.course.session_count} درس
         </div>
       ),
     },
-    {
-      field: "price",
-      headerName: "  السعر",
-      width: 100,
-      sortable: true,
-      renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {params.row.course.price} $
-        </div>
-      ),
-    },
+
     {
       field: "status",
       headerName: "الحالة",
@@ -158,83 +143,55 @@ export default function CoursesTable({
             alignSelf: "center",
             borderRadius: "6px",
             backgroundColor: `${
-              params.row.status == "مفعل" ? "#ECF8EF" : "#FDECEC"
+              params.row.course.active == 1 ? "#ECF8EF" : "#FDECEC"
             }`,
-            color: `${params.row.status == "مفعل" ? "#43B75D" : "#DB340B"}`,
+            color: `${params.row.course.active == 1 ? "#43B75D" : "#DB340B"}`,
           }}
         >
-          {params.row.status}
+          {params.row.course.active == 1 ? "مفعل" : "غير مفعل"}
         </div>
       ),
     },
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 140,
+      width: 90,
       sortable: false,
       renderCell: (params) => (
         <div
           style={{
             display: "flex",
-            gap: "8px",
+            gap: "4px",
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
             height: "100%",
           }}
         >
-          {/* عرض */}
-          <Tooltip title="عرض">
+          <Tooltip title="الحالة">
             <IconButton
-              onClick={() => handleView(params.row.id)}
-              color="primary"
+              onClick={() => handleChangeCourseStatus(params.row.id)}
+              color="success"
               size="small"
-              sx={{ cursor: "pointer" }}
+              sx={{ cursor: "pointer", gap: "3px" }}
             >
-              <FaRegEye />
+              <MdOutlinePublishedWithChanges />
             </IconButton>
           </Tooltip>
-
-          {/* تعديل */}
-          <Tooltip title="تعديل">
-            <IconButton
-              onClick={() => handleEdit(params.row.id)}
-              color="secondary"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaEdit />
-            </IconButton>
-          </Tooltip>
-
-          {/* حذف */}
-          <Tooltip title="حذف">
-            <IconButton
-              onClick={() => handleDelete(params.row.id)}
-              color="error"
-              size="small"
-              sx={{ cursor: "pointer" }}
-            >
-              <FaTrash />
-            </IconButton>
-          </Tooltip>
+          <MenuDots course={params.row.course} />
         </div>
       ),
     },
   ];
 
-  const handleView = (id: number) => {
-    alert(`عرض المستخدم ID: ${id}`);
-  };
-
-  const handleDelete = (id: number) => {
-    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
-      alert(`تم حذف المستخدم ID: ${id}`);
+  const handleChangeCourseStatus = async (id: number) => {
+    try {
+      await changeCourseStatus(id).unwrap();
+      showSuccess("Course status changed successfully!");
+      await refetch();
+    } catch {
+      showError("Course status changed failed!");
     }
-  };
-
-  const handleEdit = (id: number) => {
-    alert(`تعديل المستخدم ID: ${id}`);
   };
 
   return (
@@ -256,7 +213,7 @@ export default function CoursesTable({
       <Box sx={{ overflowX: "auto" }}>
         <div style={{ minWidth: 800 }}>
           <DataGrid
-            rows={courses?.data ?? []}
+            rows={courses ?? []}
             columns={columns}
             initialState={{
               pagination: { paginationModel: { pageSize: 10, page: 0 } },
@@ -269,7 +226,16 @@ export default function CoursesTable({
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: "Tajawal",
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: "Tajawal",
+                fontWeight: "500",
+              },
             }}
           />
         </div>

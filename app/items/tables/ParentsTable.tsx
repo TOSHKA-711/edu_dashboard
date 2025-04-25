@@ -2,7 +2,8 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye } from "react-icons/fa";
+import { FaRegEye, FaTrash } from "react-icons/fa";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -10,14 +11,18 @@ import { ParentType } from "@/app/Redux/types";
 import { useGetAllParentsQuery } from "@/app/Redux/Slices/Parents/parentsApi";
 import { setSelectedParent } from "@/app/Redux/Slices/Parents/ParentsSlice";
 import Image from "next/image";
+import { useAlert } from "../hooks/useAlert";
+import { useChangeUserStatusMutation, useDeleteUserMutation } from "@/app/Redux/Slices/Students/studentsApi";
+import { ToastContainer } from "react-toastify";
 
 export default function ParentsTable() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { showSuccess, showError } = useAlert();
+  const [deleteUser] = useDeleteUserMutation();
+  const { data, error, isLoading ,refetch} = useGetAllParentsQuery();
+  const [changeUserStatus] = useChangeUserStatusMutation();
 
-  // start fetch users
-
-  const { data, error, isLoading } = useGetAllParentsQuery();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching students</p>;
   const parents = data?.data;
@@ -42,7 +47,7 @@ export default function ParentsTable() {
     ...parent,
   }));
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "full_name",
       headerName: "الاسم",
@@ -66,7 +71,7 @@ export default function ParentsTable() {
     },
     { field: "phone_number", headerName: "رقم الهاتف", width: 150 },
     { field: "email", headerName: " البريد", width: 230 },
-    { field: "children_count", headerName: " عدد الابناء", width: 100 },
+    { field: "children_count", headerName: " عدد الابناء", width: 90 },
     {
       field: "status",
       headerName: "الحالة",
@@ -96,7 +101,7 @@ export default function ParentsTable() {
     {
       field: "actions",
       headerName: "الإجراء",
-      width: 80,
+      width: 110,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -120,6 +125,28 @@ export default function ParentsTable() {
               <FaRegEye />
             </IconButton>
           </Tooltip>
+          <Tooltip title="الحالة">
+            <IconButton
+              onClick={() => handleChangeCourseStatus(params.row.id)}
+              color="success"
+              size="small"
+              sx={{ cursor: "pointer", gap: "3px" }}
+            >
+              <MdOutlinePublishedWithChanges />
+              {/* {params.row.active == 0 ? "تفعيل" : "تعطيل"} */}
+            </IconButton>
+          </Tooltip>
+          {/* حذف */}
+          <Tooltip title="حذف">
+            <IconButton
+              onClick={() => handleDelete(params.row.id)}
+              color="error"
+              size="small"
+              sx={{ cursor: "pointer" }}
+            >
+              <FaTrash />
+            </IconButton>
+          </Tooltip>
         </div>
       ),
     },
@@ -129,8 +156,30 @@ export default function ParentsTable() {
     router.push(`/dashboard/parents/viewParent/${user.id}`);
     dispatch(setSelectedParent(user));
   };
+  const handleDelete = async (id: number) => {
+    if (window.confirm(`هل أنت متأكد من حذف المستخدم ID: ${id}؟`)) {
+      try {
+        await deleteUser(id).unwrap();
+        showSuccess("user deleted successfully!");
+        await refetch()
+      } catch {
+        showError("user deleted failed!");
+      }
+    }
+  };
+  const handleChangeCourseStatus = async (id: number) => {
+    try {
+      await changeUserStatus(id).unwrap();
+      showSuccess("User status changed successfully!");
+      await refetch()
+    } catch {
+      showError("User status changed failed!");
+    }
+  };
 
   return (
+    <>
+ 
     <Paper
       sx={{
         height: 600,
@@ -163,11 +212,22 @@ export default function ParentsTable() {
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: "Tajawal",
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: "Tajawal",
+                fontWeight: "500",
+              },
             }}
           />
         </div>
       </Box>
     </Paper>
+    <ToastContainer/>
+    </>
   );
 }

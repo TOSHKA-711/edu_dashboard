@@ -45,7 +45,7 @@ export default function AllRolesTable() {
   }));
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 60 },
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "full_name",
       headerName: "الاسم",
@@ -241,7 +241,16 @@ export default function AllRolesTable() {
                   display: "flex",
                   justifyContent: "center",
                 },
-                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"bold"
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"500"
+                },
               }}
             />
           </div>

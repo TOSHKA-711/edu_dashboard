@@ -231,7 +231,16 @@ export default function EnrolledTable({
                   display: "flex",
                   justifyContent: "center",
                 },
-                "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"bold"
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: 'Tajawal',
+                  fontWeight:"500"
+                },
               }}
             />
           </div>

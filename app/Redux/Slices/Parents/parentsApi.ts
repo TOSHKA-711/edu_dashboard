@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setAllParents } from "./ParentsSlice";
-import { GetAllParentChildrenResponseType, GetAllParentsResponseType } from "../../types";
+import {
+  GetAllParentChildrenResponseType,
+  GetAllParentsResponseType,
+} from "../../types";
 
 export const parentsApi = createApi({
   reducerPath: "parentsApi",
@@ -30,10 +33,24 @@ export const parentsApi = createApi({
         }
       },
     }),
-    getParentChildren: builder.query<GetAllParentChildrenResponseType, string|number>({
+    getParentChildren: builder.query<
+      GetAllParentChildrenResponseType,
+      string | number
+    >({
       query: (parentId) => `/users/info/parent/${parentId}/children`,
+    }),
+    setParent: builder.mutation<unknown, FormData>({
+      query: (data) => ({
+        url: `users/addParent`,
+        method: "POST",
+        body: data,
+      }),
     }),
   }),
 });
 
-export const { useGetAllParentsQuery , useGetParentChildrenQuery } = parentsApi;
+export const {
+  useGetAllParentsQuery,
+  useGetParentChildrenQuery,
+  useSetParentMutation,
+} = parentsApi;

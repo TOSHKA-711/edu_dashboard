@@ -39,6 +39,7 @@ export default function PaymentsTable({
 
   // const router = useRouter();
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "user",
       headerName: "المستخدم",
@@ -155,9 +156,7 @@ export default function PaymentsTable({
         </div>
       ),
     },
-  
   ];
-
 
   return (
     <Paper
@@ -191,7 +190,16 @@ export default function PaymentsTable({
                 display: "flex",
                 justifyContent: "center",
               },
-              "& .MuiDataGrid-columnHeaderTitle": { fontWeight: "bold" },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontSize: "14px",
+                fontFamily: 'Tajawal',
+                fontWeight:"bold"
+              },
+              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                fontSize: "15px",
+                fontFamily: 'Tajawal',
+                fontWeight:"500"
+              },
             }}
           />
         </div>
