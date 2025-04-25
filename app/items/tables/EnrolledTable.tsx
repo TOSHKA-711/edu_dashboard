@@ -4,11 +4,15 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { IoMdAdd } from "react-icons/io";
+import { RiAlarmWarningFill } from "react-icons/ri";
 import {
   AllEnrolledUsersResponseType,
   EnrolledUserType,
 } from "@/app/Redux/types";
-import { useSetUserPaymentMutation } from "@/app/Redux/Slices/Courses/courseApi";
+import {
+  useSetUserPaymentMutation,
+  useSetWarningMutation,
+} from "@/app/Redux/Slices/Courses/courseApi";
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 
@@ -19,6 +23,7 @@ export default function EnrolledTable({
 }) {
   const { showSuccess, showError } = useAlert();
   const [setUserPayment] = useSetUserPaymentMutation();
+  const [setWarning] = useSetWarningMutation();
   const [amounts, setAmounts] = React.useState<{ [userId: number]: number }>(
     {}
   );
@@ -41,7 +46,7 @@ export default function EnrolledTable({
     {
       field: "full_name",
       headerName: "الاسم",
-      width: 230,
+      width: 200,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -86,7 +91,7 @@ export default function EnrolledTable({
     {
       field: "payment_message",
       headerName: "رسالة الدفع",
-      width: 400,
+      width: 390,
       sortable: true,
       renderCell: (params) => (
         <div
@@ -144,7 +149,7 @@ export default function EnrolledTable({
     {
       field: "actions",
       headerName: "سداد مبلغ",
-      width: 280,
+      width: 290,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -174,6 +179,16 @@ export default function EnrolledTable({
               <IoMdAdd />
             </IconButton>
           </Tooltip>
+          <Tooltip title="ارسال تنبيه">
+            <IconButton
+              onClick={() => handleSendWarning(parseInt(params.row.id))}
+              color="primary"
+              size="small"
+              sx={{ cursor: "pointer", color: "#C53B3B" }}
+            >
+              <RiAlarmWarningFill />
+            </IconButton>
+          </Tooltip>
         </div>
       ),
     },
@@ -192,6 +207,22 @@ export default function EnrolledTable({
         showSuccess("Payment added successfully!");
       } catch {
         showError("Payment failed!");
+      }
+    }
+  };
+  const handleSendWarning = async (userId: number) => {
+    if (userId) {
+      const confirmed = window.confirm(
+        `هل أنت متأكد من ارسال تنبيه للمستخدم  ${userId} ؟`
+      );
+
+      if (!confirmed) return;
+
+      try {
+        await setWarning(userId).unwrap();
+        showSuccess("Notification sent successfully!");
+      } catch {
+        showError("Notification sent failed!");
       }
     }
   };
@@ -233,13 +264,13 @@ export default function EnrolledTable({
                 },
                 "& .MuiDataGrid-columnHeaderTitle": {
                   fontSize: "14px",
-                  fontFamily: 'Tajawal',
-                  fontWeight:"bold"
+                  fontFamily: "Tajawal",
+                  fontWeight: "bold",
                 },
                 "& .MuiDataGrid-cell.MuiDataGrid-cell": {
                   fontSize: "15px",
-                  fontFamily: 'Tajawal',
-                  fontWeight:"500"
+                  fontFamily: "Tajawal",
+                  fontWeight: "500",
                 },
               }}
             />

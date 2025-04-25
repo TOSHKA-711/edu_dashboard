@@ -9,6 +9,7 @@ const Page = () => {
     const courseId = (params.id as string) ?? "";
 
     const {data:users} = useGetEnrolledUsersQuery(courseId)
+    
     return (
         <div>
             <EnrolledTable users={users??{status:false,message:"",data:[]}}/>

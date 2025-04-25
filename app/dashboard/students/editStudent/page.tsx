@@ -45,9 +45,8 @@ const Page = () => {
     educational_stage: selectedUser?.educational_stage ?? "null",
     school_name: selectedUser?.school_name ?? "null",
     grade_name: selectedUser?.grade_name ?? "null",
+    points: selectedUser?.points ?? "null",
   });
-
-  // console.log(selectedUser);
 
   useEffect(() => {
     setIsRendered(true);
@@ -56,7 +55,6 @@ const Page = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPayload((prev) => ({ ...prev, [name]: value }));
-    // console.log({ ...payload, [name]: value });
   };
 
   //  handle submit
@@ -149,6 +147,9 @@ const Page = () => {
       ) {
         formData.append("mother_name", payload.mother_name);
       }
+      if (selectedUser.points !== payload.points && payload.points !== null) {
+        formData.append("points", String(payload.points));
+      }
 
       // إرسال البيانات
       try {
@@ -157,17 +158,8 @@ const Page = () => {
           data: formData,
         }).unwrap();
         showSuccess("Data updated successfully!");
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 5000);
-        // for (const [key, value] of formData.entries()) {
-        //   console.log(`${key}: ${value}`);
-        // }
       } catch {
         showError("Data updated failed!");
-        // for (const [key, value] of formData.entries()) {
-        //   console.log(`${key}: ${value}`);
-        // }
       }
     }
   };
@@ -266,6 +258,13 @@ const Page = () => {
               type="text"
               name="mother_name"
               value={payload.mother_name}
+              onChange={handleChange}
+            />
+            <InputField
+              label="النقاط *"
+              type="number"
+              name="points"
+              value={payload.points}
               onChange={handleChange}
             />
             <FormControl

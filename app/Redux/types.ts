@@ -76,7 +76,7 @@ export type StudentType = {
   child_type: "male" | "female";
   mother_name: string | null;
   mother_identity_id: number | null;
-  points: number | null;
+  points: number | string;
   first_enrolled_course: string | null;
   full_name?: string;
   children_count?: number;
@@ -501,6 +501,28 @@ export type AllCoursesPaymentsResponseType = {
   message: string;
   data: CoursesPaymentType[];
 };
+//=================== logs =======================
+
+export type LogType = {
+  id: number;
+  device_id: string;
+  model: string;
+  brand: string;
+  manufacturer: string;
+  os_version: string;
+  sdk_version: string;
+  system_name: string;
+  device_name: string;
+  ip_address: string;
+  latitude: string;
+  longitude: string;
+  contact_info: string;
+  status: 'failed' | 'success' | 'pending'; 
+  created_at: string; 
+  updated_at: string; 
+};
+
+
 
 
 

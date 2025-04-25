@@ -1,15 +1,26 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser } from "./authSlice"; // Ensure the path is correct
+import { LogType } from "../../types";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/auth/",
+    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    prepareHeaders: (headers) => {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
-        url: "loginAdmin",
+        url: "auth/loginAdmin",
         method: "POST",
         body: credentials,
       }),
@@ -34,7 +45,21 @@ export const authApi = createApi({
         }
       },
     }),
+    getLogs: builder.query<
+    {logs:LogType[]},
+    void
+  >({
+    query: () => `logsLogin`,
+    async onQueryStarted(arg, { queryFulfilled }) {
+      try {
+        await queryFulfilled;
+      } catch (error) {
+        console.error("Fetching Logs failed", error);
+      }
+    },
   }),
+  }),
+  
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation ,useGetLogsQuery} = authApi;

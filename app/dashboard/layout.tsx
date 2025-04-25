@@ -6,6 +6,7 @@ import { GoArrowSwitch } from "react-icons/go";
 import { FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
 import { MdOutlineWidgets, MdOutlinePayments } from "react-icons/md";
 import { CiSettings, CiLogout } from "react-icons/ci";
+import { LuHistory } from "react-icons/lu";
 
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
@@ -75,8 +76,13 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     ),
     getItem(
       <Link href="/dashboard/payments">المدفوعات</Link>,
-      "8",
+      "13",
       <MdOutlinePayments />
+    ),
+    getItem(
+      <Link href="/dashboard/logs">السجلات</Link>,
+      "8",
+      <LuHistory />
     ),
     getItem(
       <Link href="/dashboard/settings/profile">الاعدادات</Link>,
@@ -127,6 +133,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       "7": [{ title: "المواضيع" }],
       "8": [{ title: "المدفوعات" }],
       "9": [{ title: "الاعدادات" }],
+      "13": [{ title: "التسجيلات" }],
     }),
     []
   );
@@ -153,6 +160,9 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         break;
       case path.includes("/settings"):
         setBreadcrumbItems(breadcrumbMap["9"] || [{ title: "الرئيسية" }]);
+        break;
+      case path.includes("/logs"):
+        setBreadcrumbItems(breadcrumbMap["13"] || [{ title: "التسجيلات" }]);
         break;
       default:
         setBreadcrumbItems([{ title: "الرئيسية" }]);
@@ -181,21 +191,21 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}
-          style={{ paddingTop: "2rem" }}
+          style={{ paddingTop: "1rem" }}
         />
         <Image
           src="/sidebar_image.svg"
           alt="sidebar"
           width={500}
           height={530}
-          className="pt-6 pl-2"
+          className="pt-4 pl-2"
         />
         <Menu
           theme="light"
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items2}
-          style={{ paddingTop: "2rem" }}
+          style={{ paddingTop: "1rem" }}
         />
       </Sider>
 
@@ -210,7 +220,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           }}
         >
           <Breadcrumb
-            style={{ margin: "20px 0", direction: "rtl", fontSize: "25px" }}
+            style={{ margin: "20px 0", direction: "rtl", fontSize: "30px" }}
             items={breadcrumbItems.map((item) => ({ title: item.title }))}
           />
           {children}

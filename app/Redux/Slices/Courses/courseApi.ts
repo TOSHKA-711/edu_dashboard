@@ -170,6 +170,16 @@ export const coursesApi = createApi({
         },
       }),
     }),
+    setWarning: builder.mutation<
+      unknown,
+       number | string 
+    >({
+      query: ( userId) => ({
+        url: `sendNotification/${userId}`,
+        method: "GET",
+       
+      }),
+    }),
     changeCourseStatus: builder.mutation<unknown, number>({
       query: (id) => ({
         url: `changeCourseStatus/${id}`,
@@ -218,6 +228,7 @@ export const {
   useSetSessionMutation,
   useSetUserAttendanceMutation,
   useSetUserPaymentMutation,
+  useSetWarningMutation,
   useChangeCourseStatusMutation,
   useChangeCourseRateStatusMutation,
   useUpdateCourseMutation,

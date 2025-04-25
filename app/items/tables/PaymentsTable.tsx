@@ -16,7 +16,6 @@ export default function PaymentsTable({
 }: {
   payments: AllCoursesPaymentsResponseType;
 }) {
-  console.log(payments);
 
   if (!payments || payments.data.length === 0) {
     return (
