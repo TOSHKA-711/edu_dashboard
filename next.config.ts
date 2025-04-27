@@ -1,11 +1,16 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
+
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true, // تفعيل Strict Mode
+  reactStrictMode: true,
   images: {
-    unoptimized: true, // تجنب مشاكل الصور بعد النشر
+    unoptimized: true,
   },
-  
+
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);
+
+

@@ -219,6 +219,7 @@ export type ParentType = {
   mother_identity_id: string | null;
   points: number | null;
   first_enrolled_course: string | null;
+  children_count?:number|null;
 };
 
 export type GetAllParentsResponseType = {

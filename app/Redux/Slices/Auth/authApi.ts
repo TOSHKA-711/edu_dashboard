@@ -36,7 +36,7 @@ export const authApi = createApi({
           }
 
           if (getState()) {
-            dispatch(setUser({ user, token , role}));
+            dispatch(setUser({ user, token , role , lang:"ar"}));
           } else {
             console.warn("Store is not initialized yet");
           }

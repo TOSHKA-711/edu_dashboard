@@ -1,4 +1,4 @@
-"use client"; // Important for Next.js App Router
+"use client"; 
 
 import { Provider } from "react-redux";
 import {store} from "./Store";
