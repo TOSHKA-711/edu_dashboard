@@ -27,6 +27,7 @@ export default function UsersTable() {
   const [changeUserStatus] = useChangeUserStatusMutation();
   const [deleteUser] = useDeleteUserMutation();
   const students = data?.data;
+  
   const t = useTranslations();
 
   if (error) return <p>Error fetching users</p>;

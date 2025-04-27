@@ -166,6 +166,8 @@ const Page = () => {
           data: formData,
         }).unwrap();
         showSuccess(`${t("alerts.user_added_success")}`);
+        console.log(formData);
+        
       } catch {
         showError(`${t("alerts.user_added_failed")}`);
       }

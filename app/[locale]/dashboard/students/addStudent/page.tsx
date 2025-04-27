@@ -36,6 +36,7 @@ const Page = () => {
 
   const [image, setImage] = useState<string | Blob | null>(null);
   const [color, setColor] = useState("");
+  const [colorShow, setColorShow] = useState("");
   const [parent, setParent] = useState<{ name: string; id: string | number }>({
     name: "",
     id: "",
@@ -75,6 +76,8 @@ const Page = () => {
     if (image instanceof Blob) return URL.createObjectURL(image);
     return "";
   };
+
+  // convert color from flutter to hex
 
   //  handle submit
 
@@ -130,9 +133,9 @@ const Page = () => {
           parentId: parseInt(String(parent.id)),
           data: formData,
         }).unwrap();
-        showSuccess(`${t('alerts.user_added_success')}`);
+        showSuccess(`${t("alerts.user_added_success")}`);
       } catch {
-        showError(`${t('alerts.user_added_failed')}`);
+        showError(`${t("alerts.user_added_failed")}`);
       }
     }
   };
@@ -322,7 +325,7 @@ const Page = () => {
                 {t("students.add.color")}
               </p>
               <IoIosColorPalette className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
-              <SelectColorDialog setColor={setColor} />
+              <SelectColorDialog setColor={setColor} setColorShow={setColorShow}/>
               <span
                 style={{
                   marginRight: "8px",
@@ -330,10 +333,10 @@ const Page = () => {
                   fontWeight: "bold",
                 }}
               >
-                {color && (
+                {colorShow && (
                   <div
                     className={`w-12 h-12 max-sm:h-9 max-sm:w-9  rounded-full cursor-pointer border-2 transition-all duration-200 hover:scale-110 `}
-                    style={{ backgroundColor: color }}
+                    style={{ backgroundColor: colorShow }}
                   ></div>
                 )}
               </span>

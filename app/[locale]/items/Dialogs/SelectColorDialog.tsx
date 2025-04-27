@@ -37,8 +37,10 @@ const Transition = React.forwardRef<
 
 export default function SelectColorDialog({
   setColor,
+  setColorShow
 }: {
   setColor: React.Dispatch<React.SetStateAction<string>>;
+  setColorShow: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const t = useTranslations();
   const [open, setOpen] = React.useState(false);
@@ -46,7 +48,9 @@ export default function SelectColorDialog({
   const handleClose = () => setOpen(false);
 
   const handleNextClick = (color: string) => {
-    setColor(color);
+    const cleanedHex = color.replace('#', '');
+    setColor(`Color(0xFF${cleanedHex.toUpperCase()})`);
+    setColorShow(color);
     handleClose();
   };
 
