@@ -6,9 +6,13 @@ import { Box } from "@mui/material";
 import { LogType } from "@/app/Redux/types";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import LogsDialog from "../Dialogs/LogsDialog";
 
 export default function LogsTable({ logs }: { logs: LogType[] }) {
   const t = useTranslations();
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [device, setDevice] = React.useState<LogType>();
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 50 },
     { field: "brand", headerName: `${t("tables.type")}`, width: 120 },
@@ -59,6 +63,10 @@ export default function LogsTable({ logs }: { logs: LogType[] }) {
         scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
       }}
     >
+      {device && (
+        <LogsDialog device={device} open={dialogOpen} setOpen={setDialogOpen} />
+      )}
+
       <Paper
         sx={{
           height: 600,
@@ -66,7 +74,10 @@ export default function LogsTable({ logs }: { logs: LogType[] }) {
           background: "",
           marginBottom: "3rem",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",
@@ -79,6 +90,10 @@ export default function LogsTable({ logs }: { logs: LogType[] }) {
             <DataGrid
               rows={logs}
               columns={columns}
+              onCellClick={(params) => {
+                setDevice(params.row);
+                setDialogOpen(true);
+              }}
               initialState={{
                 pagination: { paginationModel: { pageSize: 10, page: 0 } },
               }}

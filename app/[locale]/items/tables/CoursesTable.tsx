@@ -11,7 +11,7 @@ import { useChangeCourseStatusMutation } from "@/app/Redux/Slices/Courses/course
 import { useAlert } from "../hooks/useAlert";
 import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { useTranslations } from "next-intl";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function CoursesTable({ userId }: { userId: number }) {
   const t = useTranslations();
@@ -179,7 +179,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
             height: "100%",
           }}
         >
-          <Tooltip title={t("tables.status")}>
+          {/* <Tooltip title={t("tables.status")}>
             <IconButton
               onClick={() => handleChangeCourseStatus(params.row.id)}
               color="success"
@@ -188,7 +188,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
             >
               <MdOutlinePublishedWithChanges />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           <MenuDots course={params.row.course} />
         </div>
       ),
@@ -207,13 +207,14 @@ export default function CoursesTable({ userId }: { userId: number }) {
 
   return (
     <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.4,
-      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
-    }}
-  >
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+      className="w-full"
+    >
       <Paper
         sx={{
           height: 600,
@@ -221,7 +222,10 @@ export default function CoursesTable({ userId }: { userId: number }) {
           background: "",
           marginBottom: "3rem",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",

@@ -226,7 +226,10 @@ export default function AllRolesTable() {
           width: "100%",
           background: "",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",

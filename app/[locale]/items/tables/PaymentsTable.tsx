@@ -154,7 +154,7 @@ export default function PaymentsTable({
             }`,
           }}
         >
-          {params.row.status == "active"
+          {params.row.status == "approved"
             ? `${t("tables.enabled")}`
             : `${t("tables.disabled")}`}
         </div>
@@ -178,7 +178,10 @@ export default function PaymentsTable({
           background: "",
           marginBottom: "3rem",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",

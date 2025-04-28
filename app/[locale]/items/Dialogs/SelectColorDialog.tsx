@@ -72,7 +72,7 @@ export default function SelectColorDialog({
         }}
       >
         <DialogContent className="bg-[#363636] text-white">
-          <div className="w-full flex items-start justify-end flex-wrap gap-3 p-4 min-h-[200px] max-h-[300px]">
+          <div className="w-full flex items-start justify-end flex-wrap gap-3 p-4 min-h-[100px] max-h-[300px]">
             {colorList?.length ? (
               colorList.map((color, index) => (
                 <div className="flex flex-col items-center gap-2" key={index}>

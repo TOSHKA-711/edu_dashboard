@@ -142,16 +142,16 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               "12-1",
               <span>AR</span>
             ),
-            getItem(
-              <button
-                onClick={() => setLanguage("he")}
-                className="cursor-pointer"
-              >
-                עברית
-              </button>,
-              "12-3",
-              <span>🇮🇱</span>
-            ),
+            // getItem(
+            //   <button
+            //     onClick={() => setLanguage("he")}
+            //     className="cursor-pointer"
+            //   >
+            //     עברית
+            //   </button>,
+            //   "12-3",
+            //   <span>HE</span>
+            // ),
           ]
         ),
       ]
@@ -159,7 +159,11 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   ];
 
   const items2: MenuItem[] = [
-    getItem(<button onClick={handleLogout}>{t("btns.logout")}</button>, "11", <CiLogout />),
+    getItem(
+      <button onClick={handleLogout}>{t("btns.logout")}</button>,
+      "11",
+      <CiLogout />
+    ),
   ];
 
   const [collapsed, setCollapsed] = useState(false);
@@ -233,7 +237,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         setBreadcrumbItems([{ title: `${t("home.home")}` }]);
         break;
     }
-  }, [path, breadcrumbMap]);
+  }, [path, breadcrumbMap, t]);
 
   return (
     <Layout style={{ minHeight: "100vh" }} dir="rtl">
@@ -244,7 +248,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         theme="light"
         style={{
           background: "white",
-          minHeight: "100vh",
+          maxHeight: "105vh",
           position: "sticky",
           top: "0",
           right: "0",

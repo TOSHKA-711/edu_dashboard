@@ -2,7 +2,7 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { FaRegEye, FaTrash } from "react-icons/fa";
+import { FaEdit, FaRegEye, FaTrash } from "react-icons/fa";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,8 @@ import {
 } from "@/app/Redux/Slices/Students/studentsApi";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
+
 
 export default function ParentsTable() {
   const t = useTranslations();
@@ -117,7 +118,7 @@ export default function ParentsTable() {
     {
       field: "actions",
       headerName: `${t("tables.action")}`,
-      width: 110,
+      width: 140,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -152,6 +153,16 @@ export default function ParentsTable() {
               {/* {params.row.active == 0 ? "تفعيل" : "تعطيل"} */}
             </IconButton>
           </Tooltip>
+          <Tooltip title={t("btns.edit")}>
+            <IconButton
+              onClick={() => handleEdit(params.row)}
+              color="secondary"
+              size="small"
+              sx={{ cursor: "pointer" }}
+            >
+              <FaEdit />
+            </IconButton>
+          </Tooltip>
           {/* حذف */}
           <Tooltip title={t("btns.delete")}>
             <IconButton
@@ -183,6 +194,11 @@ export default function ParentsTable() {
       }
     }
   };
+  const handleEdit = (user: ParentType) => {
+    router.push("/dashboard/parents/editParent");
+    dispatch(setSelectedParent(user));
+  };
+
   const handleChangeCourseStatus = async (id: number) => {
     try {
       await changeUserStatus(id).unwrap();
@@ -195,13 +211,13 @@ export default function ParentsTable() {
 
   return (
     <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.4,
-      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
-    }}
-  >
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+    >
       <Paper
         sx={{
           height: 600,
@@ -209,7 +225,10 @@ export default function ParentsTable() {
           background: "",
           marginBottom: "3rem",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",

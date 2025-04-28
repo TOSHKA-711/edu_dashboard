@@ -13,7 +13,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function AllCoursesTable() {
   const t = useTranslations();
@@ -152,13 +152,13 @@ export default function AllCoursesTable() {
 
   return (
     <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.4,
-      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
-    }}
-  >
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+    >
       <Paper
         sx={{
           height: 600,
@@ -166,7 +166,10 @@ export default function AllCoursesTable() {
           background: "",
           marginBottom: "3rem",
           "& .MuiToolbar-root": { direction: "ltr" },
-          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row--borderBottom": {
+            gap: "2rem",
+            width: "fit-content",
+          },
           "& .MuiDataGrid-row": { gap: "2rem" },
           "& .MuiDataGrid-columnHeaders": {
             background: "white",
@@ -175,7 +178,7 @@ export default function AllCoursesTable() {
         }}
       >
         <Box sx={{ overflowX: "auto" }}>
-          <div style={{ minWidth: 800 , height:600 }}>
+          <div style={{ minWidth: 800, height: 600 }}>
             <DataGrid
               rows={courses}
               columns={columns}

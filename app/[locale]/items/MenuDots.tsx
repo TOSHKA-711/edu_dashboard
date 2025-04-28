@@ -86,7 +86,7 @@ export default function MenuDots({ course }: { course: CourseType }) {
             router.push(`/dashboard/courses/enrolled/${course.id}`)
           }
         >
-          {t("btns.edit")}
+          {t("btns.enrollments")}
           <IoBookmarksOutline />
         </MenuItem>
         <MenuItem

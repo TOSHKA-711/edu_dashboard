@@ -145,7 +145,7 @@ export default function EnrolledTable({
             }`,
           }}
         >
-          {params.row.status == "active"
+          {params.row.status == "approved"
             ? `${t("tables.enabled")}`
             : `${t("tables.disabled")}`}
         </div>

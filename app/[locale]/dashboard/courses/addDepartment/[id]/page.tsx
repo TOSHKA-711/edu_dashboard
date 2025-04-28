@@ -41,7 +41,7 @@ const Page = () => {
   const [isAddingSession, setIsAddingSession] = useState(false);
   const departmentRef = useRef<HTMLDivElement | null>(null);
   // const sessionRef = useRef<HTMLDivElement | null>(null);
-  const { data: departments } = useGetCourseDepartmentsQuery(courseId);
+  const { data: departments , refetch:refetchDepartments} = useGetCourseDepartmentsQuery(courseId);
   const [setDepartment] = useSetDepartmentMutation();
   const [deleteDepartment] = useDeleteDepartmentMutation();
   const [setSession] = useSetSessionMutation();
@@ -73,6 +73,7 @@ const Page = () => {
   const handleAddDepartmentClick = () => {
     setIsAddingDepartment(!isAddingDepartment);
     setIsAddingSession(false);
+   
   };
 
   const handleAddSessionClick = (departmentId: number) => {
@@ -99,6 +100,7 @@ const Page = () => {
     try {
       await setDepartment(payload).unwrap();
       showSuccess(`${t("alerts.department_added_success")}`);
+      await refetchDepartments()
     } catch {
       showError(`${t("alerts.department_added_failed")}`);
     }
@@ -112,6 +114,7 @@ const Page = () => {
     try {
       await setSession(payload).unwrap();
       showSuccess(`${t("alerts.session_added_success")}`);
+      await refetchDepartments()
     } catch {
       showError(`${t("alerts.session_added_failedsession_added_failed")}`);
     }
@@ -128,6 +131,7 @@ const Page = () => {
     try {
       await deleteDepartment(id).unwrap();
       showSuccess(`${t("alerts.delete_section_success")}`);
+      await refetchDepartments()
     } catch {
       showError(`${t("alerts.delete_section_confirm")}`);
     }

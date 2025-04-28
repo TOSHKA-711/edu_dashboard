@@ -120,7 +120,7 @@ export default function SelectParentDialog({ setParent }: Props) {
           <Paper
             sx={{
               direction: "rtl",
-              height: 400,
+              height: "auto",
               width: {
                 xs: "90%",
                 sm: 500,
