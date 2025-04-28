@@ -14,8 +14,8 @@ import { motion } from "framer-motion";
 
 export default function CoursesTable({ userId }: { userId: number }) {
   const t = useTranslations();
-  const { showSuccess, showError } = useAlert();
-  const [changeCourseStatus] = useChangeCourseStatusMutation();
+  // const { showSuccess, showError } = useAlert();
+  // const [changeCourseStatus] = useChangeCourseStatusMutation();
   const { data, refetch } = useGetStudentCoursesQuery(userId, {
     skip: !userId,
   });
@@ -194,15 +194,15 @@ export default function CoursesTable({ userId }: { userId: number }) {
     },
   ];
 
-  const handleChangeCourseStatus = async (id: number) => {
-    try {
-      await changeCourseStatus(id).unwrap();
-      showSuccess(`${t("alerts.course_status_changed_success")}`);
-      await refetch();
-    } catch {
-      showError(`${t("alerts.course_status_changed_failed")}`);
-    }
-  };
+  // const handleChangeCourseStatus = async (id: number) => {
+  //   try {
+  //     await changeCourseStatus(id).unwrap();
+  //     showSuccess(`${t("alerts.course_status_changed_success")}`);
+  //     await refetch();
+  //   } catch {
+  //     showError(`${t("alerts.course_status_changed_failed")}`);
+  //   }
+  // };
 
   return (
     <motion.div
