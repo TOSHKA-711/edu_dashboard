@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 export default function UsersTable() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function UsersTable() {
   const [changeUserStatus] = useChangeUserStatusMutation();
   const [deleteUser] = useDeleteUserMutation();
   const students = data?.data;
-  
+
   const t = useTranslations();
 
   if (error) return <p>Error fetching users</p>;
@@ -214,7 +215,14 @@ export default function UsersTable() {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+    >
       <Paper
         sx={{
           height: 600,
@@ -231,7 +239,7 @@ export default function UsersTable() {
         }}
       >
         <Box sx={{ overflowX: "auto" }}>
-          <div style={{ minWidth: 800, height: "100%" }}>
+          <div style={{ minWidth: 800, height: 600 }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -263,6 +271,6 @@ export default function UsersTable() {
         </Box>
       </Paper>
       <ToastContainer />
-    </>
+    </motion.div>
   );
 }

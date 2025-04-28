@@ -9,6 +9,7 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { RiUploadLine } from "react-icons/ri";
 import { ToastContainer } from "react-toastify";
+import { motion } from "framer-motion";
 
 const colors = ["#EFECFF", "#FFFADF", "#E8FBF5", "#FFF0FF"];
 const Page = () => {
@@ -102,13 +103,19 @@ const Page = () => {
                 {t("categories.add.upload_image")}
               </span>
 
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                }}
                 type="button"
                 className="flex items-center justify-center text-[#DB340B] text-[16px] font-bold border-2 pt-1 pb-2 px-7 rounded-full cursor-pointer"
                 onClick={resetImage}
               >
                 {t("categories.add.delete_image")}
-              </button>
+              </motion.button>
             </div>
 
             {/* Hidden file input */}
@@ -143,12 +150,18 @@ const Page = () => {
             image={image ?? null}
           />
         </div>
-        <button
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 10,
+          }}
           className="text-white bg-[#2664B1] text-2xl py-2 px-24 rounded-full self-center mt-6 cursor-pointer max-sm:px-15"
           onClick={handleSubmit}
         >
           {t("categories.add.confirm")}
-        </button>
+        </motion.button>
       </div>
     </>
   );

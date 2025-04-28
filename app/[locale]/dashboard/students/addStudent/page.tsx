@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoIosColorPalette } from "react-icons/io";
+import {motion} from "framer-motion"
 
 // alert
 import { ToastContainer } from "react-toastify";
@@ -372,18 +373,30 @@ const Page = () => {
         {/* --------------- */}
 
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
-          <button
+          <motion.button
+       whileTap={{ scale: 0.9 }}
+       transition={{
+         type: 'spring',
+         stiffness: 400,
+         damping: 10
+       }}
             className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             {t("students.add.save")}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+       whileTap={{ scale: 0.9 }}
+       transition={{
+         type: 'spring',
+         stiffness: 400,
+         damping: 10
+       }}
             className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >
             {t("students.add.cancel")}
-          </button>
+          </motion.button>
         </div>
       </div>
     </>

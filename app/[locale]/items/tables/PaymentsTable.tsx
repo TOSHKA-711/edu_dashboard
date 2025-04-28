@@ -11,6 +11,7 @@ import {
   CoursesPaymentType,
 } from "@/app/Redux/types";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 export default function PaymentsTable({
   payments,
@@ -162,51 +163,60 @@ export default function PaymentsTable({
   ];
 
   return (
-    <Paper
-      sx={{
-        height: 600,
-        width: "100%",
-        background: "",
-        marginBottom: "3rem",
-        "& .MuiToolbar-root": { direction: "ltr" },
-        "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
-        "& .MuiDataGrid-row": { gap: "2rem" },
-        "& .MuiDataGrid-columnHeaders": {
-          background: "white",
-          padding: "12px 0",
-        },
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
       }}
     >
-      <Box sx={{ overflowX: "auto" }}>
-        <div style={{ minWidth: 800 }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10, page: 0 } },
-            }}
-            pageSizeOptions={[10]}
-            sx={{
-              border: 0,
-              "& .MuiDataGrid-cell": {
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              },
-              "& .MuiDataGrid-columnHeaderTitle": {
-                fontSize: "14px",
-                fontFamily: "Tajawal",
-                fontWeight: "bold",
-              },
-              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
-                fontSize: "15px",
-                fontFamily: "Tajawal",
-                fontWeight: "500",
-              },
-            }}
-          />
-        </div>
-      </Box>
-    </Paper>
+      <Paper
+        sx={{
+          height: 600,
+          width: "100%",
+          background: "",
+          marginBottom: "3rem",
+          "& .MuiToolbar-root": { direction: "ltr" },
+          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row": { gap: "2rem" },
+          "& .MuiDataGrid-columnHeaders": {
+            background: "white",
+            padding: "12px 0",
+          },
+        }}
+      >
+        <Box sx={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 800, height: 600 }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10, page: 0 } },
+              }}
+              pageSizeOptions={[10]}
+              sx={{
+                border: 0,
+                "& .MuiDataGrid-cell": {
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: "Tajawal",
+                  fontWeight: "bold",
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: "Tajawal",
+                  fontWeight: "500",
+                },
+              }}
+            />
+          </div>
+        </Box>
+      </Paper>
+    </motion.div>
   );
 }

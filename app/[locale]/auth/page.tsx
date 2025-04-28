@@ -8,14 +8,14 @@ import { ToastContainer } from "react-toastify";
 import { useAlert } from "../items/hooks/useAlert";
 import { useLoginMutation } from "@/app/Redux/Slices/Auth/authApi";
 import { useTranslations } from "next-intl";
-
+import { motion } from "framer-motion";
 
 const AuthPage = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
   const [payload, setPayload] = useState({ email: "", password: "" });
   const { showSuccess, showError } = useAlert();
-  const t = useTranslations()
+  const t = useTranslations();
 
   //   handle inputs change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,10 @@ const AuthPage = () => {
   return (
     <>
       <ToastContainer />
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
         className="login w-full h-screen flex items-center justify-center relative "
         style={{ background: "linear-gradient(to left, #EDF4F1, #E3EBF5)" }}
         dir="rtl"
@@ -59,10 +62,16 @@ const AuthPage = () => {
         >
           <span className="flex flex-col items-start gap-1">
             <h2 className="text-[#0E0E0E] font-semibold"> </h2>
-            <p className="text-[13px]"> {t('settings.roles.enter_user_data')}</p>
+            <p className="text-[13px]">
+              {" "}
+              {t("settings.roles.enter_user_data")}
+            </p>
           </span>
           <div className="input  w-full flex flex-col items-start gap-2">
-            <p className="font-semibold text-[15px]"> {t('alerts.enter_email')}</p>
+            <p className="font-semibold text-[15px]">
+              {" "}
+              {t("alerts.enter_email")}
+            </p>
             <span className="flex items-center justify-between border-2 px-3 rounded-2xl  w-full focus:outline-none focus:ring-2 focus:ring-blue-500 border-[#2664B1]">
               <input
                 onChange={handleInputChange}
@@ -75,7 +84,10 @@ const AuthPage = () => {
             </span>
           </div>
           <div className="input  w-full flex flex-col items-start gap-2">
-            <p className="font-semibold text-[15px]"> {t('alerts.enter_password')}</p>
+            <p className="font-semibold text-[15px]">
+              {" "}
+              {t("alerts.enter_password")}
+            </p>
             <span className="flex items-center justify-between border-2 px-3 rounded-2xl  w-full focus:outline-none focus:ring-2 focus:ring-blue-500 border-[#2664B1]">
               <input
                 onChange={handleInputChange}
@@ -87,14 +99,20 @@ const AuthPage = () => {
               <FaRegEyeSlash className="text-[20px] text-zinc-500" />
             </span>
           </div>
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#2664B1] text-white self-center w-full p-2 rounded-lg cursor-pointer mt-4"
             onClick={handleSubmit}
           >
-            {t('alerts.login')}
-          </button>
+            {t("alerts.login")}
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

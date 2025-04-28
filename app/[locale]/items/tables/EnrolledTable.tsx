@@ -16,6 +16,7 @@ import {
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
+import {motion} from "framer-motion"
 
 export default function EnrolledTable({
   users,
@@ -234,7 +235,14 @@ export default function EnrolledTable({
   };
 
   return (
-    <>
+    <motion.div
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.4,
+      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+    }}
+  >
       <ToastContainer />
       <Paper
         sx={{
@@ -252,7 +260,7 @@ export default function EnrolledTable({
         }}
       >
         <Box sx={{ overflowX: "auto" }}>
-          <div style={{ minWidth: 800 }}>
+          <div style={{ minWidth: 800, height: 600 }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -283,6 +291,6 @@ export default function EnrolledTable({
           </div>
         </Box>
       </Paper>
-    </>
+    </motion.div>
   );
 }

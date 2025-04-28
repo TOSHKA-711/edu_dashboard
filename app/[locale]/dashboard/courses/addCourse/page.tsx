@@ -10,6 +10,7 @@ import { useImageUpload } from "@/app/[locale]/items/hooks/useImageUploader";
 import { useAlert } from "@/app/[locale]/items/hooks/useAlert";
 import { useTranslations } from "next-intl";
 import CourseDetailsSelectBtns from "@/app/[locale]/items/inputs&btns/CourseDetialsSelectBtns";
+import {motion} from "framer-motion"
 
 const Page = () => {
   const t = useTranslations();
@@ -191,13 +192,19 @@ const Page = () => {
                 {t("courses.add.upload_image")}
               </span>
 
-              <button
+              <motion.button
+       whileTap={{ scale: 0.9 }}
+       transition={{
+         type: 'spring',
+         stiffness: 400,
+         damping: 10
+       }}
                 type="button"
                 className="flex items-center justify-center text-[#DB340B] text-[16px] font-bold border-2 pt-1 pb-2 px-7 rounded-full cursor-pointer"
                 onClick={resetImage}
               >
                 {t("courses.add.delete_image")}
-              </button>
+              </motion.button>
             </div>
 
             {/* Hidden file input */}
@@ -259,12 +266,18 @@ const Page = () => {
           </span>
         </div>
         {/* submit  */}
-        <button
+        <motion.button
+       whileTap={{ scale: 0.9 }}
+       transition={{
+         type: 'spring',
+         stiffness: 400,
+         damping: 10
+       }}
           className="text-white bg-[#2664B1] text-2xl py-2 px-24 rounded-full self-center mt-6 cursor-pointer max-sm:px-15"
           onClick={handleSubmit}
         >
           {t("courses.add.confirm")}
-        </button>
+        </motion.button>
       </div>
     </>
   );

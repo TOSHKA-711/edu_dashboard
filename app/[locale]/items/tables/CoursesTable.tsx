@@ -11,6 +11,7 @@ import { useChangeCourseStatusMutation } from "@/app/Redux/Slices/Courses/course
 import { useAlert } from "../hooks/useAlert";
 import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { useTranslations } from "next-intl";
+import {motion} from "framer-motion"
 
 export default function CoursesTable({ userId }: { userId: number }) {
   const t = useTranslations();
@@ -31,7 +32,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
   if (!courses || courses.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 text-lg">
-       {t("alerts.no_courses_found")}{" "}
+        {t("alerts.no_courses_found")}{" "}
         <Image
           src={"/404 Error-rafiki.svg"}
           alt="not found"
@@ -74,7 +75,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
     },
     {
       field: "instructor",
-      headerName: `${t('btns.teachers')}`,
+      headerName: `${t("btns.teachers")}`,
       width: 150,
       sortable: true,
       renderCell: (params) => (
@@ -95,7 +96,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
     },
     {
       field: "progress",
-      headerName:`${t('alerts.progress')}`,
+      headerName: `${t("alerts.progress")}`,
       width: 180,
       sortable: true,
       renderCell: (params) => (
@@ -130,7 +131,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
             height: "100%",
           }}
         >
-          {params.row.course.session_count} 
+          {params.row.course.session_count}
         </div>
       ),
     },
@@ -197,59 +198,68 @@ export default function CoursesTable({ userId }: { userId: number }) {
   const handleChangeCourseStatus = async (id: number) => {
     try {
       await changeCourseStatus(id).unwrap();
-      showSuccess(`${t('alerts.course_status_changed_success')}`);
+      showSuccess(`${t("alerts.course_status_changed_success")}`);
       await refetch();
     } catch {
-      showError(`${t('alerts.course_status_changed_failed')}`);
+      showError(`${t("alerts.course_status_changed_failed")}`);
     }
   };
 
   return (
-    <Paper
-      sx={{
-        height: 600,
-        width: "100%",
-        background: "",
-        marginBottom: "3rem",
-        "& .MuiToolbar-root": { direction: "ltr" },
-        "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
-        "& .MuiDataGrid-row": { gap: "2rem" },
-        "& .MuiDataGrid-columnHeaders": {
-          background: "white",
-          padding: "12px 0",
-        },
-      }}
-    >
-      <Box sx={{ overflowX: "auto" }}>
-        <div style={{ minWidth: 800 }}>
-          <DataGrid
-            rows={courses ?? []}
-            columns={columns}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10, page: 0 } },
-            }}
-            pageSizeOptions={[10]}
-            sx={{
-              border: 0,
-              "& .MuiDataGrid-cell": {
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              },
-              "& .MuiDataGrid-columnHeaderTitle": {
-                fontSize: "14px",
-                fontFamily: "Tajawal",
-                fontWeight: "bold",
-              },
-              "& .MuiDataGrid-cell.MuiDataGrid-cell": {
-                fontSize: "15px",
-                fontFamily: "Tajawal",
-                fontWeight: "500",
-              },
-            }}
-          />
-        </div>
-      </Box>
-    </Paper>
+    <motion.div
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.4,
+      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+    }}
+  >
+      <Paper
+        sx={{
+          height: 600,
+          width: "100%",
+          background: "",
+          marginBottom: "3rem",
+          "& .MuiToolbar-root": { direction: "ltr" },
+          "& .MuiDataGrid-row--borderBottom": { gap: "2rem", background: "" },
+          "& .MuiDataGrid-row": { gap: "2rem" },
+          "& .MuiDataGrid-columnHeaders": {
+            background: "white",
+            padding: "12px 0",
+          },
+        }}
+      >
+        <Box sx={{ overflowX: "auto" }}>
+          <div style={{ minWidth: 800, height: 600 }}>
+            <DataGrid
+              rows={courses ?? []}
+              columns={columns}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10, page: 0 } },
+              }}
+              pageSizeOptions={[10]}
+              sx={{
+                border: 0,
+                "& .MuiDataGrid-cell": {
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                },
+                "& .MuiDataGrid-columnHeaderTitle": {
+                  fontSize: "14px",
+                  fontFamily: "Tajawal",
+                  fontWeight: "bold",
+                },
+                "& .MuiDataGrid-cell.MuiDataGrid-cell": {
+                  fontSize: "15px",
+                  fontFamily: "Tajawal",
+                  fontWeight: "500",
+                },
+              }}
+            />
+          </div>
+        </Box>
+      </Paper>
+    </motion.div>
   );
 }

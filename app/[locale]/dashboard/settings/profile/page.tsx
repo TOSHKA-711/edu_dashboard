@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { logout } from "@/app/Redux/Slices/Auth/authSlice";
 import { useAlert } from "@/app/[locale]/items/hooks/useAlert";
 import { useTranslations } from "next-intl";
+import {motion} from "framer-motion"
 
 const Page = () => {
   const [isRendered, setIsRendered] = useState(false);
@@ -189,12 +190,18 @@ const Page = () => {
               </span>
             </div>
           </div>
-          <button
+          <motion.button
+       whileTap={{ scale: 0.9 }}
+       transition={{
+         type: 'spring',
+         stiffness: 400,
+         damping: 10
+       }}
             className="bg-[#2664B1] text-white self-center w-full p-2 rounded-lg cursor-pointer mt-4"
             onClick={handleChangePassword}
           >
             {t("settings.profile.confirm_password")}
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

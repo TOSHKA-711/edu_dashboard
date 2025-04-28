@@ -13,6 +13,7 @@ import { useAlert } from "@/app/[locale]/items/hooks/useAlert";
 import { FormControl, MenuItem } from "@mui/material";
 import AllRolesTable from "@/app/[locale]/items/tables/AllRolesTable";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const Page = () => {
   const t = useTranslations();
@@ -172,12 +173,18 @@ const Page = () => {
                 </MenuItem>
               </Select>
             </FormControl>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 10,
+              }}
               className="bg-[#2664B1] text-white self-center w-full p-2 rounded-lg cursor-pointer mt-4"
               onClick={handleSubmit}
             >
               {t("settings.roles.confirm")}
-            </button>
+            </motion.button>
           </div>
         </div>
         <AllRolesTable />

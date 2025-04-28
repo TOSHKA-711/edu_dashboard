@@ -13,6 +13,7 @@ import {
   useGetAllRolesQuery,
 } from "@/app/Redux/Slices/Settings/settingsApi";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 export default function AllRolesTable() {
   const t = useTranslations();
@@ -70,7 +71,7 @@ export default function AllRolesTable() {
     },
     {
       field: "email",
-      headerName:`${t('tables.email')}`,
+      headerName: `${t("tables.email")}`,
       width: 180,
       renderCell: (params) => (
         <div
@@ -104,7 +105,7 @@ export default function AllRolesTable() {
     },
     {
       field: "identity_id",
-      headerName: `${t('tables.identity')}`,
+      headerName: `${t("tables.identity")}`,
       width: 90,
       renderCell: (params) => (
         <div
@@ -121,7 +122,7 @@ export default function AllRolesTable() {
     },
     {
       field: "role",
-      headerName: `${t('setting.profile.role')}`,
+      headerName: `${t("settings.profile.role")}`,
       width: 130,
       renderCell: (params) => (
         <div
@@ -202,14 +203,22 @@ export default function AllRolesTable() {
 
     try {
       await deleteRole(instructorId).unwrap();
-      showSuccess(`${t('alerts.user_deleted_success')}`);
+      showSuccess(`${t("alerts.user_deleted_success")}`);
     } catch {
-      showError(`${t('alerts.user_delete_failed')}`);
+      showError(`${t("alerts.user_delete_failed")}`);
     }
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+      className="w-full"
+    >
       <ToastContainer />
       <Paper
         sx={{
@@ -257,6 +266,6 @@ export default function AllRolesTable() {
           </div>
         </Box>
       </Paper>
-    </>
+    </motion.div>
   );
 }

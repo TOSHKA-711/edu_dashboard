@@ -16,6 +16,7 @@ import { setSelectedInstructor } from "@/app/Redux/Slices/Instructors/Instructor
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
+import {motion} from "framer-motion"
 
 export default function TeachersTable() {
   const t = useTranslations();
@@ -76,7 +77,7 @@ export default function TeachersTable() {
     },
     {
       field: "bio",
-      headerName: `${t('tables.bio')}`,
+      headerName: `${t("tables.bio")}`,
       width: 280,
       renderCell: (params) => (
         <div
@@ -93,7 +94,7 @@ export default function TeachersTable() {
     },
     {
       field: "info",
-      headerName: `${t('tables.about')}`,
+      headerName: `${t("tables.about")}`,
       width: 300,
       renderCell: (params) => (
         <div
@@ -202,22 +203,27 @@ export default function TeachersTable() {
   };
 
   const handleDelete = async (instructorId: number) => {
-    const confirmDelete = window.confirm(
-     `${t('alerts.delete_user_confirm')}`
-    );
+    const confirmDelete = window.confirm(`${t("alerts.delete_user_confirm")}`);
     if (!confirmDelete) return;
 
     try {
       await deleteInstructor({ instructorId }).unwrap();
-      showSuccess(`${t('alerts.user_deleted_success')}`);
+      showSuccess(`${t("alerts.user_deleted_success")}`);
       await refetch();
     } catch {
-      showError(`${t('alerts.user_delete_failed')}`);
+      showError(`${t("alerts.user_delete_failed")}`);
     }
   };
 
   return (
-    <>
+    <motion.div
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.4,
+      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+    }}
+  >
       <ToastContainer />
       <Paper
         sx={{
@@ -234,7 +240,7 @@ export default function TeachersTable() {
         }}
       >
         <Box sx={{ overflowX: "auto" }}>
-          <div style={{ minWidth: 800 }}>
+          <div style={{ minWidth: 800, height: 600 }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -265,6 +271,6 @@ export default function TeachersTable() {
           </div>
         </Box>
       </Paper>
-    </>
+    </motion.div>
   );
 }

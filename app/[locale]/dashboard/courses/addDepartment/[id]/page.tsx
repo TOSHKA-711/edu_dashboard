@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import { useAlert } from "@/app/[locale]/items/hooks/useAlert";
 import { InputField } from "@/app/[locale]/items/inputs&btns/InputField";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const Page = () => {
   const params = useParams();
@@ -97,9 +98,9 @@ const Page = () => {
     });
     try {
       await setDepartment(payload).unwrap();
-      showSuccess(`${t('alerts.department_added_success')}`);
+      showSuccess(`${t("alerts.department_added_success")}`);
     } catch {
-      showError(`${t('alerts.department_added_failed')}`);
+      showError(`${t("alerts.department_added_failed")}`);
     }
   };
   // handle add session
@@ -110,9 +111,9 @@ const Page = () => {
     });
     try {
       await setSession(payload).unwrap();
-      showSuccess(`${t('alerts.session_added_success')}`);
+      showSuccess(`${t("alerts.session_added_success")}`);
     } catch {
-      showError(`${t('alerts.session_added_failedsession_added_failed')}`);
+      showError(`${t("alerts.session_added_failedsession_added_failed")}`);
     }
   };
 
@@ -120,15 +121,15 @@ const Page = () => {
 
   const handleDeleteDepartment = async (id: number) => {
     const confirmDelete = window.confirm(
-        `${t('alerts.delete_section_confirm')}`
+      `${t("alerts.delete_section_confirm")}`
     );
     if (!confirmDelete) return;
 
     try {
       await deleteDepartment(id).unwrap();
-      showSuccess(`${t('alerts.delete_section_success')}`);
+      showSuccess(`${t("alerts.delete_section_success")}`);
     } catch {
-      showError(`${t('alerts.delete_section_confirm')}`);
+      showError(`${t("alerts.delete_section_confirm")}`);
     }
   };
 
@@ -138,14 +139,22 @@ const Page = () => {
       <div className="add-department bg-white p-5 rounded-lg flex flex-col items-start gap-4 mb-5 max-sm:p-2">
         {/* العنوان الرئيسي */}
         <div className="title w-full flex items-center justify-between text-[20px] mb-5">
-          <p className="font-semibold max-md:text-[17px]">{t("tables.course_content")},</p>
-          <button
+          <p className="font-semibold max-md:text-[17px]">
+            {t("tables.course_content")},
+          </p>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="flex items-center gap-1 text-[#2664B1] cursor-pointer max-md:text-[17px]"
             onClick={handleAddDepartmentClick}
           >
             <IoMdAdd />
             {t("courses.add.add_department")}
-          </button>
+          </motion.button>
         </div>
 
         {/* الأقسام */}
@@ -156,7 +165,9 @@ const Page = () => {
           >
             <div className="flex items-center justify-between w-full">
               <span className="title flex items-center gap-1 text-[18px]">
-                <p className="font-semibold max-md:text-[17px]">{section.title} :</p>
+                <p className="font-semibold max-md:text-[17px]">
+                  {section.title} :
+                </p>
                 <p className="flex items-center gap-1 text-zinc-600">
                   <CiFileOn />
                   {/* {section.subtitle} */}
@@ -201,13 +212,19 @@ const Page = () => {
               </div>
             )}
 
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 10,
+              }}
               className="add-lesson flex items-center gap-1 text-[#2664B1] cursor-pointer text-[20px]"
               onClick={() => handleAddSessionClick(section.id)}
             >
               <IoMdAdd />
               {t("courses.add.add_lesson")}
-            </button>
+            </motion.button>
             {isAddingSession &&
               sessionPayload.department_id === section.id.toString() && (
                 <>
@@ -216,7 +233,7 @@ const Page = () => {
                     // ref={sessionRef}
                   >
                     <InputField
-                      label= {t("courses.add.title_l_ar")}
+                      label={t("courses.add.title_l_ar")}
                       type="text"
                       name="title"
                       value={sessionPayload.title}
@@ -230,12 +247,18 @@ const Page = () => {
                       onChange={handleAddSessionInputsChange}
                     />
                   </div>
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 10,
+                    }}
                     className="text-white bg-[#2664B1] text-2xl py-2 px-24 rounded-full self-center cursor-pointer max-md:px-15"
                     onClick={handleAddSession}
                   >
                     {t("courses.add.confirm")}
-                  </button>
+                  </motion.button>
                 </>
               )}
           </div>
@@ -262,12 +285,18 @@ const Page = () => {
                 onChange={handleAddDepartmentInputsChange}
               />
             </div>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 10,
+              }}
               className="text-white bg-[#2664B1] text-2xl py-2 px-24 rounded-full self-center cursor-pointer max-md:px-15"
               onClick={handleAddDepartment}
             >
-             {t("courses.add.confirm")}
-            </button>
+              {t("courses.add.confirm")}
+            </motion.button>
           </>
         )}
       </div>

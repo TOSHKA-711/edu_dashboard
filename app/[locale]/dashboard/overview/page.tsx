@@ -5,6 +5,7 @@ import { useGetAllOverViewDataQuery } from "@/app/Redux/Slices/OverView/overView
 import OverViewCard from "../../items/cards/OverViewCard";
 import DashLineChart from "../../items/charts/LineChart";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const OverView = () => {
   const t = useTranslations();
@@ -15,8 +16,13 @@ const OverView = () => {
   }
 
   return (
-    <div className="overview w-full flex flex-col gap-5 pb-3">
-      <div className="cards w-full flex flex-row items-center justify-start gap-2">
+    <div className="overview w-full flex flex-col gap-10 pb-3">
+      <motion.div
+        className="cards w-full flex flex-row items-center justify-start gap-2"
+        animate={{ opacity: 1, y: 10 }}
+        initial={{ opacity: 0, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <OverViewCard
           data={
             data?.totals ?? {
@@ -30,8 +36,13 @@ const OverView = () => {
             }
           }
         />
-      </div>
-      <div className="charts w-full flex flex-row items-center justify-start gap-5 max-md:flex-col">
+      </motion.div>
+      <motion.div
+        className="charts w-full flex flex-row items-center justify-start gap-5 max-md:flex-col"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <DashLineChart
           areaColor="#25CD25"
           gradientId="greenGradient"
@@ -46,7 +57,7 @@ const OverView = () => {
           title={t("home.profit")}
           data={data?.profit_chart ?? []}
         />
-      </div>
+      </motion.div>
       {/* <div className="courses flex flex-col gap-4 mt-2">
         <h1 className="text-2xl font-bold">دورات المستخدمين المسجلين</h1>
        <div className="flex flex-col gap-3 items-stretch " >

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { RiUploadLine } from "react-icons/ri";
+import { motion } from "framer-motion";
 // alert
 import { ToastContainer } from "react-toastify";
 
@@ -128,13 +129,19 @@ const Page = () => {
                 {t("instructors.add.upload_image")}
               </span>
 
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                }}
                 type="button"
                 className="flex items-center justify-center text-[#DB340B] text-[16px] font-bold border-2 pt-1 pb-2 px-7 rounded-full cursor-pointer"
                 onClick={resetImage}
               >
                 {t("instructors.add.delete_image")}
-              </button>
+              </motion.button>
             </div>
 
             {/* Hidden file input */}
@@ -249,18 +256,30 @@ const Page = () => {
 
         {/* --------------- */}
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             {t("instructors.add.save")}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >
             {t("instructors.add.cancel")}
-          </button>
+          </motion.button>
         </div>
       </div>
     </>

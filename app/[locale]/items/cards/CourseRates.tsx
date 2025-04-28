@@ -6,6 +6,7 @@ import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useChangeCourseRateStatusMutation } from "@/app/Redux/Slices/Courses/courseApi";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -83,7 +84,13 @@ const CourseRates = ({
                 {" "}
                 {review.comment}
               </p>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                }}
                 className="text-white  text-md py-1 px-6 rounded-sm self-center mt-6 cursor-pointer max-sm:px-15"
                 style={{
                   backgroundColor: `${
@@ -101,7 +108,7 @@ const CourseRates = ({
                 {review.is_accept == 1
                   ? `${t("btns.refuse")}`
                   : `${t("btns.confirm")}`}
-              </button>
+              </motion.button>
             </div>
           </div>
         ))}
