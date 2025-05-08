@@ -142,16 +142,16 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               "12-1",
               <span>AR</span>
             ),
-            // getItem(
-            //   <button
-            //     onClick={() => setLanguage("he")}
-            //     className="cursor-pointer"
-            //   >
-            //     עברית
-            //   </button>,
-            //   "12-3",
-            //   <span>HE</span>
-            // ),
+            getItem(
+              <button
+                onClick={() => setLanguage("he")}
+                className="cursor-pointer"
+              >
+                עברית
+              </button>,
+              "12-3",
+              <span>HE</span>
+            ),
           ]
         ),
       ]
