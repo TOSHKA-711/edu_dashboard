@@ -20,6 +20,9 @@ const ViewStudent = () => {
     (state: RootState) => state.students.selectedUser
   );
 
+  console.log(selectedUser);
+  
+
   useEffect(() => {
     setIsRendered(true);
   }, []);

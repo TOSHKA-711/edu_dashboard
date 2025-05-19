@@ -58,6 +58,21 @@ const OverView = () => {
           data={data?.profit_chart ?? []}
         />
       </motion.div>
+      <motion.div
+        className="charts w-full flex flex-row items-center justify-start gap-5 max-md:flex-col -mt-5 mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <DashLineChart
+          areaColor="#25CD25"
+          gradientId="greenGradient"
+          dir={true}
+          title={t("home.users")}
+          data={data?.user_chart ?? [{ date: "", value: 0 }]}
+        />
+    
+      </motion.div>
       {/* <div className="courses flex flex-col gap-4 mt-2">
         <h1 className="text-2xl font-bold">دورات المستخدمين المسجلين</h1>
        <div className="flex flex-col gap-3 items-stretch " >

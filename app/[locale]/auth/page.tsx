@@ -2,13 +2,13 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { CiMail } from "react-icons/ci";
-import { FaRegEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import { useAlert } from "../items/hooks/useAlert";
 import { useLoginMutation } from "@/app/Redux/Slices/Auth/authApi";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { IoKeyOutline } from "react-icons/io5";
 
 const AuthPage = () => {
   const router = useRouter();
@@ -96,7 +96,7 @@ const AuthPage = () => {
                 type="password"
                 className="border-none outline-none px-3 py-2 w-full"
               />
-              <FaRegEyeSlash className="text-[20px] text-zinc-500" />
+              <IoKeyOutline  className="text-[20px] text-zinc-500" />
             </span>
           </div>
           <motion.button

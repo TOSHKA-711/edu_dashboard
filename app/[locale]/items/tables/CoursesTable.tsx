@@ -2,20 +2,16 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 import LinearProgressBar from "../charts/LinearProgress";
 import Image from "next/image";
 import MenuDots from "../MenuDots";
-// import { useChangeCourseStatusMutation } from "@/app/Redux/Slices/Courses/courseApi";
-// import { useAlert } from "../hooks/useAlert";
 import { useGetStudentCoursesQuery } from "@/app/Redux/Slices/Students/studentsApi";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 
 export default function CoursesTable({ userId }: { userId: number }) {
   const t = useTranslations();
-  // const { showSuccess, showError } = useAlert();
-  // const [changeCourseStatus] = useChangeCourseStatusMutation();
   const { data, refetch } = useGetStudentCoursesQuery(userId, {
     skip: !userId,
   });
@@ -42,7 +38,18 @@ export default function CoursesTable({ userId }: { userId: number }) {
     );
   }
 
-  // const router = useRouter();
+  // 🟢 تفكيك بيانات الكورس
+  const flatCourses = courses.map((item) => ({
+    id: item.id,
+    title: item.course.title,
+    image: item.course.image,
+    instructor: `${item.course.instructor.first_name} ${item.course.instructor.last_name}`,
+    session_count: item.course.session_count,
+    active: item.course.active,
+    attendance_percentage: item.attendance_percentage,
+    course: item.course, // محتاجينها عشان MenuDots
+  }));
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 50 },
     {
@@ -50,25 +57,17 @@ export default function CoursesTable({ userId }: { userId: number }) {
       headerName: `${t("tables.course")}`,
       width: 250,
       sortable: true,
+      filterable: true,
       renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
+        <div className="flex gap-2 items-center">
           <Image
-            alt="user"
-            src={params.row.course.image}
+            alt="course"
+            src={params.row.image}
             width={40}
             height={30}
             className="h-10"
           />
-          {params.row.course.title}
+          {params.row.title}
         </div>
       ),
     },
@@ -77,21 +76,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
       headerName: `${t("btns.teachers")}`,
       width: 150,
       sortable: true,
-      renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {params.row.course.instructor.first_name}{" "}
-          {params.row.course.instructor.last_name}
-        </div>
-      ),
+      filterable: true,
     },
     {
       field: "progress",
@@ -99,47 +84,24 @@ export default function CoursesTable({ userId }: { userId: number }) {
       width: 180,
       sortable: true,
       renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
+        <div className="flex items-center w-full">
           <LinearProgressBar value={params.row.attendance_percentage} />
         </div>
       ),
     },
-
     {
-      field: "attendance",
+      field: "session_count",
       headerName: `${t("tables.attendance")}`,
       width: 100,
       sortable: true,
-      renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            justifyContent: "start",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {params.row.course.session_count}
-        </div>
-      ),
+      filterable: true,
     },
-
     {
-      field: "status",
+      field: "active",
       headerName: `${t("tables.status")}`,
       width: 120,
       sortable: true,
+      filterable: true,
       renderCell: (params) => (
         <div
           style={{
@@ -148,15 +110,12 @@ export default function CoursesTable({ userId }: { userId: number }) {
             alignItems: "center",
             width: "80%",
             height: "60%",
-            alignSelf: "center",
             borderRadius: "6px",
-            backgroundColor: `${
-              params.row.course.active == 1 ? "#ECF8EF" : "#FDECEC"
-            }`,
-            color: `${params.row.course.active == 1 ? "#43B75D" : "#DB340B"}`,
+            backgroundColor: params.row.active == 1 ? "#ECF8EF" : "#FDECEC",
+            color: params.row.active == 1 ? "#43B75D" : "#DB340B",
           }}
         >
-          {params.row.course.active == 1
+          {params.row.active == 1
             ? `${t("tables.enabled")}`
             : `${t("tables.disabled")}`}
         </div>
@@ -167,42 +126,14 @@ export default function CoursesTable({ userId }: { userId: number }) {
       headerName: `${t("tables.action")}`,
       width: 90,
       sortable: false,
+      filterable: false,
       renderCell: (params) => (
-        <div
-          style={{
-            display: "flex",
-            gap: "4px",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {/* <Tooltip title={t("tables.status")}>
-            <IconButton
-              onClick={() => handleChangeCourseStatus(params.row.id)}
-              color="success"
-              size="small"
-              sx={{ cursor: "pointer", gap: "3px" }}
-            >
-              <MdOutlinePublishedWithChanges />
-            </IconButton>
-          </Tooltip> */}
+        <div className="flex justify-center items-center w-full">
           <MenuDots course={params.row.course} />
         </div>
       ),
     },
   ];
-
-  // const handleChangeCourseStatus = async (id: number) => {
-  //   try {
-  //     await changeCourseStatus(id).unwrap();
-  //     showSuccess(`${t("alerts.course_status_changed_success")}`);
-  //     await refetch();
-  //   } catch {
-  //     showError(`${t("alerts.course_status_changed_failed")}`);
-  //   }
-  // };
 
   return (
     <motion.div
@@ -235,7 +166,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
         <Box sx={{ overflowX: "auto" }}>
           <div style={{ minWidth: 800, height: 600 }}>
             <DataGrid
-              rows={courses ?? []}
+              rows={flatCourses ?? []}
               columns={columns}
               initialState={{
                 pagination: { paginationModel: { pageSize: 10, page: 0 } },

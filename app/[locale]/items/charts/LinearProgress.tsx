@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
-import { useTranslations } from "next-intl";
+// import { useTranslations } from "next-intl";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -26,13 +26,13 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 export default function LinearProgressBar({ value }: { value: number }) {
-  const t = useTranslations()
-  const getLabel = (value: number) => {
-    if (value < 50) return t("alerts.poor");
-    if (value < 70) return t("alerts.good");
-    if (value < 85) return t("alerts.veryGood");
-    return t("alerts.excellent");
-  };
+  // const t = useTranslations()
+  // const getLabel = (value: number) => {
+  //   if (value < 50) return t("alerts.poor");
+  //   if (value < 70) return t("alerts.good");
+  //   if (value < 85) return t("alerts.veryGood");
+  //   return t("alerts.excellent");
+  // };
   return (
     <Stack
       spacing={2}
@@ -43,7 +43,7 @@ export default function LinearProgressBar({ value }: { value: number }) {
     >
       <div className="flex items-center justify-between w-full h-3">
         <p>{value}%</p>
-        <p>{getLabel(value)}</p>
+        {/* <p>{getLabel(value)}</p> */}
       </div>
       <BorderLinearProgress variant="determinate" value={value ?? 0} />
     </Stack>

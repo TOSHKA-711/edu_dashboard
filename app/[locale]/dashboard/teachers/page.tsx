@@ -14,7 +14,7 @@ const Page = () => {
     router.push("/dashboard/teachers/addTeacher");
   };
   return (
-    <div className="flex flex-col gap-4 -mt-10 pb-4">
+    <div className="flex flex-col gap-4 -mt-0 pb-4">
       <motion.button
        whileTap={{ scale: 0.9 }}
        transition={{

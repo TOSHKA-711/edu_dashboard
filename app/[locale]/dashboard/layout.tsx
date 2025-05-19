@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { PieChartOutlined } from "@ant-design/icons";
 import { FiUsers } from "react-icons/fi";
 import { GoArrowSwitch } from "react-icons/go";
-import { FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
+import { FaArrowCircleLeft, FaChalkboardTeacher, FaLaptopCode } from "react-icons/fa";
 import { MdOutlineWidgets, MdOutlinePayments } from "react-icons/md";
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { LuHistory } from "react-icons/lu";
@@ -49,6 +49,14 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
   }, [language, path, router]);
 
+//  handle go back 
+const goBack = () => {
+  if (typeof window !== 'undefined' && window.history.length > 1) {
+    router.back();
+  } else {
+    router.push('/');
+  }
+};
   // handle logout
   const handleLogout = () => {
     router.push("/auth");
@@ -193,26 +201,97 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     switch (true) {
+      case path.includes("/students/addStudent"):
+        setBreadcrumbItems(
+          [{ title: `${t("students.all.students")} / ${t("students.all.add_student")}` }]
+        );
+        break;
+      case path.includes("/students/editStudent"):
+        setBreadcrumbItems(
+          [{ title: `${t("students.all.students")} / ${t("btns.edit")}` }]
+        );
+        break;
+      case path.includes("/students/viewStudent"):
+        setBreadcrumbItems(
+          [{ title: `${t("students.all.students")} / ${t("btns.view")}` }]
+        );
+        break;
       case path.includes("/students"):
         setBreadcrumbItems(
           breadcrumbMap["3"] || [{ title: `${t("students.all.students")}` }]
         );
         break;
+        case path.includes("/parents/addParent"):
+          setBreadcrumbItems(
+            [{ title: `${t("parents.all.guardians")} / ${t("parents.all.add_guardian")}` }]
+          );
+          break;
+        case path.includes("/parents/editParent"):
+          setBreadcrumbItems(
+            [{ title: `${t("parents.all.guardians")} / ${t("btns.edit")}` }]
+          );
+          break;
+        case path.includes("/parents/viewParent"):
+          setBreadcrumbItems(
+            [{ title: `${t("parents.all.guardians")} / ${t("btns.view")}` }]
+          );
+          break;
       case path.includes("/parents"):
         setBreadcrumbItems(
           breadcrumbMap["4"] || [{ title: `${t("parents.all.guardians")}` }]
         );
         break;
+        case path.includes("/teachers/addTeacher"):
+          setBreadcrumbItems(
+            [{ title: `${t("instructors.all.teachers")} / ${t("instructors.all.add_teacher")}` }]
+          );
+          break;
+        case path.includes("/teachers/editTeacher"):
+          setBreadcrumbItems(
+            [{ title: `${t("instructors.all.teachers")} / ${t("btns.edit")}` }]
+          );
+          break;
+        case path.includes("/teachers/viewTeacher"):
+          setBreadcrumbItems(
+            [{ title: `${t("instructors.all.teachers")} / ${t("btns.view")}` }]
+          );
+          break;
       case path.includes("/teachers"):
         setBreadcrumbItems(
           breadcrumbMap["5"] || [{ title: `${t("instructors.all.teachers")} ` }]
         );
         break;
+        case path.includes("/courses/addCourse"):
+          setBreadcrumbItems(
+            [{ title: `${t("courses.all.courses")} / ${t("courses.all.add_course")}` }]
+          );
+          break;
+        case path.includes("/courses/editCourse"):
+          setBreadcrumbItems(
+            [{ title: `${t("courses.all.courses")} / ${t("btns.edit")}` }]
+          );
+          break;
+        case path.includes("/courses/viewCourse"):
+          setBreadcrumbItems(
+            [{ title: `${t("courses.all.courses")} / ${t("btns.view")}` }]
+          );
+          break;
       case path.includes("/courses"):
         setBreadcrumbItems(
           breadcrumbMap["6"] || [{ title: `${t("courses.all.courses")}` }]
         );
         break;
+        case path.includes("/subjects/addSubject"):
+          setBreadcrumbItems(
+            [{ title: `${t("categories.all.topics")} / ${t("categories.all.add_topic")}` }]
+          );
+          break;
+        case path.includes("/subjects/editCategory"):
+          setBreadcrumbItems(
+            [{ title: `${t("categories.all.topics")} / ${t("btns.edit")}` }]
+          );
+          break;
+    
       case path.includes("/subjects"):
         setBreadcrumbItems(
           breadcrumbMap["7"] || [{ title: `${t("categories.all.topics")}` }]
@@ -288,10 +367,17 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             background: "linear-gradient(to left, #EDF4F1, #E3EBF5)",
           }}
         >
+          <div className="flex w-full items-center justify-between">
           <Breadcrumb
             style={{ margin: "20px 0", direction: "rtl", fontSize: "30px" }}
             items={breadcrumbItems.map((item) => ({ title: item.title }))}
-          />
+          />  
+         
+            <button onClick={goBack} className="cursor-pointer p-1">
+            <FaArrowCircleLeft className="text-[#3c6dd9] text-4xl "/>
+            </button>
+          </div>
+        
           {children}
         </Content>
       </Layout>

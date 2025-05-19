@@ -85,7 +85,7 @@ export default function SubjectsCardDots({
             router.push(`/dashboard/subjects/editCategory/${categoryId}`)
           }
         >
-          {t("btns.rates")} <CiEdit />
+          {t("btns.edit")} <CiEdit />
         </MenuItem>
         <MenuItem
           onClick={() => handleDeleteCategory(parseInt(String(categoryId)))}
