@@ -4,7 +4,7 @@ import { DashboardStatsType } from "../../types";
 export const OverViewApi = createApi({
   reducerPath: "OverViewApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://jmaheryapp.com/api",
+    baseUrl: "https://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");

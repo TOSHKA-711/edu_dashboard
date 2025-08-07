@@ -4,7 +4,7 @@ import { AllRolesResponseType } from "../../types";
 export const settingsApi = createApi({
   reducerPath: "settingsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://jmaheryapp.com/api",
+    baseUrl: "https://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");

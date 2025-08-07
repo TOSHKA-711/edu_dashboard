@@ -5,7 +5,7 @@ import { AllStudentCoursesType, GetAllStudentsResponseType } from "../../types";
 export const studentsApi = createApi({
   reducerPath: "studentsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://jmaheryapp.com/api",
+    baseUrl: "https://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");

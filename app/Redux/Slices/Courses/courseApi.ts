@@ -14,7 +14,7 @@ import {
 export const coursesApi = createApi({
   reducerPath: "coursesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://jmaheryapp.com/api",
+    baseUrl: "https://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
