@@ -14,7 +14,7 @@ import {
 export const coursesApi = createApi({
   reducerPath: "coursesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -170,14 +170,10 @@ export const coursesApi = createApi({
         },
       }),
     }),
-    setWarning: builder.mutation<
-      unknown,
-       number | string 
-    >({
-      query: ( userId) => ({
+    setWarning: builder.mutation<unknown, number | string>({
+      query: (userId) => ({
         url: `sendNotification/${userId}`,
         method: "GET",
-       
       }),
     }),
     changeCourseStatus: builder.mutation<unknown, number>({

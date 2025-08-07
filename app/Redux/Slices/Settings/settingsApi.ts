@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  AllRolesResponseType,
-} from "../../types";
+import { AllRolesResponseType } from "../../types";
 
 export const settingsApi = createApi({
   reducerPath: "settingsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");

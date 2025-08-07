@@ -5,7 +5,7 @@ import { LogType } from "../../types";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -36,7 +36,7 @@ export const authApi = createApi({
           }
 
           if (getState()) {
-            dispatch(setUser({ user, token , role , lang:"ar"}));
+            dispatch(setUser({ user, token, role, lang: "ar" }));
           } else {
             console.warn("Store is not initialized yet");
           }
@@ -45,21 +45,17 @@ export const authApi = createApi({
         }
       },
     }),
-    getLogs: builder.query<
-    {logs:LogType[]},
-    void
-  >({
-    query: () => `logsLogin`,
-    async onQueryStarted(arg, { queryFulfilled }) {
-      try {
-        await queryFulfilled;
-      } catch (error) {
-        console.error("Fetching Logs failed", error);
-      }
-    },
+    getLogs: builder.query<{ logs: LogType[] }, void>({
+      query: () => `logsLogin`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Fetching Logs failed", error);
+        }
+      },
+    }),
   }),
-  }),
-  
 });
 
-export const { useLoginMutation ,useGetLogsQuery} = authApi;
+export const { useLoginMutation, useGetLogsQuery } = authApi;

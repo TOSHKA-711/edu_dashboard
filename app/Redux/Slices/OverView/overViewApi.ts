@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {  DashboardStatsType } from "../../types";
+import { DashboardStatsType } from "../../types";
 
 export const OverViewApi = createApi({
   reducerPath: "OverViewApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -22,17 +22,13 @@ export const OverViewApi = createApi({
       query: () => "overview",
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
-         await queryFulfilled;
+          await queryFulfilled;
         } catch (error) {
           console.error("Fetching overview failed", error);
         }
       },
     }),
-    
-
   }),
 });
 
-export const {
-  useGetAllOverViewDataQuery,
-} = OverViewApi;
+export const { useGetAllOverViewDataQuery } = OverViewApi;

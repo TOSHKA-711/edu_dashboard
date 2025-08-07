@@ -1,11 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setAllInstructors } from "./InstructorsSlice";
-import {  AllInstructorCoursesType, AllInstructorRatesResponseType, GetAllInstructorsResponseType } from "../../types";
+import {
+  AllInstructorCoursesType,
+  AllInstructorRatesResponseType,
+  GetAllInstructorsResponseType,
+} from "../../types";
 
 export const instructorsApi = createApi({
   reducerPath: "instructorsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -30,39 +34,50 @@ export const instructorsApi = createApi({
         }
       },
     }),
-    getInstructorCourses: builder.query<AllInstructorCoursesType, string | number>({
+    getInstructorCourses: builder.query<
+      AllInstructorCoursesType,
+      string | number
+    >({
       query: (instructorId) => `instructorCourses/${instructorId}`,
     }),
-    getInstructorRates: builder.query<AllInstructorRatesResponseType, string | number>({
+    getInstructorRates: builder.query<
+      AllInstructorRatesResponseType,
+      string | number
+    >({
       query: (instructorId) => `instructorRating/${instructorId}`,
     }),
     setInstructor: builder.mutation<unknown, FormData>({
-      query: ( data ) => ({
+      query: (data) => ({
         url: `instructors`,
         method: "POST",
         body: data,
       }),
     }),
-    setInstructorUpdate: builder.mutation<unknown, { id: number; data: FormData }>({
+    setInstructorUpdate: builder.mutation<
+      unknown,
+      { id: number; data: FormData }
+    >({
       query: ({ id, data }) => ({
         url: `instructors/${id}`,
         method: "POST",
         body: data,
       }),
     }),
-    changeInstructorRateStatus: builder.mutation<unknown,{id:number,status:number}>({
-      query: ({id,status}) => ({
+    changeInstructorRateStatus: builder.mutation<
+      unknown,
+      { id: number; status: number }
+    >({
+      query: ({ id, status }) => ({
         url: `changeInstructorRatingStatusReview/${id}/${status}`,
         method: "GET",
       }),
     }),
     deleteInstructor: builder.mutation<unknown, { instructorId: number }>({
-        query: ({ instructorId }) => ({
-          url: `instructors/${instructorId}`,
-          method: "DELETE",
-        }),
+      query: ({ instructorId }) => ({
+        url: `instructors/${instructorId}`,
+        method: "DELETE",
       }),
-      
+    }),
   }),
 });
 
@@ -73,5 +88,5 @@ export const {
   useGetInstructorRatesQuery,
   useSetInstructorUpdateMutation,
   useChangeInstructorRateStatusMutation,
-  useDeleteInstructorMutation
+  useDeleteInstructorMutation,
 } = instructorsApi;

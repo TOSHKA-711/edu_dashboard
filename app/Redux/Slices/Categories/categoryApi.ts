@@ -4,7 +4,7 @@ import { AllCategoriesResponseType, CategoryType } from "../../types";
 export const categoriesApi = createApi({
   reducerPath: "categoriesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://morabrand.net/el-fahem-commuintyApp/public/api/",
+    baseUrl: "http://jmaheryapp.com/api",
     prepareHeaders: (headers) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("token");
@@ -22,7 +22,7 @@ export const categoriesApi = createApi({
       query: () => "categories",
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
-         await queryFulfilled;
+          await queryFulfilled;
         } catch (error) {
           console.error("Fetching categories failed", error);
         }
@@ -64,7 +64,6 @@ export const categoriesApi = createApi({
         method: "DELETE",
       }),
     }),
-
   }),
 });
 
@@ -73,5 +72,5 @@ export const {
   useGetCategoryQuery,
   useSetCategoryMutation,
   useUpdateCategoryMutation,
-  useDeleteCategoryMutation
+  useDeleteCategoryMutation,
 } = categoriesApi;
