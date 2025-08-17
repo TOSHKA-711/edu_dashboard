@@ -162,7 +162,7 @@ const Page = () => {
             {t("courses.add.description_he")}
           </p>
           <textarea
-            name={t("courses.add.description_he")}
+            name="description_he"
             cols={30}
             rows={2}
             placeholder={t("courses.add.description_he_placeholder")}
@@ -284,3 +284,4 @@ const Page = () => {
 };
 
 export default Page;
+
