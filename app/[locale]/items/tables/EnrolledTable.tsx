@@ -167,9 +167,16 @@ export default function EnrolledTable({
             height: "100%",
           }}
         >
-          <input
+            <input
+            placeholder="000"
             type="number"
-            className="border-1 h-7 w-30 rounded-lg py-2 px-3  focus:outline-none focus:ring-1 focus:ring-blue-500 border-[#2664B1] "
+            className="border border-[#2664B1] h-7 pt-1.5 w-[120px] rounded-lg px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            onInput={(e) => {
+              e.currentTarget.value = e.currentTarget.value.replace(
+                /[^0-9]/g,
+                ""
+              );
+            }}
             onChange={(e) => handleInputsChange(e, params.row.id)}
             value={amounts[params.row.id] || ""}
           />
@@ -294,3 +301,4 @@ export default function EnrolledTable({
     </motion.div>
   );
 }
+
