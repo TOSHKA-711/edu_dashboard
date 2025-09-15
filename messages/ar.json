@@ -104,7 +104,7 @@
       "personal_information": "معلومات شخصية",
       "first_name": "الاسم الشخصي *",
       "father_name": "اسم الاب *",
-      "identity": "الهوية *",
+      "identity": "رقم هوية ولي الامر *",
       "email": "البريد الالكتروني *",
       "phone": "الهاتف *",
       "gender": "النوع *",

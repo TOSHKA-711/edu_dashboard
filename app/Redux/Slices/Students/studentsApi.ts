@@ -48,6 +48,15 @@ export const studentsApi = createApi({
         }),
       }
     ),
+       setStudentToCourse: builder.mutation<unknown, { data: FormData }>(
+      {
+        query: ({ data }) => ({
+          url: `/addUserToCourse`,
+          method: "POST",
+          body: data,
+        }),
+      }
+    ),
     setStudentUpdate: builder.mutation<unknown, { id: number; data: FormData }>(
       {
         query: ({ id, data }) => ({
@@ -78,6 +87,7 @@ export const {
   useGetStudentImagesQuery,
   useSetStudentUpdateMutation,
   useSetStudentMutation,
+  useSetStudentToCourseMutation,
   useChangeUserStatusMutation,
   useDeleteUserMutation,
 } = studentsApi;

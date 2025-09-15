@@ -16,7 +16,7 @@ import {
 import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function EnrolledTable({
   users,
@@ -167,7 +167,8 @@ export default function EnrolledTable({
             height: "100%",
           }}
         >
-            <input
+
+          <input
             placeholder="000"
             type="number"
             className="border border-[#2664B1] h-7 pt-1.5 w-[120px] rounded-lg px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -180,6 +181,7 @@ export default function EnrolledTable({
             onChange={(e) => handleInputsChange(e, params.row.id)}
             value={amounts[params.row.id] || ""}
           />
+
           {/* سداد مبلغ */}
           <Tooltip title={t("alerts.pay_part")}>
             <IconButton
@@ -243,13 +245,13 @@ export default function EnrolledTable({
 
   return (
     <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{
-      duration: 0.4,
-      scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
-    }}
-  >
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+      }}
+    >
       <ToastContainer />
       <Paper
         sx={{
