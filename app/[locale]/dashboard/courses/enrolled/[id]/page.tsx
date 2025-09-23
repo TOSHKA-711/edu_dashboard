@@ -45,11 +45,8 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <EnrolledTable
-        users={users ?? { status: false, message: "", data: [] }}
-      />
-      <div className="flex-row flex items-center justify-start gap-7">
+    <div className="flex flex-col py-4">
+       <div className="flex-row flex self-end items-center justify-start gap-7 -mb-4">
         <SelectUserDialog setStudent={setStudent} />
         {student.name != "" && (
           <button
@@ -60,6 +57,10 @@ const Page = () => {
           </button>
         )}
       </div>
+      <EnrolledTable
+        users={users ?? { status: false, message: "", data: [] }}
+      />
+     
       <ToastContainer />
     </div>
   );

@@ -61,7 +61,7 @@ export default function CoursesTable({ userId }: { userId: number }) {
       renderCell: (params) => (
         <div className="flex gap-2 items-center">
           <Image
-            alt="course"
+            alt="course image"
             src={params.row.image}
             width={40}
             height={30}

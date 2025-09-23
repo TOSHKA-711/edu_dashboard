@@ -19,7 +19,8 @@ import {
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export default function ParentsTable() {
   const t = useTranslations();
@@ -209,8 +210,37 @@ export default function ParentsTable() {
     }
   };
 
+  // save file
+
+  const handleExportToExcel = () => {
+    if (parents.length === 0) {
+      alert("No data to export!");
+      return;
+    }
+
+    // Convert JSON to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(parents);
+
+    // Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "UsersData");
+
+    // Write the file and trigger download
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    // Save the file
+    saveAs(data, "All parents.xlsx");
+  };
+
   return (
     <motion.div
+      className="py-3"
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
@@ -269,6 +299,12 @@ export default function ParentsTable() {
         </Box>
       </Paper>
       <ToastContainer />
+      <button
+        onClick={handleExportToExcel}
+        className="px-4 py-2 -mt-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition cursor-pointer"
+      >
+        {t("exports.export_excel")}
+      </button>
     </motion.div>
   );
 }

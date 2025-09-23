@@ -17,6 +17,8 @@ import { useAlert } from "../hooks/useAlert";
 import { ToastContainer } from "react-toastify";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export default function TeachersTable() {
   const t = useTranslations();
@@ -215,6 +217,33 @@ export default function TeachersTable() {
     }
   };
 
+  // save file
+
+  const handleExportToExcel = () => {
+    if (instructors.length === 0) {
+      alert("No data to export!");
+      return;
+    }
+
+    // Convert JSON to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(instructors);
+
+    // Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "UsersData");
+
+    // Write the file and trigger download
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    // Save the file
+    saveAs(data, "All instructors.xlsx");
+  };
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
@@ -274,6 +303,12 @@ export default function TeachersTable() {
           </div>
         </Box>
       </Paper>
+      <button
+        onClick={handleExportToExcel}
+        className="px-4 py-2 mt-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition cursor-pointer"
+      >
+        {t("exports.export_excel")}
+      </button>
     </motion.div>
   );
 }

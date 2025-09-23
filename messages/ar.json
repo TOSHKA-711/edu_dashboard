@@ -13,7 +13,7 @@
     "enrollments": "الحجوزات",
     "courses": "الدورات",
     "instructors": "المرشدين",
-    "categories": "المجالات",
+    "categories": "الفئات",
     "users": "المستخدمين",
     "profit": "المدفوعات"
   },
@@ -98,7 +98,7 @@
       "personal_information": "معلومات شخصية",
       "id_number": "رقم الهوية:",
       "join_date": "تاريخ الإنضمام :",
-      "my_courses": "كورساتي"
+      "my_courses": "دوراتي"
     },
     "add": {
       "personal_information": "معلومات شخصية",
@@ -182,9 +182,9 @@
       "approve": "قبول"
     },
     "add": {
-      "course_info": "معلومات عن الكورس",
-      "course_title_ar_placeholder": "قم بكتابه عنوان الكورس بالعربي هنا.....",
-      "course_title_he_placeholder": "قم بكتابه عنوان الكورس بالعبري هنا.....",
+      "course_info": "معلومات عن الدورة",
+      "course_title_ar_placeholder": "قم بكتابه عنوان الدورة بالعربي هنا.....",
+      "course_title_he_placeholder": "قم بكتابه عنوان الدورة بالعبري هنا.....",
       "description_ar": "الوصف بالعربي",
       "description_he": "الوصف بالعبري",
       "title_d_ar": "عنوان القسم بالعربي",
@@ -195,14 +195,14 @@
       "supported_file_types": "نحن ندعم فقط ملفات JPG، JPEG، أو PNG.",
       "upload_image": "رفع الصورة",
       "delete_image": "مسح",
-      "course_details": "تفاصيل الكورس",
+      "course_details": "تفاصيل الدورة",
       "category": "الفئه",
       "type": "النوع",
       "teachers": "المرشدين",
       "price": "السعر",
       "average_age": "متوسط العمر",
       "number_of_sessions": "عدد الحصص",
-      "course_capacity": "سعة الكورس",
+      "course_capacity": "سعة الدورة",
       "points": "النقاط",
       "status": "الحالة",
       "start_date_label": "تاريخ البدأ",
@@ -218,12 +218,12 @@
   },
   "categories": {
     "all": {
-      "topics": "المجالات",
-      "add_topic": "إضافة موضوع"
+      "topics": "الفئات",
+      "add_topic": "إضافة فئة"
     },
     "add": {
-      "topic_name_ar": "اسم الموضوع بالعربي*",
-      "topic_name_he": "اسم الموضوع بالعبري*",
+      "topic_name_ar": "اسم الفئة بالعربي*",
+      "topic_name_he": "اسم الفئة بالعبري*",
       "count": "العدد*",
       "supported_file_types": "نحن ندعم فقط ملفات JPG، JPEG، أو PNG.",
       "upload_image": "رفع الصورة",
@@ -312,7 +312,7 @@
     "enabled": "مفعل",
     "status": "الحالة",
     "points": "النقاط",
-    "course_capacity": "سعة الكورس",
+    "course_capacity": "سعة الدورة",
     "number_of_sessions": "عدد الحصص",
     "average_age": "متوسط العمر",
     "price": "السعر",
@@ -380,12 +380,17 @@
     "payment_added_success": "تم إضافة الدفع بنجاح!",
     "payment_failed": "فشل في الدفع!",
     "no_payments_found": "لم يتم العثور على مدفوعات",
-    "confirm_delete_topic": "هل أنت متأكد من حذف الموضوع ؟",
+    "confirm_delete_topic": "هل أنت متأكد من حذف الفئة ؟",
     "category_deleted_success": "تم حذف الفئة بنجاح!",
     "category_delete_failed": "فشل في حذف الفئة!",
     "enter_name": "قم بأدخال اسمك",
     "enter_password": "كلمة السر",
     "enter_email": "البريد الالكتروني",
     "login": "تسجيل الدخول"
+  }
+  ,"exports": {
+    "export_excel": "تصدير الى اكسل",
+    "export_pdf": "تصدير الى PDF",
+    "print": "طباعة"
   }
 }

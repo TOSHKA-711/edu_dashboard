@@ -387,5 +387,10 @@
     "enter_password": "והסיסמה",
     "enter_email": "הדוא\"ל",
     "login": "התחברות"
+  },
+  "exports": {
+    "export_excel": "ייצוא לאקסל",
+    "export_pdf": "ייצוא ל-PDF",
+    "print": "הדפסה"
   }
 }
