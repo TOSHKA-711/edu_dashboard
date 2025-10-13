@@ -331,6 +331,9 @@
   "alerts": {
     "course_added_success": "הקורס נוסף בהצלחה!",
     "course_added_failed": "נכשל בהוספת הקורס!",
+    "course_deleted_success": "הקורס נמחק בהצלחה!",
+    "course_delete_failed": "נכשל במחיקת הקורס!",
+    "delete_course_confirm": "האם אתה בטוח שברצונך למחוק את הקורס הזה?",
     "delete_section_confirm": "האם אתה בטוח שברצונך למחוק את הסעיף הזה?",
     "delete_section_success": "הסעיף נמחק בהצלחה!",
     "delete_section_failed": "נכשל בהסרת הסעיף!",
@@ -348,6 +351,7 @@
     "loading_or_no_users_found": "טוען או לא נמצאו משתמשים.",
     "role_added_success": "התפקיד נוסף בהצלחה",
     "role_added_failed": "נכשל בהוספת התפקיד",
+    "password_change_confirm": "האם אתה בטוח שברצונך לשנות את הסיסמה?",
     "password_changed_success": "הסיסמה שונתה בהצלחה",
     "password_change_failed": "הסיסמה הישנה שגויה או אירעה שגיאה בעת שינוי הסיסמה",
     "user_updated_success": "המשתמש עודכן בהצלחה!",

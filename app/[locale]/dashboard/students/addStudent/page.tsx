@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoIosColorPalette } from "react-icons/io";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 // alert
 import { ToastContainer } from "react-toastify";
@@ -53,6 +53,12 @@ const Page = () => {
     password: "",
     password_confirmation: "",
     child_type: "",
+    grade_name: "",
+    school_name: "",
+    educational_stage: "",
+    neighborhood: "",
+    mother_name: "",
+    mother_identity_id: "",
   });
 
   useEffect(() => {
@@ -118,6 +124,25 @@ const Page = () => {
       if (payload.username !== null) {
         formData.append("username", payload.username);
       }
+      if (payload.grade_name !== null) {
+        formData.append("grade_name", payload.grade_name);
+      }
+      if (payload.school_name !== null) {
+        formData.append("school_name", payload.school_name);
+      }
+      if (payload.educational_stage !== null) {
+        formData.append("educational_stage", payload.educational_stage);
+      }
+      if (payload.neighborhood !== null) {
+        formData.append("neighborhood", payload.neighborhood);
+      }
+      if (payload.mother_name !== null) {
+        formData.append("mother_name", payload.mother_name);
+      }
+      if (payload.mother_identity_id !== null) {
+        formData.append("mother_identity_id", payload.mother_identity_id);
+      }
+
       if (date_of_birth !== null) {
         formData.append(
           "date_of_birth",
@@ -134,11 +159,13 @@ const Page = () => {
           parentId: parseInt(String(parent.id)),
           data: formData,
         }).unwrap();
+
         showSuccess(`${t("alerts.user_added_success")}`);
       } catch {
         showError(`${t("alerts.user_added_failed")}`);
       }
     }
+    console.log(Array.from(formData.entries()));
   };
 
   if (!isRendered) {
@@ -201,6 +228,20 @@ const Page = () => {
               type="text"
               name="identity_id"
               value={payload.identity_id}
+              onChange={handleChange}
+            />
+            <InputField
+              label={t("students.edit.mother_name")}
+              type="text"
+              name="mother_name"
+              value={payload.mother_name}
+              onChange={handleChange}
+            />
+            <InputField
+              label={t("students.edit.mother_id")}
+              type="text"
+              name="mother_identity_id"
+              value={payload.mother_identity_id}
               onChange={handleChange}
             />
             <InputField
@@ -326,7 +367,10 @@ const Page = () => {
                 {t("students.add.color")}
               </p>
               <IoIosColorPalette className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
-              <SelectColorDialog setColor={setColor} setColorShow={setColorShow}/>
+              <SelectColorDialog
+                setColor={setColor}
+                setColorShow={setColorShow}
+              />
               <span
                 style={{
                   marginRight: "8px",
@@ -370,28 +414,65 @@ const Page = () => {
             </FormControl>
           </div>
         </div>
+
+        {/* --------------- */}
+        <div className="course-details flex flex-col items-start gap-8 pt-10">
+          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl max-sm:text-[16px] rounded-md">
+            {t("students.edit.class_info")}
+          </div>
+          <div className="inputs w-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
+            <InputField
+              label={t("students.edit.class")}
+              type="text"
+              name="grade_name"
+              value={payload.grade_name}
+              onChange={handleChange}
+            />
+            <InputField
+              label={t("students.edit.school")}
+              type="text"
+              name="school_name"
+              value={payload.school_name}
+              onChange={handleChange}
+            />
+            <InputField
+              label={t("students.edit.education_level")}
+              type="text"
+              name="educational_stage"
+              value={payload.educational_stage}
+              onChange={handleChange}
+            />
+            <InputField
+              label={t("students.edit.district")}
+              type="text"
+              name="neighborhood"
+              value={payload.neighborhood}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         {/* --------------- */}
 
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             {t("students.add.save")}
           </motion.button>
           <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >

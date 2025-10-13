@@ -45,6 +45,16 @@ export const authApi = createApi({
         }
       },
     }),
+    updatePassword: builder.mutation<
+      unknown,
+      { userId: number; password: string; password_confirmation: string }
+    >({
+      query: ({ userId, password, password_confirmation }) => ({
+        url: `/users/updatePassword/${userId}`,
+        method: "POST",
+        body: { password, password_confirmation },
+      }),
+    }),
     getLogs: builder.query<{ logs: LogType[] }, void>({
       query: () => `logsLogin`,
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -58,4 +68,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useGetLogsQuery } = authApi;
+export const { useLoginMutation, useGetLogsQuery ,useUpdatePasswordMutation} = authApi;

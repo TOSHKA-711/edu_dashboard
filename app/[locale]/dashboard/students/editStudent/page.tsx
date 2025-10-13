@@ -16,9 +16,10 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { useSelector } from "react-redux";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 // alert
 import { ToastContainer } from "react-toastify";
+import { useUpdatePasswordMutation } from "@/app/Redux/Slices/Auth/authApi";
 
 const Page = () => {
   const [isRendered, setIsRendered] = useState(false);
@@ -34,6 +35,7 @@ const Page = () => {
   );
   const [setStudentUpdate] = useSetStudentUpdateMutation();
   const { data: studentImages } = useGetStudentImagesQuery();
+  const [updatePassword] = useUpdatePasswordMutation();
 
   const [payload, setPayload] = useState({
     image: selectedUser?.image,
@@ -51,7 +53,12 @@ const Page = () => {
     school_name: selectedUser?.school_name ?? "null",
     grade_name: selectedUser?.grade_name ?? "null",
     points: selectedUser?.points ?? 0,
+    password: "",
+    password_confirmation: "",
   });
+
+  console.log(selectedUser);
+  
 
   useEffect(() => {
     setIsRendered(true);
@@ -168,13 +175,29 @@ const Page = () => {
         }).unwrap();
         showSuccess(`${t("alerts.user_added_success")}`);
         console.log(formData);
-        
       } catch {
         showError(`${t("alerts.user_added_failed")}`);
       }
     }
   };
 
+  //  handle change password
+  const handleChangePassword = async () => {
+    if (window.confirm(t("alerts.password_change_confirm"))) {
+      if (selectedUser) {
+        try {
+          await updatePassword({
+            userId: selectedUser.id,
+            password: payload.password,
+            password_confirmation: payload.password_confirmation,
+          }).unwrap();
+          showSuccess(`${t("alerts.password_changed_success")}`);
+        } catch {
+          showError(`${t("alerts.password_change_failed")}`);
+        }
+      }
+    }
+  };
   // return image
   const getImageSrc = () => {
     if (typeof image === "string") return image;
@@ -338,26 +361,62 @@ const Page = () => {
           </div>
         </div>
         {/* --------------- */}
+        <div className="course-details flex flex-col items-start gap-8 pt-10">
+          <div className="header bg-[#2664B11A] flex items-center justify-start w-full  p-4 text-2xl max-sm:text-[16px] rounded-md">
+            تحديث كلمة المرور
+          </div>
+          <div className="inputs w-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
+            <InputField
+              label={"كلمة المرور الجديدة"}
+              type="text"
+              name="password"
+              value={payload.password}
+              onChange={handleChange}
+            />{" "}
+            <InputField
+              label={"كلمة المرور الجديدة مرة أخرى"}
+              type="text"
+              name="password_confirmation"
+              value={payload.password_confirmation}
+              onChange={handleChange}
+            />
+            <div className="sub-btn p-10 w-full flex flex-col items-center justify-start gap-4 -mt-1.5">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                }}
+                className="bg-green-600 text-[18px] text-white py-3 px-20 max-sm:px-20 rounded-3xl cursor-pointer"
+                onClick={handleChangePassword}
+              >
+                {t("students.edit.save")}
+              </motion.button>
+            </div>
+          </div>
+        </div>
+        {/* --------------- */}
         <div className="sub-btn p-10 w-full flex flex-col items-center gap-4">
           <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#2664B1] text-white py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={handleSubmit}
           >
             {t("students.edit.save")}
           </motion.button>
           <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+            whileTap={{ scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
             className="bg-[#F2F4F8]  py-2 px-30 max-sm:px-20 rounded-3xl cursor-pointer"
             onClick={() => router.push("/dashboard/students/allStudents")}
           >
