@@ -25,8 +25,10 @@ const Page = () => {
   const { showSuccess, showError } = useAlert();
   const router = useRouter();
   const [image, setImage] = useState<File | null>(null);
-  const { imagePreviewUrl, handleImageChange, resetImage } =
-    useImageUpload(setImage);
+  const { imagePreviewUrl, handleImageChange, resetImage } = useImageUpload(
+    setImage,
+    { width: 150, height: 150 }
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const selectedUser = useSelector(
     (state: RootState) => state.Instructors.selectedUser
@@ -145,6 +147,7 @@ const Page = () => {
             <p className="text-[#5D5959] text-md">
               {t("instructors.add.supported_file_types")}
             </p>
+            <p className="-mt-3">{t("categories.add.recommended_size")}</p>
 
             <div className="flex items-center justify-center gap-8">
               <span

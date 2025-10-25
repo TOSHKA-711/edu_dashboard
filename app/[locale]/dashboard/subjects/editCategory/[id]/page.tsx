@@ -27,8 +27,10 @@ const Page = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [image, setImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { imagePreviewUrl, handleImageChange, resetImage } =
-    useImageUpload(setImage);
+  const { imagePreviewUrl, handleImageChange, resetImage } = useImageUpload(
+    setImage,
+    { width: 150, height: 150 }
+  );
   const { data: category, isLoading } = useGetCategoryQuery(categoryId);
   const [updateCategory] = useUpdateCategoryMutation();
   const [payload, setPayload] = useState({

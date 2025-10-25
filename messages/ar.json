@@ -226,6 +226,7 @@
       "topic_name_he": "اسم الفئة بالعبري*",
       "count": "العدد*",
       "supported_file_types": "نحن ندعم فقط ملفات JPG، JPEG، أو PNG.",
+      "recommended_size": "مقاس الصور الموصى به 150 * 150",
       "upload_image": "رفع الصورة",
       "delete_image": "مسح",
       "confirm": "تأكيد"
@@ -391,8 +392,8 @@
     "enter_password": "كلمة السر",
     "enter_email": "البريد الالكتروني",
     "login": "تسجيل الدخول"
-  }
-  ,"exports": {
+  },
+  "exports": {
     "export_excel": "تصدير الى اكسل",
     "export_pdf": "تصدير الى PDF",
     "print": "طباعة"

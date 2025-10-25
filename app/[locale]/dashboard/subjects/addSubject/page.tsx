@@ -18,8 +18,10 @@ const Page = () => {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [image, setImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { imagePreviewUrl, handleImageChange, resetImage } =
-    useImageUpload(setImage);
+  const { imagePreviewUrl, handleImageChange, resetImage } = useImageUpload(
+    setImage,
+    { width: 150, height: 150 }
+  );
   const [setCategory] = useSetCategoryMutation();
   const [payload, setPayload] = useState({
     name_ar: "",
@@ -93,6 +95,7 @@ const Page = () => {
             <p className="text-[#5D5959] text-md">
               {t("categories.add.supported_file_types")}
             </p>
+            <p className="-mt-3">{t("categories.add.recommended_size")}</p>
 
             <div className="flex items-center justify-center gap-8 max-sm:flex-col max-sm:justify-center">
               <span

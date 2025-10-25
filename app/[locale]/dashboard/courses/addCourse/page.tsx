@@ -10,7 +10,7 @@ import { useImageUpload } from "@/app/[locale]/items/hooks/useImageUploader";
 import { useAlert } from "@/app/[locale]/items/hooks/useAlert";
 import { useTranslations } from "next-intl";
 import CourseDetailsSelectBtns from "@/app/[locale]/items/inputs&btns/CourseDetialsSelectBtns";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 
 const Page = () => {
   const t = useTranslations();
@@ -18,8 +18,10 @@ const Page = () => {
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [image, setImage] = useState<File | null>(null);
-  const { imagePreviewUrl, handleImageChange, resetImage } =
-    useImageUpload(setImage);
+  const { imagePreviewUrl, handleImageChange, resetImage } = useImageUpload(
+    setImage,
+    { width: 150, height: 150 }
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [setCourse] = useSetCourseMutation();
   const [payload, setPayload] = useState({
@@ -180,8 +182,9 @@ const Page = () => {
               <Image src={imagePreviewUrl} alt="img" width={100} height={50} />
             )}
             <p className="text-[#5D5959] text-md">
-              {t("courses.add.supported_file_types")}
+              {t("categories.add.supported_file_types")}
             </p>
+            <p className="-mt-3">{t("categories.add.recommended_size")}</p>
 
             <div className="flex items-center justify-center gap-8 max-sm:flex-col">
               <span
@@ -193,12 +196,12 @@ const Page = () => {
               </span>
 
               <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+                whileTap={{ scale: 0.9 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                }}
                 type="button"
                 className="flex items-center justify-center text-[#DB340B] text-[16px] font-bold border-2 pt-1 pb-2 px-7 rounded-full cursor-pointer"
                 onClick={resetImage}
@@ -267,12 +270,12 @@ const Page = () => {
         </div>
         {/* submit  */}
         <motion.button
-       whileTap={{ scale: 0.9 }}
-       transition={{
-         type: 'spring',
-         stiffness: 400,
-         damping: 10
-       }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 10,
+          }}
           className="text-white bg-[#2664B1] text-2xl py-2 px-24 rounded-full self-center mt-6 cursor-pointer max-sm:px-15"
           onClick={handleSubmit}
         >
@@ -284,4 +287,3 @@ const Page = () => {
 };
 
 export default Page;
-
