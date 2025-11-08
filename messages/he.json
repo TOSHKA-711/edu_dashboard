@@ -151,7 +151,8 @@
       "confirm_password": "אישור סיסמה *",
       "date_of_birth": "תאריך לידה",
       "save": "שמור",
-      "cancel": "בטל"
+      "cancel": "בטל",
+      "add_New_instructor": "הוסף מורה חדש"
     }
   },
   "courses": {
@@ -213,7 +214,8 @@
       "address_he_placeholder": "כתובת",
       "add_department": "הוסף מחלקה",
       "add_lesson": "הוסף שיעור",
-      "confirm": "אשר"
+      "confirm": "אשר",
+      "unvalid_date_range": "טווח תאריכים לא חוקי"
     }
   },
   "categories": {

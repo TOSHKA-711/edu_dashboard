@@ -15,7 +15,7 @@ import { setSelectedCourse } from "@/app/Redux/Slices/Courses/courseSlice";
 import { useTranslations } from "next-intl";
 import { useDeleteCourseMutation } from "@/app/Redux/Slices/Courses/courseApi";
 import { useAlert } from "./hooks/useAlert";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 
 export default function MenuDots({ course }: { course: CourseType }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -132,7 +132,7 @@ const handleDeleteCourse = async (courseId: number) => {
           <MdDeleteOutline className="mb-1" />
         </MenuItem>
       </Menu>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

@@ -24,7 +24,7 @@ export const useImageUpload = (
       const requiredWidth = options?.width;
       const requiredHeight = options?.height;
 
-      // ✅ لو المقاسات محددة و الصورة مش مطابقة، اعمل تنبيه لكن كمل الرفع
+      //  لو المقاسات محددة و الصورة مش مطابقة، اعمل تنبيه لكن كمل الرفع
       if (
         requiredWidth &&
         requiredHeight &&
@@ -35,7 +35,7 @@ export const useImageUpload = (
         );
       }
 
-      // ✅ كمل عادي
+      //  كمل عادي
       setPreviewUrl(imageUrl);
       setImageState(file);
     };

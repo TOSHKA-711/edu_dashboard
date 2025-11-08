@@ -17,6 +17,7 @@ import { useGetAllCategoriesQuery } from "@/app/Redux/Slices/Courses/courseApi";
 import { useGetAllInstructorsQuery } from "@/app/Redux/Slices/Instructors/InstructorsApi";
 import { VscActivateBreakpoints } from "react-icons/vsc";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function CourseDetailsSelectBtns({
   payload,
@@ -39,8 +40,9 @@ export default function CourseDetailsSelectBtns({
 }) {
   const { data: categories } = useGetAllCategoriesQuery();
   const { data: instructors } = useGetAllInstructorsQuery();
-  const t = useTranslations()
-  
+  const t = useTranslations();
+  const router = useRouter();
+
   return (
     <div className="w-full grid grid-cols-4 items-center justify-start gap-y-15 gap-x-5 max-md:grid max-lg:grid-cols-2 max-md:grid-cols-1">
       <FormControl
@@ -62,7 +64,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.category')}
+          {t("btns.category")}
         </p>
         <FaPaintbrush className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <Select
@@ -71,7 +73,6 @@ export default function CourseDetailsSelectBtns({
           onChange={handleSelectChange}
           displayEmpty
           inputProps={{ "aria-label": "Without label" }}
-
         >
           {categories?.data.map((category) => (
             <MenuItem
@@ -103,7 +104,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.type')}
+          {t("btns.type")}
         </p>
         <FaPaintbrush className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <Select
@@ -114,10 +115,10 @@ export default function CourseDetailsSelectBtns({
           inputProps={{ "aria-label": "Without label" }}
         >
           <MenuItem value="course" sx={{ direction: "rtl" }}>
-          {t('btns.course')}
+            {t("btns.course")}
           </MenuItem>
           <MenuItem value="event" sx={{ direction: "rtl" }}>
-          {t('btns.update')}
+            {t("btns.update")}
           </MenuItem>
         </Select>
       </FormControl>
@@ -140,7 +141,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.teachers')}
+          {t("btns.teachers")}
         </p>
         <FaUser className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <Select
@@ -159,6 +160,12 @@ export default function CourseDetailsSelectBtns({
               {Instructor.first_name} {Instructor.last_name}
             </MenuItem>
           ))}
+          <MenuItem
+            sx={{ direction: "rtl", fontWeight: "bold", color: "#2664B1" }}
+            onClick={() => router.push("/dashboard/teachers/addTeacher")}
+          >
+            + {t(`instructors.add.add_New_instructor`)}
+          </MenuItem>
         </Select>
       </FormControl>
       <FormControl
@@ -180,7 +187,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.price')}
+          {t("btns.price")}
         </p>
         <AiFillDollarCircle className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <input
@@ -210,7 +217,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.average_age')}
+          {t("btns.average_age")}
         </p>
         <FaChartSimple className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <input
@@ -240,7 +247,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.number_of_sessions')}
+          {t("btns.number_of_sessions")}
         </p>
         <RiNumbersLine className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <input
@@ -270,7 +277,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.course_capacity')}
+          {t("btns.course_capacity")}
         </p>
         <FaUsers className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <input
@@ -300,7 +307,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.points')}
+          {t("btns.points")}
         </p>
         <VscActivateBreakpoints className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <input
@@ -330,7 +337,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.status')}
+          {t("btns.status")}
         </p>
         <MdOutlineSignalWifiStatusbarConnectedNoInternet4 className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <Select
@@ -341,10 +348,10 @@ export default function CourseDetailsSelectBtns({
           inputProps={{ "aria-label": "Without label" }}
         >
           <MenuItem value={1} sx={{ direction: "rtl" }}>
-          {t('btns.enabled')}
+            {t("btns.enabled")}
           </MenuItem>
           <MenuItem value={0} sx={{ direction: "rtl" }}>
-          {t('btns.disabled')}
+            {t("btns.disabled")}
           </MenuItem>
         </Select>
       </FormControl>
@@ -367,7 +374,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.start_date')}
+          {t("btns.start_date")}
         </p>
         <CiCalendarDate className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <CalenderDialog setStartDate={setStartDate} />
@@ -396,7 +403,7 @@ export default function CourseDetailsSelectBtns({
       >
         <p className="absolute -top-9 right-12 text-lg text-[#2664B1]  ">
           {" "}
-          {t('btns.end_date')}
+          {t("btns.end_date")}
         </p>
         <CiCalendarDate className="bg-[#2664B1] text-white p-2 rounded-3xl text-4xl" />
         <CalenderDialog setStartDate={setEndDate} />

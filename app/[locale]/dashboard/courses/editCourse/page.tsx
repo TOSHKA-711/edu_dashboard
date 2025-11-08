@@ -17,18 +17,22 @@ import { motion } from "framer-motion";
 const Page = () => {
   const [isRendered, setIsRendered] = useState(false);
   const t = useTranslations();
+  const selectedCourse = useSelector(
+    (state: RootState) => state.Courses.selectedCourse
+  );
   const { showSuccess, showError } = useAlert();
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [image, setImage] = useState<File | null>(null);
+  const [imgPreviewUrl] = useState<string | null>(
+    selectedCourse?.image ?? null
+  );
   const { imagePreviewUrl, handleImageChange, resetImage } = useImageUpload(
     setImage,
     { width: 150, height: 150 }
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const selectedCourse = useSelector(
-    (state: RootState) => state.Courses.selectedCourse
-  );
+
   const [updateCourse] = useUpdateCourseMutation();
   const [payload, setPayload] = useState({
     title: selectedCourse?.title ?? "",
@@ -90,6 +94,17 @@ const Page = () => {
     }));
   };
   const handleSubmit = async () => {
+    console.log("Submitting payload:", payload);
+
+    if (startDate && startDate.isBefore(dayjs(), "day")) {
+      showError(t("courses.add.unvalid_date_range"));
+      return;
+    }
+
+    if (endDate && endDate.isBefore(dayjs(), "day")) {
+      showError(t("courses.add.unvalid_date_range"));
+      return;
+    }
     const formData = new FormData();
 
     // إضافة الصورة إذا كانت موجودة
@@ -206,14 +221,16 @@ const Page = () => {
       formData.append("price", payload.price);
     }
 
+    console.log("Submitting payload:", formData);
+
     // إرسال البيانات
     if (selectedCourse) {
       try {
         await updateCourse({ id: selectedCourse.id, data: formData }).unwrap();
         showSuccess(`${t("alerts.course_updated_success")}`);
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 5000);
       } catch {
         showError(`${t("alerts.course_updated_failed")}`);
       }
@@ -286,8 +303,12 @@ const Page = () => {
         {/* img upload  */}
         <div className="img-upload flex items-center justify-start gap-4 w-full">
           <div className="inputs flex flex-col items-center gap-3 w-full flex flex-col items-center justify-center gap-2 py-18 border-2 border-dashed border-[#5e87b8] rounded-lg">
-            {imagePreviewUrl && (
-              <Image src={imagePreviewUrl} alt="img" width={100} height={50} />
+            {imagePreviewUrl ? (
+              <Image src={imagePreviewUrl} alt="img" className="w-90 h-60" width={250} height={150} />
+            ) : (
+              imgPreviewUrl && (
+                <Image src={imgPreviewUrl} alt="img" className="w-90 h-60" width={250} height={150} />
+              )
             )}
             <p className="text-[#5D5959] text-md">
               {t("categories.add.supported_file_types")}

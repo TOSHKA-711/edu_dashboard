@@ -151,7 +151,8 @@
       "confirm_password": "تأكيد كلمة المرور *",
       "date_of_birth": "تاريخ الميلاد",
       "save": "حفظ",
-      "cancel": "الغاء"
+      "cancel": "الغاء",
+      "add_New_instructor": "إضافة مرشد جديد"
     }
   },
   "courses": {
@@ -162,7 +163,7 @@
       "course": "الدورة",
       "students": "الطلاب",
       "type": "النوع",
-      "number_of_sessions": "عدد الحصص",
+      "number_of_sessions": "عدد اللقاءات",
       "start_date": "بدايه الدورة",
       "end_date": "نهايه الدورة",
       "status": "الحالة",
@@ -201,7 +202,7 @@
       "teachers": "المرشدين",
       "price": "السعر",
       "average_age": "متوسط العمر",
-      "number_of_sessions": "عدد الحصص",
+      "number_of_sessions": "عدد اللقاءات",
       "course_capacity": "سعة الدورة",
       "points": "النقاط",
       "status": "الحالة",
@@ -213,7 +214,8 @@
       "address_he_placeholder": "العنوان",
       "add_department": "إضافة قسم",
       "add_lesson": "إضافة درس",
-      "confirm": "تأكيد"
+      "confirm": "تأكيد",
+      "unvalid_date_range": "نطاق تاريخ غير صالح"
     }
   },
   "categories": {
@@ -272,7 +274,7 @@
     "about": "حول",
     "students": "الطلاب",
     "type": "النوع",
-    "number_of_sessions": "عدد الحصص",
+    "number_of_sessions": "عدد اللقاءات",
     "start_date": "بدايه الدورة",
     "end_date": "نهايه الدورة",
     "course_content": "محتوي الدورة",
@@ -314,7 +316,7 @@
     "status": "الحالة",
     "points": "النقاط",
     "course_capacity": "سعة الدورة",
-    "number_of_sessions": "عدد الحصص",
+    "number_of_sessions": "عدد اللقاءات",
     "average_age": "متوسط العمر",
     "price": "السعر",
     "teachers": "المرشدين",

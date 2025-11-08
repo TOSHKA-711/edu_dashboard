@@ -80,6 +80,16 @@ const Page = () => {
     }));
   };
   const handleSubmit = async () => {
+     // التحقق من أن التواريخ صالحة
+  if (startDate && startDate.isBefore(dayjs(), 'day')) {
+    showError(t("courses.add.unvalid_date_range"));
+    return;
+  }
+
+  if (endDate && endDate.isBefore(dayjs(), 'day')) {
+       showError(t("courses.add.unvalid_date_range"));
+    return;
+  }
     const formData = new FormData();
 
     // إضافة الصورة إذا كانت موجودة
